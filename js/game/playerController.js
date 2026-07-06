@@ -14,6 +14,13 @@ export const PlayerController = {
         this.bindKeys();
         this.updatePosition();
         this.loop();
+
+        // 监听返回主菜单事件，重置按键状态
+        document.addEventListener('returnToMenu', () => {
+            this.keysPressed = {};
+        });
+
+        console.log('PlayerController: 初始化完成');
     },
 
     /**
@@ -21,11 +28,15 @@ export const PlayerController = {
      */
     bindKeys() {
         document.addEventListener('keydown', (e) => {
-            this.keysPressed[e.key.toLowerCase()] = true;
+            const key = e.key.toLowerCase();
+            this.keysPressed[key] = true;
 
-            // 阻止方向键滚动页面
-            if (['arrowleft', 'arrowright', 'arrowup', 'arrowdown'].includes(e.key.toLowerCase())) {
-                e.preventDefault();
+            // 阻止方向键滚动页面（仅在游戏中）
+            const gameScreen = document.getElementById('game-screen');
+            if (gameScreen && gameScreen.style.display !== 'none') {
+                if (['arrowleft', 'arrowright', 'arrowup', 'arrowdown'].includes(key)) {
+                    e.preventDefault();
+                }
             }
         });
 
@@ -49,19 +60,41 @@ export const PlayerController = {
      * 游戏主循环
      */
     loop() {
-        // 对话或地图打开时暂停移动
+        // 暂停、对话或地图打开时停止移动
         const mapOpen = document.getElementById('map-screen').style.display === 'flex';
-        if (!gameState.dialogueActive && !mapOpen) {
-            if (this.keysPressed['arrowleft'] || this.keysPressed['a']) {
+        const settingsOpen = document.getElementById('settings-overlay').style.display === 'flex';
+
+        if (!gameState.isPaused && !gameState.dialogueActive && !mapOpen && !settingsOpen) {
+            let moved = false;
+
+            if (this._isMoveLeft()) {
                 gameState.playerPosPercent = Math.max(5, gameState.playerPosPercent - gameState.playerSpeed * 0.03);
-                this.updatePosition();
+                moved = true;
             }
-            if (this.keysPressed['arrowright'] || this.keysPressed['d']) {
+            if (this._isMoveRight()) {
                 gameState.playerPosPercent = Math.min(85, gameState.playerPosPercent + gameState.playerSpeed * 0.03);
+                moved = true;
+            }
+
+            if (moved) {
                 this.updatePosition();
             }
         }
 
         requestAnimationFrame(() => this.loop());
+    },
+
+    /**
+     * 检查是否按下左移按键（使用可配置按键绑定）
+     */
+    _isMoveLeft() {
+        return gameState.keyBindings.moveLeft.keys.some(key => this.keysPressed[key]);
+    },
+
+    /**
+     * 检查是否按下右移按键（使用可配置按键绑定）
+     */
+    _isMoveRight() {
+        return gameState.keyBindings.moveRight.keys.some(key => this.keysPressed[key]);
     }
 };

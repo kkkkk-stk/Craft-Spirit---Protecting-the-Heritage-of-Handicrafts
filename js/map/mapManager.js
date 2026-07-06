@@ -1,7 +1,6 @@
 // ========== 地图管理器 ==========
 
 import { gameState } from '../common/gameState.js';
-import { Toast } from '../common/toast.js';
 
 export const MapManager = {
     mapScreen: null,
@@ -18,12 +17,17 @@ export const MapManager = {
             closeBtn.addEventListener('click', () => this.close());
         }
 
-        // M 键切换地图
+        // 地图按键（使用可配置按键绑定）
         document.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 'm') {
+            const key = e.key.toLowerCase();
+            if (gameState.isPaused || gameState.dialogueActive) return;
+
+            if (gameState.keyBindings.openMap.keys.includes(key)) {
                 this.toggle();
             }
         });
+
+        console.log('MapManager: 初始化完成');
     },
 
     /**
@@ -42,7 +46,7 @@ export const MapManager = {
      */
     open() {
         if (!gameState.hasMap) {
-            Toast.show('你还没有获得地图！');
+            this._showToast('你还没有获得地图！');
             return;
         }
         this.mapScreen.style.display = 'flex';
@@ -53,5 +57,23 @@ export const MapManager = {
      */
     close() {
         this.mapScreen.style.display = 'none';
+    },
+
+    /**
+     * 简易 Toast 提示
+     */
+    _showToast(message) {
+        let toast = document.querySelector('.toast-message');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.className = 'toast-message';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.style.opacity = '1';
+        clearTimeout(this._toastTimer);
+        this._toastTimer = setTimeout(() => {
+            toast.style.opacity = '0';
+        }, 2200);
     }
 };

@@ -1,0 +1,250 @@
+/* ========== 暂停面板样式 ========== */
+
+#pause-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.pause-panel {
+    background: rgba(245, 235, 220, 0.98);
+    border: 4px solid #8b5a2b;
+    border-radius: 16px;
+    padding: 48px 64px;
+    text-align: center;
+    min-width: 360px;
+}
+
+.pause-title {
+    font-size: 34px;
+    color: #8b4513;
+    margin-bottom: 40px;
+    letter-spacing: 8px;
+}
+
+.pause-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.pause-btn {
+    width: 240px;
+    padding: 14px 0;
+    background: transparent;
+    border: 2px solid #2c1810;
+    color: #2c1810;
+    font-size: 20px;
+    cursor: pointer;
+    letter-spacing: 4px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    border-radius: 8px;
+}
+
+.pause-btn:hover {
+    background: #8b5a2b;
+    color: #f5f0e8;
+    transform: scale(1.03);
+}
+
+/* ========== 设置面板样式 ========== */
+
+#settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 210;
+}
+
+.settings-panel {
+    background: rgba(245, 235, 220, 0.98);
+    border: 4px solid #8b5a2b;
+    border-radius: 16px;
+    padding: 40px 56px;
+    text-align: center;
+    min-width: 500px;
+    max-width: 620px;
+}
+
+.settings-title {
+    font-size: 32px;
+    color: #8b4513;
+    margin-bottom: 32px;
+    letter-spacing: 6px;
+}
+
+/* ========== 设置主菜单 ========== */
+
+.settings-menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.settings-menu-btn {
+    width: 260px;
+    padding: 14px 0;
+    background: transparent;
+    border: 2px solid #2c1810;
+    color: #2c1810;
+    font-size: 20px;
+    cursor: pointer;
+    letter-spacing: 4px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    border-radius: 8px;
+    align-self: center;
+}
+
+.settings-menu-btn:hover:not(.disabled) {
+    background: #8b5a2b;
+    color: #f5f0e8;
+    transform: scale(1.03);
+}
+
+.settings-menu-btn.disabled {
+    border-color: #ccc;
+    color: #bbb;
+    cursor: not-allowed;
+}
+
+/* ========== 按键绑定子界面 ========== */
+
+.settings-section {
+    margin-bottom: 28px;
+}
+
+.settings-section-title {
+    font-size: 20px;
+    color: #5c3a1e;
+    margin-bottom: 16px;
+    letter-spacing: 3px;
+    border-bottom: 2px solid #d4c5a9;
+    padding-bottom: 8px;
+}
+
+.keybinding-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.keybinding-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #faf6ef;
+    border-radius: 8px;
+    border: 1px solid #d4c5a9;
+}
+
+.keybinding-label {
+    font-size: 17px;
+    color: #2c1810;
+    letter-spacing: 2px;
+}
+
+.keybinding-value {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.keybinding-key {
+    display: inline-block;
+    background: #2c1810;
+    color: #f5f0e8;
+    padding: 5px 16px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 15px;
+    min-width: 80px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.keybinding-key.listening {
+    background: #8b0000;
+    animation: pulse 0.8s infinite;
+}
+
+.keybinding-rebind {
+    padding: 5px 16px;
+    background: #8b5a2b;
+    color: #f5f0e8;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+.keybinding-rebind:hover {
+    background: #a0522d;
+    transform: scale(1.05);
+}
+
+.keybinding-rebind.listening {
+    background: #8b0000;
+    pointer-events: none;
+}
+
+.keybinding-hint {
+    font-size: 13px;
+    color: #999;
+    margin-top: 8px;
+    letter-spacing: 1px;
+}
+
+.settings-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 28px;
+}
+
+.settings-btn {
+    padding: 12px 40px;
+    background: #8b4513;
+    color: #f5f0e8;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+.settings-btn:hover {
+    background: #a0522d;
+    transform: scale(1.05);
+}
+
+.settings-btn.secondary {
+    background: transparent;
+    color: #8b4513;
+    border: 2px solid #8b4513;
+}
+
+.settings-btn.secondary:hover {
+    background: rgba(139, 69, 19, 0.1);
+}

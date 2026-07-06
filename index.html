@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/dialogue.css">
     <link rel="stylesheet" href="css/tutorial.css">
     <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/settings.css">
 </head>
 <body>
 
@@ -139,6 +140,51 @@
             <div class="map-placeholder-text">暂 未 开 发</div>
         </div>
         <p class="map-hint">更多地图内容敬请期待...</p>
+    </div>
+</div>
+
+<!-- ==================== 暂停面板 ==================== -->
+<div id="pause-overlay">
+    <div class="pause-panel">
+        <h2 class="pause-title">游 戏 暂 停</h2>
+        <div class="pause-buttons">
+            <button class="pause-btn" data-action="resume">继续游戏</button>
+            <button class="pause-btn" data-action="settings">设置选项</button>
+            <button class="pause-btn" data-action="quit">返回主菜单</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== 设置面板 ==================== -->
+<div id="settings-overlay">
+    <div class="settings-panel">
+        <!-- 设置主菜单 -->
+        <div id="settings-menu">
+            <h2 class="settings-title">游 戏 设 置</h2>
+            <div class="settings-menu-buttons">
+                <button class="settings-menu-btn" data-target="keybinding">按 键 绑 定</button>
+                <button class="settings-menu-btn disabled" disabled>音量设置（开发中）</button>
+                <button class="settings-menu-btn disabled" disabled>画面设置（开发中）</button>
+            </div>
+            <div class="settings-buttons">
+                <button class="settings-btn secondary" id="settings-close">关闭</button>
+            </div>
+        </div>
+
+        <!-- 按键绑定子界面 -->
+        <div id="settings-keybinding" style="display:none;">
+            <h2 class="settings-title">按 键 绑 定</h2>
+            <div class="settings-section">
+                <div class="keybinding-list" id="keybinding-list">
+                    <!-- JS 动态填充 -->
+                </div>
+                <p class="keybinding-hint">点击「修改」后按下新按键即可完成绑定</p>
+            </div>
+            <div class="settings-buttons">
+                <button class="settings-btn secondary" id="settings-reset">恢复默认</button>
+                <button class="settings-btn secondary" id="settings-back">返回</button>
+            </div>
+        </div>
     </div>
 </div>
 

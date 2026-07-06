@@ -15,12 +15,17 @@ export const NpcController = {
         // 监听玩家移动事件，检查距离
         document.addEventListener('playerMoved', () => this.checkProximity());
 
-        // E 键交互
+        // 交互按键（使用可配置按键绑定）
         document.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 'e' && !gameState.dialogueActive) {
+            const key = e.key.toLowerCase();
+            if (gameState.isPaused || gameState.dialogueActive) return;
+
+            if (gameState.keyBindings.interact.keys.includes(key)) {
                 this.tryInteract();
             }
         });
+
+        console.log('NpcController: 初始化完成');
     },
 
     /**
