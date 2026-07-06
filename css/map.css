@@ -1,0 +1,83 @@
+/* ========== 地图界面样式 ========== */
+
+#map-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(44, 24, 16, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 180;
+}
+
+.map-container {
+    background: #f5f0e8;
+    border: 6px double #8b5a2b;
+    border-radius: 16px;
+    padding: 50px 70px;
+    text-align: center;
+    min-width: 480px;
+    position: relative;
+}
+
+.map-title {
+    font-size: 34px;
+    color: #8b4513;
+    margin-bottom: 36px;
+    letter-spacing: 6px;
+}
+
+.map-placeholder {
+    width: 400px;
+    height: 320px;
+    background: #e8dcc8;
+    border: 3px dashed #999;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+}
+
+.map-placeholder-icon {
+    font-size: 64px;
+    color: #bbb;
+    margin-bottom: 16px;
+}
+
+.map-placeholder-text {
+    font-size: 20px;
+    color: #999;
+    letter-spacing: 4px;
+}
+
+.map-hint {
+    font-size: 15px;
+    color: #999;
+    margin-top: 16px;
+}
+
+.map-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: #8b5a2b;
+    color: #fff;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 181;
+}
+
+.map-close:hover {
+    background: #a0522d;
+    transform: scale(1.1);
+}

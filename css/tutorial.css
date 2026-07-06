@@ -1,0 +1,67 @@
+/* ========== 新手教程样式 ========== */
+
+#tutorial-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 150;
+}
+
+.tutorial-box {
+    background: rgba(245, 235, 220, 0.98);
+    border: 4px solid #8b5a2b;
+    border-radius: 16px;
+    padding: 40px 56px;
+    text-align: center;
+    max-width: 520px;
+}
+
+.tutorial-title {
+    font-size: 28px;
+    color: #8b4513;
+    margin-bottom: 28px;
+    letter-spacing: 4px;
+}
+
+.tutorial-item {
+    font-size: 18px;
+    color: #333;
+    margin: 18px 0;
+    line-height: 1.6;
+}
+
+.tutorial-key {
+    display: inline-block;
+    background: #2c1810;
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    margin: 0 6px;
+    font-family: monospace;
+    font-size: 16px;
+}
+
+.tutorial-close {
+    margin-top: 28px;
+    padding: 12px 44px;
+    background: #8b4513;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    letter-spacing: 4px;
+    transition: all 0.3s;
+}
+
+.tutorial-close:hover {
+    background: #a0522d;
+    transform: scale(1.05);
+}

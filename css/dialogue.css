@@ -1,0 +1,43 @@
+/* ========== 对话框样式 ========== */
+
+#dialogue-box {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    max-width: 900px;
+    min-height: 140px;
+    background: rgba(240, 230, 215, 0.97);
+    border: 4px solid #2c1810;
+    border-radius: 12px;
+    padding: 24px 32px;
+    display: none;
+    z-index: 200;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+}
+
+.dialogue-speaker {
+    font-size: 20px;
+    color: #8b4513;
+    font-weight: bold;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+}
+
+.dialogue-text {
+    font-size: 17px;
+    color: #2c1810;
+    line-height: 1.8;
+    letter-spacing: 1px;
+}
+
+.dialogue-next {
+    position: absolute;
+    bottom: 12px;
+    right: 20px;
+    color: #888;
+    font-size: 14px;
+    animation: pulse 1.5s infinite;
+}
