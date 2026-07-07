@@ -163,3 +163,67 @@
 .save-slots-btn.secondary:hover {
     background: rgba(139, 69, 19, 0.1);
 }
+
+/* 删除按钮 */
+.save-slots-btn.danger {
+    background: transparent;
+    color: #c62828;
+    border: 2px solid #c62828;
+}
+
+.save-slots-btn.danger:hover {
+    background: #c62828;
+    color: #fff;
+}
+
+.save-slots-btn.danger.active {
+    background: #c62828;
+    color: #fff;
+}
+
+/* ========== 槽位删除模式 ========== */
+
+/* 删除模式下的红叉 */
+.save-slot-delete-x {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 28px;
+    height: 28px;
+    background: #c62828;
+    color: #fff;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 5;
+    line-height: 1;
+    transition: transform 0.2s;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.save-slot-delete-x:hover {
+    transform: scale(1.2);
+    background: #b71c1c;
+}
+
+/* 删除模式下槽位样式 */
+.save-slot.delete-mode {
+    position: relative;
+    overflow: visible;
+    cursor: default;
+}
+
+.save-slot.delete-mode:hover {
+    transform: none;
+    border-color: #d4c5a9;
+    background: #faf6ef;
+}
+
+.save-slot.delete-mode .save-slot-delete-x {
+    display: flex;
+}

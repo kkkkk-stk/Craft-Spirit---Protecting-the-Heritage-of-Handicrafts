@@ -168,29 +168,21 @@
     clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
 }
 
-/* 玩家角色 */
+/* 玩家角色（精灵动画） */
 #player {
     position: absolute;
-    bottom: 43%;
+    bottom: 42%;
     left: calc(15% + 30px);
-    width: 32px;
-    height: 48px;
-    background: #c62828;
-    border: 2px solid #7f0000;
-    transition: left 0.08s linear;
-    image-rendering: pixelated;
     z-index: 50;
+    image-rendering: pixelated;
+    transform-origin: center bottom;
 }
 
-.player-head {
-    position: absolute;
-    top: -24px;
-    left: 2px;
-    width: 26px;
-    height: 26px;
-    background: #ffcc99;
-    border: 2px solid #333;
-    border-radius: 50%;
+#player-sprite {
+    display: block;
+    height: 96px;
+    width: auto;
+    image-rendering: pixelated;
 }
 
 /* NPC 向导 */

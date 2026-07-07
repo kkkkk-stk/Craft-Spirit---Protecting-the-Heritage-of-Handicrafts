@@ -13,6 +13,8 @@ export const gameState = {
     // 玩家状态
     playerX: 0,
     playerPosPercent: 15,
+    playerDirection: 'right',  // 'left' | 'right'
+    playerMoving: false,
 
     // 进度
     hasMap: false,
@@ -33,7 +35,7 @@ export const gameState = {
     settingsSource: null,
 
     // 游戏配置
-    playerSpeed: 5,
+    playerSpeed: 16,
 
     // 按键绑定
     keyBindings: {
@@ -68,6 +70,7 @@ export const gameState = {
     getSaveSnapshot() {
         return {
             playerPosPercent: this.playerPosPercent,
+            playerDirection: this.playerDirection,
             hasMap: this.hasMap,
             tutorialShown: this.tutorialShown,
             currentChapter: this.currentChapter,
@@ -82,6 +85,7 @@ export const gameState = {
     loadSnapshot(snap) {
         if (!snap) return;
         this.playerPosPercent = snap.playerPosPercent ?? 15;
+        this.playerDirection = snap.playerDirection ?? 'right';
         this.hasMap = snap.hasMap ?? false;
         this.tutorialShown = snap.tutorialShown ?? false;
         this.currentChapter = snap.currentChapter ?? 'prologue';

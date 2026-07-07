@@ -1,5 +1,5 @@
 // ========== 存档管理器 ==========
-// 管理存档槽位选择、保存、读取（基于 localStorage）
+// 管理存档槽位选择、保存、读取、删除（基于 localStorage）
 
 import { gameState } from '../common/gameState.js';
 import { SceneManager } from '../common/sceneManager.js';
@@ -20,12 +20,15 @@ function createEmptySlot(index) {
 export const SaveManager = {
     overlay: null,
     slotList: null,
+    deleteBtn: null,
     _mode: 'new-game',
+    _deleteMode: false,
     _slots: [],
 
     init() {
         this.overlay = document.getElementById('save-slots-overlay');
         this.slotList = document.getElementById('save-slots-list');
+        this.deleteBtn = document.getElementById('save-slots-delete');
 
         if (!this.overlay) {
             console.error('SaveManager: 找不到 #save-slots-overlay');
@@ -34,11 +37,18 @@ export const SaveManager = {
 
         this._loadFromStorage();
 
+        // 返回按钮
         const backBtn = document.getElementById('save-slots-back');
         if (backBtn) {
             backBtn.addEventListener('click', () => this.close());
         }
 
+        // 删除存档按钮
+        if (this.deleteBtn) {
+            this.deleteBtn.addEventListener('click', () => this._toggleDeleteMode());
+        }
+
+        // 点击遮罩关闭
         this.overlay.addEventListener('click', (e) => {
             if (e.target === this.overlay) this.close();
         });
@@ -83,6 +93,7 @@ export const SaveManager = {
 
     show(mode = 'new-game') {
         this._mode = mode;
+        this._deleteMode = false;
         this._renderSlots();
 
         const titleEl = document.getElementById('save-slots-title');
@@ -90,19 +101,46 @@ export const SaveManager = {
             titleEl.textContent = mode === 'new-game' ? '选 择 存 档' : '读 取 存 档';
         }
 
+        // 删除按钮仅读档模式显示
+        if (this.deleteBtn) {
+            this.deleteBtn.style.display = mode === 'load' ? 'inline-block' : 'none';
+            this.deleteBtn.classList.remove('active');
+            this.deleteBtn.textContent = '删除存档';
+        }
+
         this.overlay.style.display = 'flex';
         console.log('SaveManager: 显示存档界面，模式:', mode);
     },
 
     close() {
+        this._deleteMode = false;
         this.overlay.style.display = 'none';
 
-        // 新游戏模式下返回 → 回到主菜单
         if (this._mode === 'new-game') {
             SceneManager.show('main-menu', 'flex');
         }
 
         console.log('SaveManager: 关闭存档界面');
+    },
+
+    /**
+     * 切换删除模式
+     */
+    _toggleDeleteMode() {
+        this._deleteMode = !this._deleteMode;
+
+        if (this.deleteBtn) {
+            if (this._deleteMode) {
+                this.deleteBtn.classList.add('active');
+                this.deleteBtn.textContent = '取消删除';
+            } else {
+                this.deleteBtn.classList.remove('active');
+                this.deleteBtn.textContent = '删除存档';
+            }
+        }
+
+        this._renderSlots();
+        console.log('SaveManager: 删除模式:', this._deleteMode ? '开' : '关');
     },
 
     _renderSlots() {
@@ -111,12 +149,32 @@ export const SaveManager = {
 
         this._slots.forEach((slot, index) => {
             const el = document.createElement('div');
-            el.className = 'save-slot' + (slot.isEmpty ? ' empty' : '');
+            el.className = 'save-slot';
+            if (slot.isEmpty) {
+                el.classList.add('empty');
+            }
+            if (this._deleteMode && !slot.isEmpty) {
+                el.classList.add('delete-mode');
+            }
 
+            // 删除模式下的红叉（仅非空槽位）
+            if (this._deleteMode && !slot.isEmpty) {
+                const deleteX = document.createElement('span');
+                deleteX.className = 'save-slot-delete-x';
+                deleteX.textContent = '✕';
+                deleteX.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this._confirmDelete(index);
+                });
+                el.appendChild(deleteX);
+            }
+
+            // 槽位序号
             const idxSpan = document.createElement('span');
             idxSpan.className = 'save-slot-index';
             idxSpan.textContent = index + 1;
 
+            // 槽位信息
             const infoDiv = document.createElement('div');
             infoDiv.className = 'save-slot-info';
 
@@ -145,16 +203,21 @@ export const SaveManager = {
             infoDiv.appendChild(metaDiv);
             el.appendChild(idxSpan);
             el.appendChild(infoDiv);
-            el.addEventListener('click', () => this._onSlotClick(index));
+
+            // 点击事件（删除模式下不触发选择）
+            if (!this._deleteMode || slot.isEmpty) {
+                el.addEventListener('click', () => this._onSlotClick(index));
+            }
+
             this.slotList.appendChild(el);
         });
     },
 
     _onSlotClick(index) {
+        if (this._deleteMode) return;
         const slot = this._slots[index];
 
         if (this._mode === 'new-game') {
-            // 新游戏：确认覆盖已有存档
             if (!slot.isEmpty) {
                 const confirmed = confirm(
                     `「${slot.name}」已有存档（${this._formatTime(slot.timestamp)}），\n是否覆盖？`
@@ -163,7 +226,6 @@ export const SaveManager = {
             }
             this._startNewGame(index);
         } else {
-            // 读档：只能选非空槽位，直接进游戏
             if (slot.isEmpty) {
                 this._showToast('该存档为空');
                 return;
@@ -172,16 +234,51 @@ export const SaveManager = {
         }
     },
 
+    /**
+     * 确认删除存档
+     */
+    _confirmDelete(index) {
+        const slot = this._slots[index];
+        const confirmed = confirm(
+            `确认删除「${slot.name}」？\n\n` +
+            `保存时间：${this._formatTime(slot.timestamp)}\n` +
+            `所在章节：${slot.chapter || '未知'}\n\n` +
+            `此操作不可撤销！`
+        );
+        if (!confirmed) return;
+
+        // 删除槽位数据
+        this._slots[index] = createEmptySlot(index);
+        this._saveToStorage();
+        this._showToast(`「存档${['一', '二', '三'][index]}」已删除`);
+
+        // 如果删除的是当前活跃槽位，清除活跃标记
+        if (gameState.activeSlotIndex === index) {
+            gameState.activeSlotIndex = -1;
+        }
+
+        // 如果所有存档都被删了，自动退出删除模式
+        if (this._filledCount() === 0 && this._deleteMode) {
+            this._deleteMode = false;
+            if (this.deleteBtn) {
+                this.deleteBtn.classList.remove('active');
+                this.deleteBtn.textContent = '删除存档';
+            }
+        }
+
+        this._renderSlots();
+        console.log('SaveManager: 已删除槽位', index + 1);
+    },
+
     // ==================== 业务逻辑 ====================
 
-    /**
-     * 新游戏 —— 选槽 → 前情提要 → 游戏
-     */
     _startNewGame(slotIndex) {
         console.log('SaveManager: 新游戏 → 槽位', slotIndex + 1);
 
         gameState.activeSlotIndex = slotIndex;
         gameState.playerPosPercent = 15;
+        gameState.playerDirection = 'right';
+        gameState.playerMoving = false;
         gameState.hasMap = false;
         gameState.tutorialShown = false;
         gameState.dialogueActive = false;
@@ -190,18 +287,11 @@ export const SaveManager = {
         gameState.isPaused = false;
 
         this.close();
-
-        // 隐藏主菜单，播放前情提要
         SceneManager.hide('main-menu');
         SceneManager.show('intro-screen', 'flex');
-
-        // 通知 intro 模块开始
         document.dispatchEvent(new CustomEvent('startIntro'));
     },
 
-    /**
-     * 保存游戏
-     */
     saveGame() {
         const idx = gameState.activeSlotIndex;
         if (idx < 0 || idx >= MAX_SLOTS) {
@@ -222,9 +312,6 @@ export const SaveManager = {
         console.log('SaveManager: 保存到槽位', idx + 1);
     },
 
-    /**
-     * 读档 —— 直接进游戏，跳过前情提要
-     */
     _loadGame(slotIndex) {
         const slot = this._slots[slotIndex];
         if (slot.isEmpty || !slot.state) return;
@@ -235,8 +322,6 @@ export const SaveManager = {
         gameState.loadSnapshot(slot.state);
 
         this.close();
-
-        // 隐藏主菜单和前情提要，直接显示游戏
         SceneManager.hide('main-menu');
         SceneManager.hide('intro-screen');
         SceneManager.show('game-screen', 'block');
