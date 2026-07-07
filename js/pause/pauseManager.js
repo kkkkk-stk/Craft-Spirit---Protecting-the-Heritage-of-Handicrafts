@@ -1,5 +1,5 @@
 // ========== 暂停管理器 ==========
-// 管理 ESC 暂停菜单（继续游戏 / 设置选项 / 返回主菜单）
+// 管理 ESC 暂停菜单（继续 / 保存 / 设置 / 返回主菜单）
 
 import { gameState } from '../common/gameState.js';
 import { SceneManager } from '../common/sceneManager.js';
@@ -27,6 +27,9 @@ export const PauseManager = {
                 case 'resume':
                     this.resume();
                     break;
+                case 'save':
+                    this.saveGame();
+                    break;
                 case 'settings':
                     this.openSettings();
                     break;
@@ -39,21 +42,22 @@ export const PauseManager = {
         // 全局 ESC 监听（切换暂停）
         document.addEventListener('keydown', (e) => {
             if (gameState.isActionKey('pause', e.key.toLowerCase())) {
-                // 如果设置面板打开且是从暂停打开的，先关闭设置
+                // 如果设置面板从暂停打开，先关设置
                 if (gameState.settingsSource === 'pause') {
                     const settingsOverlay = document.getElementById('settings-overlay');
                     if (settingsOverlay && settingsOverlay.style.display === 'flex') {
-                        // 由 SettingsManager 处理关闭
                         return;
                     }
                 }
 
-                // 只在游戏进行中（非主菜单/前情提要）响应暂停
+                // 只在游戏进行中响应暂停
                 const gameScreen = document.getElementById('game-screen');
                 if (!gameScreen || gameScreen.style.display === 'none') return;
 
-                // 如果对话进行中，不暂停
+                // 对话或存档选择界面中不暂停
                 if (gameState.dialogueActive) return;
+                const saveOverlay = document.getElementById('save-slots-overlay');
+                if (saveOverlay && saveOverlay.style.display === 'flex') return;
 
                 this.toggle();
             }
@@ -96,12 +100,19 @@ export const PauseManager = {
     },
 
     /**
+     * 保存游戏（委托给 SaveManager）
+     */
+    saveGame() {
+        document.dispatchEvent(new CustomEvent('requestSave'));
+        // 保存后自动继续
+        this.resume();
+    },
+
+    /**
      * 从暂停菜单打开设置
      */
     openSettings() {
-        // 先隐藏暂停面板
         this.overlay.style.display = 'none';
-        // 打开设置面板（标记来源为 pause）
         document.dispatchEvent(new CustomEvent('openSettings', {
             detail: { source: 'pause' }
         }));
@@ -113,14 +124,12 @@ export const PauseManager = {
     quitToMenu() {
         console.log('PauseManager: 返回主菜单');
 
-        // 重置状态
         gameState.isPaused = false;
         gameState.dialogueActive = false;
-        gameState.tutorialShown = true; // 防止再次弹出教程
+        gameState.tutorialShown = true;
 
         this.overlay.style.display = 'none';
 
-        // 隐藏所有游戏相关界面
         SceneManager.hide('pause-overlay');
         SceneManager.hide('game-screen');
         SceneManager.hide('ui-hud');
@@ -128,11 +137,11 @@ export const PauseManager = {
         SceneManager.hide('tutorial-overlay');
         SceneManager.hide('map-screen');
         SceneManager.hide('settings-overlay');
+        SceneManager.hide('save-slots-overlay');
 
-        // 重置玩家位置
         gameState.playerPosPercent = 15;
+        gameState.activeSlotIndex = -1;
 
-        // 显示主菜单
         SceneManager.show('main-menu', 'flex');
 
         document.dispatchEvent(new CustomEvent('returnToMenu'));

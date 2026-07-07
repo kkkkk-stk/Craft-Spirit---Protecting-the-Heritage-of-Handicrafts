@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/tutorial.css">
     <link rel="stylesheet" href="css/map.css">
     <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="css/save.css">
 </head>
 <body>
 
@@ -149,6 +150,7 @@
         <h2 class="pause-title">游 戏 暂 停</h2>
         <div class="pause-buttons">
             <button class="pause-btn" data-action="resume">继续游戏</button>
+            <button class="pause-btn" data-action="save">保存游戏</button>
             <button class="pause-btn" data-action="settings">设置选项</button>
             <button class="pause-btn" data-action="quit">返回主菜单</button>
         </div>
@@ -184,6 +186,19 @@
                 <button class="settings-btn secondary" id="settings-reset">恢复默认</button>
                 <button class="settings-btn secondary" id="settings-back">返回</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== 存档槽选择界面 ==================== -->
+<div id="save-slots-overlay">
+    <div class="save-slots-panel">
+        <h2 class="save-slots-title" id="save-slots-title">选 择 存 档</h2>
+        <div class="save-slots-list" id="save-slots-list">
+            <!-- JS 动态填充 -->
+        </div>
+        <div class="save-slots-buttons">
+            <button class="save-slots-btn secondary" id="save-slots-back">返回</button>
         </div>
     </div>
 </div>

@@ -20,6 +20,12 @@ export const PlayerController = {
             this.keysPressed = {};
         });
 
+        // 监听读档事件，刷新玩家位置
+        document.addEventListener('gameLoaded', () => {
+            this.updatePosition();
+            console.log('PlayerController: 位置已刷新');
+        });
+
         console.log('PlayerController: 初始化完成');
     },
 
@@ -57,14 +63,17 @@ export const PlayerController = {
     },
 
     /**
-     * 游戏主循环
+     * 游戏主循环（仅 game-screen 可见时处理移动）
      */
     loop() {
-        // 暂停、对话或地图打开时停止移动
+        const gameScreen = document.getElementById('game-screen');
+        const gameVisible = gameScreen && gameScreen.style.display !== 'none';
+
+        // 暂停、对话、地图、设置打开，或游戏未显示时停止移动
         const mapOpen = document.getElementById('map-screen').style.display === 'flex';
         const settingsOpen = document.getElementById('settings-overlay').style.display === 'flex';
 
-        if (!gameState.isPaused && !gameState.dialogueActive && !mapOpen && !settingsOpen) {
+        if (gameVisible && !gameState.isPaused && !gameState.dialogueActive && !mapOpen && !settingsOpen) {
             let moved = false;
 
             if (this._isMoveLeft()) {
