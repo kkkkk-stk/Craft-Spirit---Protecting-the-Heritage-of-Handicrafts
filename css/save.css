@@ -6,7 +6,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.75);
     display: none;
     justify-content: center;
     align-items: center;
@@ -14,19 +14,26 @@
 }
 
 .save-slots-panel {
-    background: rgba(245, 240, 232, 0.98);
-    border: 4px solid #8b5a2b;
-    border-radius: 16px;
-    padding: 40px 56px;
+    background: url('../assets/images/ui/bamboo-panel.png') center/100% 100% no-repeat;
+    border: none;
+    border-radius: 0;
+    padding: 100px 72px;
     text-align: center;
-    min-width: 560px;
+    min-width: 720px;
 }
 
 .save-slots-title {
     font-size: 30px;
-    color: #8b4513;
+    color: #2c1810;
     margin-bottom: 32px;
     letter-spacing: 6px;
+    text-shadow: 0 1px 3px rgba(245, 240, 232, 0.9);
+}
+
+.save-slot-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .save-slots-list {
@@ -42,17 +49,18 @@
     align-items: center;
     gap: 20px;
     padding: 16px 24px;
-    background: #faf6ef;
-    border: 2px solid #d4c5a9;
-    border-radius: 10px;
+    min-height: 90px;
+    flex: 1;
+    background: url('../assets/images/ui/slot-bg.png') center/100% 100% no-repeat;
+    border: none;
+    border-radius: 0;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: left;
 }
 
 .save-slot:hover:not(.empty) {
-    border-color: #8b5a2b;
-    background: #f0e6d8;
+    filter: brightness(1.05);
     transform: translateX(6px);
 }
 
@@ -63,7 +71,7 @@
 
 .save-slot.empty:hover {
     opacity: 0.85;
-    border-color: #8b5a2b;
+    filter: brightness(1.03);
 }
 
 /* 槽位序号标识 */
@@ -71,19 +79,21 @@
     flex-shrink: 0;
     width: 48px;
     height: 48px;
-    border-radius: 50%;
-    background: #8b4513;
-    color: #f5f0e8;
+    background: url('../assets/images/ui/square-panel.png') center/100% 100% no-repeat;
+    border: none;
+    border-radius: 0;
+    color: #2c1810;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 22px;
     font-weight: bold;
+    text-shadow: 0 1px 2px rgba(245, 240, 232, 0.7);
 }
 
 .save-slot.empty .save-slot-index {
-    background: #ccc;
-    color: #999;
+    opacity: 0.5;
+    filter: grayscale(0.5);
 }
 
 /* 槽位信息 */
@@ -97,6 +107,7 @@
     color: #2c1810;
     font-weight: bold;
     letter-spacing: 3px;
+    text-shadow: 0 1px 2px rgba(245, 240, 232, 0.7);
 }
 
 .save-slot.empty .save-slot-name {
@@ -108,8 +119,9 @@
     gap: 20px;
     margin-top: 6px;
     font-size: 14px;
-    color: #888;
+    color: #5a4030;
     letter-spacing: 1px;
+    text-shadow: 0 1px 1px rgba(245, 240, 232, 0.5);
 }
 
 .save-slot.empty .save-slot-meta {
@@ -138,46 +150,54 @@
 
 .save-slots-btn {
     padding: 12px 40px;
-    background: #8b4513;
-    color: #f5f0e8;
+    min-width: 120px;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: url('../assets/images/ui/square-panel.png') center/100% 100% no-repeat;
     border: none;
-    border-radius: 8px;
+    border-radius: 0;
+    color: #2c1810;
     font-size: 18px;
     cursor: pointer;
     letter-spacing: 3px;
     transition: all 0.3s;
     font-family: inherit;
+    text-shadow: 0 1px 2px rgba(245, 240, 232, 0.7);
 }
 
 .save-slots-btn:hover {
-    background: #a0522d;
+    filter: brightness(1.08);
     transform: scale(1.05);
 }
 
 .save-slots-btn.secondary {
-    background: transparent;
-    color: #8b4513;
-    border: 2px solid #8b4513;
+    background: url('../assets/images/ui/square-panel.png') center/100% 100% no-repeat;
+    color: #2c1810;
+    border: none;
+    opacity: 0.85;
 }
 
 .save-slots-btn.secondary:hover {
-    background: rgba(139, 69, 19, 0.1);
+    opacity: 1;
+    filter: brightness(1.05);
 }
 
 /* 删除按钮 */
 .save-slots-btn.danger {
-    background: transparent;
+    background: url('../assets/images/ui/square-panel.png') center/100% 100% no-repeat;
     color: #c62828;
-    border: 2px solid #c62828;
+    border: none;
 }
 
 .save-slots-btn.danger:hover {
-    background: #c62828;
+    filter: brightness(1.05);
     color: #fff;
 }
 
 .save-slots-btn.danger.active {
-    background: #c62828;
+    filter: brightness(1.05);
     color: #fff;
 }
 
@@ -186,29 +206,25 @@
 /* 删除模式下的红叉 */
 .save-slot-delete-x {
     position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 28px;
-    height: 28px;
-    background: #c62828;
-    color: #fff;
-    border-radius: 50%;
+    top: -14px;
+    right: -14px;
+    width: 40px;
+    height: 40px;
+    background: url('../assets/images/ui/delete-icon-clean.png') center/cover no-repeat;
+    border: none;
+    border-radius: 0;
     display: none;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    font-weight: bold;
     cursor: pointer;
     z-index: 5;
     line-height: 1;
     transition: transform 0.2s;
-    border: 2px solid #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    color: transparent;
 }
 
 .save-slot-delete-x:hover {
-    transform: scale(1.2);
-    background: #b71c1c;
+    transform: scale(1.15);
 }
 
 /* 删除模式下槽位样式 */

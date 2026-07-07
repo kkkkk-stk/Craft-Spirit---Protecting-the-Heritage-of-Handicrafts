@@ -148,6 +148,10 @@ export const SaveManager = {
         this.slotList.innerHTML = '';
 
         this._slots.forEach((slot, index) => {
+            // 包裹容器：数字标号在存档槽外面
+            const wrapper = document.createElement('div');
+            wrapper.className = 'save-slot-wrapper';
+
             const el = document.createElement('div');
             el.className = 'save-slot';
             if (slot.isEmpty) {
@@ -169,7 +173,7 @@ export const SaveManager = {
                 el.appendChild(deleteX);
             }
 
-            // 槽位序号
+            // 槽位序号（在存档槽外面）
             const idxSpan = document.createElement('span');
             idxSpan.className = 'save-slot-index';
             idxSpan.textContent = index + 1;
@@ -201,7 +205,6 @@ export const SaveManager = {
 
             infoDiv.appendChild(nameDiv);
             infoDiv.appendChild(metaDiv);
-            el.appendChild(idxSpan);
             el.appendChild(infoDiv);
 
             // 点击事件（删除模式下不触发选择）
@@ -209,7 +212,9 @@ export const SaveManager = {
                 el.addEventListener('click', () => this._onSlotClick(index));
             }
 
-            this.slotList.appendChild(el);
+            wrapper.appendChild(idxSpan);
+            wrapper.appendChild(el);
+            this.slotList.appendChild(wrapper);
         });
     },
 
