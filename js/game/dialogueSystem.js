@@ -50,6 +50,7 @@ export const DialogueSystem = {
     dialogueBox: null,
     speakerEl: null,
     textEl: null,
+    portraitEl: null,
     _currentDialogues: null,
     _onEnd: null,
 
@@ -60,6 +61,7 @@ export const DialogueSystem = {
         this.dialogueBox = document.getElementById('dialogue-box');
         this.speakerEl = document.getElementById('dialogue-speaker');
         this.textEl = document.getElementById('dialogue-text');
+        this.portraitEl = document.getElementById('dialogue-portrait');
 
         // 点击对话框继续
         this.dialogueBox.addEventListener('click', () => {
@@ -108,6 +110,9 @@ export const DialogueSystem = {
         this.textEl.innerHTML = dialogue.text.replace(/\n/g, '<br>');
         this.dialogueBox.style.display = 'block';
 
+        // 更新对话立绘
+        this._updatePortrait(dialogue.speaker);
+
         // 如果是获得地图
         if (dialogue.text.includes('获得')) {
             gameState.hasMap = true;
@@ -126,10 +131,29 @@ export const DialogueSystem = {
     },
 
     /**
+     * 更新对话立绘
+     */
+    _updatePortrait(speaker) {
+        if (!this.portraitEl) return;
+        const name = speaker?.trim();
+        if (name === '老匠人') {
+            this.portraitEl.style.backgroundImage = "url('assets/images/image_npc/old_man_portrait.png')";
+            this.portraitEl.classList.add('visible');
+        } else {
+            this.portraitEl.classList.remove('visible');
+            this.portraitEl.style.backgroundImage = '';
+        }
+    },
+
+    /**
      * 结束对话
      */
     end() {
         this.dialogueBox.style.display = 'none';
+        if (this.portraitEl) {
+            this.portraitEl.classList.remove('visible');
+            this.portraitEl.style.backgroundImage = '';
+        }
         gameState.dialogueActive = false;
         if (this._onEnd) {
             const cb = this._onEnd;

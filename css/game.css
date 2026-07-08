@@ -185,19 +185,19 @@
     image-rendering: pixelated;
 }
 
-/* NPC 向导（精灵图） */
+/* NPC 向导（场景精灵图） */
 #npc-guide {
     position: absolute;
     bottom: 42%;
-    left: calc(15% + 350px);
+    left: calc(15% + 200px);
     z-index: 49;
 }
 
 #npc-sprite {
     display: block;
-    height: 120px;
+    height: 96px;
     width: auto;
-    image-rendering: auto;
+    image-rendering: pixelated;
 }
 
 /* 交互提示 */

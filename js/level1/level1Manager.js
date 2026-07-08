@@ -748,10 +748,36 @@ export const Level1Manager = {
     },
 
     _exitToGame() {
+        // 清除记忆播放定时器
+        clearInterval(this._memTimer);
+
+        // 隐藏第一关所有 overlay
+        this.dialogueBox.style.display = 'none';
+        this.popupOverlay.style.display = 'none';
+        this.memoryOverlay.style.display = 'none';
+        this.puzzleOverlay.style.display = 'none';
+        const fx = document.getElementById('level1-ending-fx');
+        if (fx) fx.style.display = 'none';
+
+        // 重置游戏状态
+        gameState.dialogueActive = false;
+        gameState.isPaused = false;
+
+        // 清除对话队列
+        this._dialogueQueue = [];
+        this._dialogueIndex = 0;
+        this._onDialogueEnd = null;
+        this._popupOnClose = null;
+
+        // 切换场景
         SceneManager.hide('level1-screen');
         SceneManager.show('game-screen', 'block');
         SceneManager.show('ui-hud', 'flex');
         gameState.currentChapter = 'prologue';
+
+        // 通知 PlayerController 刷新位置
+        document.dispatchEvent(new CustomEvent('gameLoaded'));
+
         this._showToast('已返回序章，可按M查看地图');
     },
 

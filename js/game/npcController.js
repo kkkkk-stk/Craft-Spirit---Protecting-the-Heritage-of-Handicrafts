@@ -32,7 +32,7 @@ export const NpcController = {
      * 检查玩家与 NPC 的距离
      */
     checkProximity() {
-        const npcPosPercent = 15 + 350 / window.innerWidth * 100;
+        const npcPosPercent = 15 + 200 / window.innerWidth * 100;
         const distance = Math.abs(gameState.playerPosPercent - npcPosPercent);
 
         if (distance < 6 && !gameState.hasMap) {
