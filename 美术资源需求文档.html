@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>匠灵：守护手艺传承 · 美术资源需求文档 v1.1</title>
+<style>
+  /* ===== Reset & Base ===== */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Noto Serif SC','Source Han Serif SC','STSong','SimSun','Songti SC',Georgia,serif;
+    background:#F2EFE9;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(139,90,43,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(100,120,100,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 20% 60%, rgba(180,160,120,0.05) 0%, transparent 40%);
+    color:#3a2a1a;
+    line-height:1.85;
+    font-size:16px;
+    min-height:100vh;
+  }
+
+  /* ===== Paper Texture ===== */
+  body::before{
+    content:'';position:fixed;top:0;left:0;right:0;bottom:0;
+    background-image:url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events:none;z-index:0;
+  }
+
+  /* ===== Container ===== */
+  .wrapper{max-width:960px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+  /* ===== Header ===== */
+  header{
+    text-align:center;padding:64px 24px 48px;
+    background:linear-gradient(180deg, rgba(139,90,43,0.06) 0%, transparent 100%);
+    border-bottom:1px solid rgba(139,90,43,0.15);
+    position:relative;
+  }
+  header::after{
+    content:'';display:block;width:60px;height:3px;
+    background:linear-gradient(90deg,transparent,#8b5a2b,transparent);
+    margin:24px auto 0;
+  }
+  header h1{font-size:38px;font-weight:700;letter-spacing:8px;color:#5a2d0c;margin-bottom:12px}
+  header .subtitle{font-size:16px;color:#8b6a4a;letter-spacing:4px}
+  header .meta{font-size:13px;color:#a08870;margin-top:16px;display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+  header .meta span{display:flex;align-items:center;gap:4px}
+
+  /* ===== Nav ===== */
+  nav.toc{
+    background:rgba(255,255,255,0.6);
+    border:1px solid rgba(139,90,43,0.2);
+    border-radius:12px;
+    padding:32px 36px;
+    margin:40px auto;
+    position:relative;
+    z-index:2;
+  }
+  nav.toc h2{font-size:20px;color:#5a2d0c;margin-bottom:16px;letter-spacing:4px;text-align:center}
+  nav.toc ol{padding-left:24px;columns:2;column-gap:32px}
+  nav.toc ol li{margin-bottom:10px;break-inside:avoid}
+  nav.toc ol ul{padding-left:18px;margin-top:4px;list-style-type:'— '}
+  nav.toc ol ul li{font-size:14px;margin-bottom:3px;color:#6a5a4a}
+  nav.toc a{color:#8b4513;text-decoration:none;transition:color 0.2s}
+  nav.toc a:hover{color:#c06014;text-decoration:underline}
+
+  /* ===== Sections ===== */
+  section{margin:56px 0}
+  h2.section-title{
+    font-size:28px;color:#5a2d0c;letter-spacing:6px;
+    padding-bottom:12px;margin-bottom:28px;
+    border-bottom:2px solid rgba(139,90,43,0.2);
+    display:flex;align-items:center;gap:12px
+  }
+  h2.section-title .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:36px;height:36px;border-radius:50%;
+    background:#8b5a2b;color:#F2EFE9;
+    font-size:16px;font-weight:700;flex-shrink:0
+  }
+  h3{font-size:22px;color:#5a2d0c;margin:32px 0 16px;letter-spacing:3px}
+  h4{font-size:18px;color:#6a4a2a;margin:24px 0 12px;letter-spacing:2px}
+
+  /* ===== Blockquote ===== */
+  blockquote{
+    margin:20px 0;padding:16px 24px;
+    background:rgba(139,90,43,0.06);
+    border-left:4px solid #8b5a2b;
+    border-radius:0 8px 8px 0;
+    color:#5a4a3a;font-style:italic;
+  }
+  blockquote strong{font-style:normal;color:#8b4513}
+
+  /* ===== Tables ===== */
+  .table-wrap{overflow-x:auto;margin:20px 0;border-radius:10px;border:1px solid rgba(139,90,43,0.15)}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid rgba(139,90,43,0.1);vertical-align:top}
+  th{background:rgba(139,90,43,0.08);color:#5a2d0c;font-weight:700;font-size:13px;letter-spacing:1px;white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:rgba(139,90,43,0.03)}
+  td:first-child{font-weight:600;white-space:nowrap}
+  td code{background:rgba(139,90,43,0.08);padding:1px 6px;border-radius:3px;font-size:13px}
+
+  /* ===== Code / Pre ===== */
+  pre{
+    background:rgba(60,40,20,0.06);
+    border:1px solid rgba(139,90,43,0.15);
+    border-radius:10px;
+    padding:20px 24px;
+    margin:16px 0;
+    overflow-x:auto;
+    font-size:13px;line-height:1.7;
+    font-family:'Cascadia Code','Fira Code','Consolas',monospace;
+  }
+
+  /* ===== Tags / Badges ===== */
+  .badge{display:inline-block;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:700;letter-spacing:1px}
+  .badge-p0{background:rgba(200,60,40,0.12);color:#a04030}
+  .badge-p1{background:rgba(200,150,30,0.12);color:#907020}
+  .badge-p2{background:rgba(100,130,160,0.12);color:#4a6080}
+  .badge-warn{background:rgba(200,40,40,0.1);color:#a03030;font-size:13px;padding:4px 12px;border:1px solid rgba(200,40,40,0.2)}
+  .badge-info{background:rgba(40,100,160,0.08);color:#406080;font-size:12px;padding:2px 8px;margin-left:6px}
+
+  /* ===== Color Swatches ===== */
+  .color-samples{display:flex;flex-wrap:wrap;gap:16px;margin:16px 0}
+  .color-swatch{display:flex;align-items:center;gap:10px}
+  .color-swatch .dot{width:36px;height:36px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);flex-shrink:0}
+  .color-swatch .info{font-size:13px;color:#6a5a4a}
+  .color-swatch .info strong{display:block;color:#3a2a1a;font-size:14px}
+
+  /* ===== Prompt Box ===== */
+  .prompt-box{
+    background:rgba(60,40,20,0.04);border:1px solid rgba(139,90,43,0.15);
+    border-radius:10px;padding:20px 24px;margin:16px 0
+  }
+  .prompt-box .lang{font-size:12px;color:#8b6a4a;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+
+  /* ===== Priority list ===== */
+  .priority-list{list-style:none;padding:0}
+  .priority-list li{
+    padding:10px 16px;margin:6px 0;
+    background:rgba(255,255,255,0.5);
+    border:1px solid rgba(139,90,43,0.1);
+    border-radius:8px;
+    display:flex;align-items:center;gap:12px;
+    font-size:14px
+  }
+  .priority-list li .seq{width:28px;height:28px;border-radius:50%;background:#8b5a2b;color:#F2EFE9;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+
+  /* ===== Summary Cards ===== */
+  .summary-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin:20px 0}
+  .summary-card{background:rgba(255,255,255,0.6);border:1px solid rgba(139,90,43,0.15);border-radius:10px;padding:20px;text-align:center}
+  .summary-card .num{font-size:36px;font-weight:700;color:#8b5a2b;line-height:1.1}
+  .summary-card .label{font-size:13px;color:#6a5a4a;margin-top:6px}
+
+  /* ===== Footer ===== */
+  footer{
+    text-align:center;padding:40px 24px 56px;
+    color:#a08870;font-size:13px;
+    border-top:1px solid rgba(139,90,43,0.1);margin-top:64px
+  }
+  footer p{margin:4px 0}
+
+  /* ===== Responsive ===== */
+  @media(max-width:768px){
+    header h1{font-size:28px;letter-spacing:4px}
+    nav.toc ol{columns:1}
+    h2.section-title{font-size:22px}
+    table{font-size:12px}
+    th,td{padding:8px 10px}
+    .summary-cards{grid-template-columns:repeat(2,1fr)}
+  }
+
+  /* ===== Print ===== */
+  @media print{
+    body{background:#fff;font-size:12px;line-height:1.5}
+    nav.toc{break-after:page}
+    section{break-inside:avoid}
+    header{padding:24px}
+    .table-wrap{border:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>匠灵：守护手艺传承</h1>
+  <p class="subtitle">美 术 资 源 需 求 文 档</p>
+  <div class="meta">
+    <span>📋 版本 v1.1</span>
+    <span>📅 2026-07-08</span>
+    <span>🎨 新中式轻水墨风格</span>
+  </div>
+</header>
+
+<div class="wrapper">
+
+<!-- ==================== 目录 ==================== -->
+<nav class="toc">
+  <h2>目　录</h2>
+  <ol>
+    <li><a href="#s1">美术风格规范与设计指南（Style Guide）</a>
+      <ul>
+        <li><a href="#s1-1">风格定义</a></li>
+        <li><a href="#s1-2">线条表现</a></li>
+        <li><a href="#s1-3">色彩与光效</a></li>
+        <li><a href="#s1-4">构图与留白</a></li>
+        <li><a href="#s1-5">材质与笔触</a></li>
+        <li><a href="#s1-6">制作规范（硬性要求）</a></li>
+        <li><a href="#s1-7">AI 辅助生成提示词</a></li>
+      </ul>
+    </li>
+    <li><a href="#s2">已有美术资源清单</a></li>
+    <li><a href="#s3">需要新增的美术资源</a></li>
+    <li><a href="#s4">第一关详细需求（畲族刺绣）</a></li>
+    <li><a href="#s5">通用资源需求（跨关卡）</a></li>
+    <li><a href="#s6">资源优先级与排期建议</a></li>
+    <li><a href="#s7">文件命名与目录规范</a></li>
+    <li><a href="#s8">需求速查表</a></li>
+  </ol>
+</nav>
+
+<!-- ==================== 第一章：风格规范 ==================== -->
+<section id="s1">
+  <h2 class="section-title"><span class="num">一</span>美术风格规范与设计指南（Style Guide）</h2>
+
+  <blockquote>
+    <strong>核心风格：新中式轻水墨风（现代中国水墨风）</strong><br>
+    艺术调性：素雅、静谧、空灵、高远，带有一丝禅意与书卷气。<br>
+    适用场景：国风游戏背景、插画插图、唯美古风美术设定。
+  </blockquote>
+
+  <h3 id="s1-1">1.1 风格定义</h3>
+  <ul>
+    <li><strong>核心风格</strong>：新中式轻水墨风（现代中国水墨风）</li>
+    <li><strong>艺术调性</strong>：素雅、静谧、空灵、高远，带有一丝禅意与书卷气</li>
+    <li><strong>融入元素</strong>：畲族/浙江非遗传统纹样（盘瓠纹、凤凰纹、山河纹、花草纹）</li>
+    <li><strong>游戏适配</strong>：场景以水墨手绘静态背景为主</li>
+    <li style="margin-left:24px"><strong>角色立绘</strong>：新中式水墨手绘风格（对话界面大尺寸半身/全身图）</li>
+    <li style="margin-left:24px"><strong>角色精灵图</strong>：<span class="badge-warn">像素风（Pixel Art）</span>，用于场景中行走、待机、交互等帧动画</li>
+    <li><strong>邪气表现</strong>：淡灰黑气纹理覆盖表面（不恐怖，代表文脉枯萎），融入水墨晕染技法</li>
+    <li><strong>特效规范</strong>：仅彩线、五色柔光、细碎纹样光点，无刺眼闪光，特效边缘用水墨晕染处理</li>
+  </ul>
+
+  <h3 id="s1-2">1.2 线条表现（Line Work）——「骨法用笔，疏密有致」</h3>
+  <ul>
+    <li><strong>线稿质感</strong>：并非干净锐利的矢量线，而是模仿<strong>毛笔勾线（白描）</strong>的质感。线条带有细微的墨色深浅变化、干湿浓淡（有些许飞白和毛边）。</li>
+    <li><strong>粗细与虚实</strong>：
+      <ul>
+        <li><strong>实体 / 近景</strong>（如桌椅、房屋结构、文物道具）：线条较实、较黑，结构交代清晰。</li>
+        <li><strong>远景 / 背景</strong>（如远山、云雾）：基本<strong>无硬线勾勒</strong>，直接用色彩渲染（没骨法），或用极淡的虚线带过。</li>
+      </ul>
+    </li>
+  </ul>
+  <p class="badge-warn">⛔ 硬性禁止：禁止使用粗细均匀的死板黑线。必须使用带压感、带颗粒感（类似炭笔或毛笔）的笔刷勾缝。</p>
+
+  <h3 id="s1-3">1.3 色彩与光效（Color Palette & Lighting）——「墨分五色，暖光点睛」</h3>
+
+  <h4>主色调</h4>
+  <p>以<strong>大地色系（暖灰、赭石、熟褐）</strong>和<strong>水墨灰色</strong>为主。色彩饱和度极低，呈现出纸张泛黄的古朴质感。</p>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>色彩角色</th><th>色系</th><th>色样</th><th>用途</th></tr>
+    <tr><td>底色</td><td>宣纸米白 / 米黄</td><td><code>#F2EFE9</code></td><td>背景底色、界面底色</td></tr>
+    <tr><td>主色</td><td>暖灰、赭石、熟褐</td><td><code>#8B6A4A</code> / <code>#5A4A3A</code></td><td>建筑、家具、山体</td></tr>
+    <tr><td>辅助色</td><td>青瓦灰、草木绿</td><td><code>#7A8A7A</code> / <code>#8A9A7A</code></td><td>屋顶、植被、染材</td></tr>
+    <tr><td>点缀色</td><td>畲族五色</td><td>黑 / 青 / 黄 / 绿 / 红</td><td>刺绣纹样、丝线、图腾高光</td></tr>
+    <tr><td>光效</td><td>暖黄色微光 Warm Glow</td><td><code>#E8D5B0</code></td><td>油灯、CG 画面暖光、匠灵柔光</td></tr>
+  </table>
+  </div>
+
+  <h4>光影表现</h4>
+  <ul>
+    <li>整体是<strong>散点透视和无明显强光源</strong>的传统国画画法。</li>
+    <li><strong>局部点睛光</strong>：画面中唯一的亮色是油灯或匠灵散发的<strong>暖黄色微光（Warm Glow）</strong>，采用柔和的渐变晕染，打破画面的冷寂，冷暖对比非常克制。</li>
+  </ul>
+  <p class="badge-warn">⛔ 硬性禁止：不要画强光直射的投影（如硬边缘的影子）。阴影用淡淡的湿水墨晕染代替。严禁使用高饱和度颜色。</p>
+
+  <h4>底色质感</h4>
+  <p>背景带有微微的<strong>宣纸 / 水彩纸纹理（Paper Texture）</strong>，不是纯白，而是温润的米白或米黄色（≈ #F2EFE9）。</p>
+
+  <h3 id="s1-4">1.4 构图与留白（Composition & White Space）——「虚实相生，意境深远」</h3>
+  <ul>
+    <li><strong>留白艺术</strong>：画面超过 60% 的区域为「虚」的云雾和天空，给观者留下想象空间（计白当黑）。</li>
+    <li><strong>前后景深（三远法）</strong>：
+      <ul>
+        <li><strong>近景（实）</strong>：精细的木桌、笔筒、画卷、灯盏、文物道具。</li>
+        <li><strong>中景（过渡）</strong>：古风建筑、屋檐、晒架。</li>
+        <li><strong>远景（虚）</strong>：层叠的泼墨远山，通过水墨的干湿浓淡表现由近及远的透视感（空气透视）。</li>
+      </ul>
+    </li>
+  </ul>
+  <blockquote>
+    <strong>关卡应用对照：</strong><br>
+    绣花古宅 → 近景绣花台 + 中景室内陈设 + 窗外远景山雾<br>
+    后山晒场 → 近景晒架染缸 + 中景晒场竹架 + 远景畲族群山<br>
+    畲族祠堂 → 近景石壁织机 + 中景长案 + 窗外薄雾远山
+  </blockquote>
+
+  <h3 id="s1-5">1.5 材质与笔触（Texture & Brushwork）——「水渍边缘，湿画晕染」</h3>
+  <ul>
+    <li><strong>水彩 / 水墨晕染</strong>：在山峦和阴影处，有非常明显的<strong>水渍边缘（Wet-on-wet watercolor edge）</strong>。</li>
+    <li><strong>材质纹理</strong>：木质结构、屋顶瓦片上保留了手绘的扫笔和干枯笔触，增加了历史感和斑驳感。</li>
+  </ul>
+  <blockquote>
+    <strong>上色核心要求：</strong><br>
+    ① 色彩过渡要像水在纸面上洇开一样自然，边缘要有水渍感。<br>
+    ② 使用「正片叠底」或半透明图层在底纹上铺色，保留背景宣纸的纹理。<br>
+    ③ <strong>严禁使用高饱和度颜色</strong>。
+  </blockquote>
+
+  <h3 id="s1-6">1.6 制作规范（给美术人员的硬性要求）</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>规范项</th><th>具体要求</th></tr>
+    <tr><td>线稿</td><td>禁止粗细均匀死板黑线；必须使用带压感、带颗粒感（类似炭笔或毛笔）的笔刷勾缝</td></tr>
+    <tr><td>上色</td><td>「正片叠底」或半透明图层铺色，保留宣纸纹理；色彩过渡自然水渍边缘</td></tr>
+    <tr><td>光影</td><td>不强光直射投影；阴影用湿水墨晕染代替</td></tr>
+    <tr><td>饱和度</td><td><strong>严禁高饱和度颜色</strong>，全程低饱和大地色 + 水墨灰</td></tr>
+    <tr><td>精灵图风格</td><td><strong>角色精灵图（行走/待机/交互动画）必须采用像素风（Pixel Art）</strong>；单帧尺寸 32×48 ~ 128×256，参考主角现有风格：<code>protagonist_move/</code> 系列</td></tr>
+    <tr><td>立绘风格</td><td>对话用半身/全身立绘采用新中式水墨手绘，≥ 1024×1536；CG 用大场景水墨手绘</td></tr>
+    <tr><td>图标</td><td>文物/UI 图标 ≥ 64×64，像素风或水墨风格均可</td></tr>
+    <tr><td>特效</td><td>粒子 / 光效边缘用水墨晕染处理，不应出现干净利落的矢量边缘</td></tr>
+    <tr><td>分辨率</td><td>背景图 ≥ 1920×1080，立绘 ≥ 1024×1536，图标 ≥ 64×64</td></tr>
+    <tr><td>格式</td><td>交付 PSD / AI 源文件 + PNG 透明底导出</td></tr>
+    <tr><td>纹理</td><td>所有图面保留宣纸 / 水彩纸纹理，不可纯白纯黑</td></tr>
+  </table>
+  </div>
+
+  <h3 id="s1-7">1.7 AI 辅助生成提示词（Prompt Reference）</h3>
+  <p style="color:#6a5a4a;font-size:14px">适用工具：Midjourney、Stable Diffusion、DALL·E 等。用途：辅助批量生产同风格的游戏场景背景、物件图、概念草图。</p>
+
+  <h4>英文 Prompt（推荐用于 Midjourney）</h4>
+  <div class="prompt-box">
+    <div class="lang">English</div>
+    <pre>A beautiful Chinese ink wash painting, traditional Chinese watercolor style,
+a wooden table with Chinese calligraphy brushes and a glowing oil lamp,
+distant misty mountain background, negative space composition,
+delicate watercolor paper texture, soft ink blending,
+warm light, warm gray and sepia tones,
+minimalist, rich Zen atmosphere, rich details, 8K resolution
+--ar 16:9 --style expressive</pre>
+  </div>
+
+  <h4>中文关键词（用于 SD 或其他中文模型）</h4>
+  <div class="prompt-box">
+    <div class="lang">中文</div>
+    <pre>传统中国水墨画风，新国风手绘，水彩纸纹理，水墨晕染，温润米色背景，留白艺术，
+暖灰与赭石色调，精致的近景，古风道具，虚化的远山云雾，暖色微光点缀，禅意，静谧，
+毛笔白描勾线，飞白墨迹，水渍边缘，手绘扫笔干枯笔触，散点透视，空气透视，
+低饱和度，宣纸质感，极简主义，高细节，8K</pre>
+  </div>
+
+  <h4>按第一关需求的定制化变体</h4>
+  <div class="table-wrap">
+  <table>
+    <tr><th>需求</th><th>AI Prompt 补充关键词</th></tr>
+    <tr><td>畲族古寨全景</td><td>She ethnic village, terraced mountain fields, blue-tiled roofs, rammed earth walls, misty Zhejiang mountains</td></tr>
+    <tr><td>绣花古宅室内</td><td>ancient embroidery workshop interior, bamboo embroidery frame, silk threads hanging, half-finished phoenix embroidery</td></tr>
+    <tr><td>后山染布晒场</td><td>mountainside dyeing yard, bamboo drying racks, indigo dye vats, natural plant dye materials, mountain spring water channel</td></tr>
+    <tr><td>祠堂石壁</td><td>ancestral hall interior, giant stone totem wall, She ethnic ancestor carvings, ancient wooden loom, incense burner</td></tr>
+    <tr><td>蓝阿婆角色</td><td>elderly She ethnic woman, traditional blue ethnic clothing, embroidered headscarf, gentle melancholic eyes, weathered hands</td></tr>
+    <tr><td>畲绣匠灵</td><td>ethereal She embroidery spirit, floating colorful silk threads, phoenix crown, glowing semi-transparent form</td></tr>
+    <tr><td>图腾纹样</td><td>She ethnic totem pattern, Panhu ancestor pattern, phoenix wedding pattern, traditional geometric border design</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ==================== 第二章：已有资源 ==================== -->
+<section id="s2">
+  <h2 class="section-title"><span class="num">二</span>已有美术资源清单</h2>
+
+  <h3>2.1 目录结构</h3>
+  <pre>assets/
+├── audio/                              [空，仅有 .gitkeep]
+├── images/
+│   ├── background/
+│   │   └── main-menu-bg.png           [1.37 MB]  主菜单背景（山间古寨风格照片）
+│   ├── image_npc/
+│   │   └── old_man.png                [5.87 MB]  序章 NPC「老匠人」
+│   ├── protagonist_stand/
+│   │   └── character1.png             [~1 MB]    主角林望站立图
+│   ├── protagonist_move/
+│   │   └── ..._00~29_clean.png        [~7.5 MB]  主角行走动画帧（30 帧）
+│   └── ui/
+│       ├── bamboo-panel.png           [371 KB]   竹纹面板（弹窗外框）
+│       ├── square-panel.png           [157 KB]   方形面板（按钮背景）
+│       ├── slot-bg.png                [75 KB]    存档槽背景
+│       ├── delete-icon.png            [16 KB]    删除图标
+│       ├── delete-icon-clean.png      [16 KB]    删除图标（透明底）
+│       ├── ui-sprite.png              [5.61 MB]  UI 精灵合图 #1
+│       ├── ui-sprite2.png             [5.91 MB]  UI 精灵合图 #2
+│       └── element_009~031.png × 11   [~435 KB]  切出的 UI 元素素材
+├── game_UI.png                         [5.09 MB]  原始 UI 合图（绿底）
+└── game_UI2.png                        [5.43 MB]  原始 UI 合图 #2（绿底）</pre>
+
+  <h3>2.2 按类型统计</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>类型</th><th>已有资产</th><th>数量</th><th>状态</th></tr>
+    <tr><td>背景图</td><td>主菜单背景</td><td>1</td><td>✅ 已完成</td></tr>
+    <tr><td>主角</td><td>林望（站立 + 30帧行走）</td><td>31</td><td>✅ 已完成</td></tr>
+    <tr><td>NPC 立绘</td><td>老匠人（序章引导）</td><td>1</td><td>✅ 已完成</td></tr>
+    <tr><td>UI 面板</td><td>竹纹面板、方形面板、槽位背景</td><td>3</td><td>✅ 已完成</td></tr>
+    <tr><td>UI 元素</td><td>删除图标、element 切图</td><td>13</td><td>✅ 已完成</td></tr>
+    <tr><td>UI 合图</td><td>game_UI / UI-sprite</td><td>4</td><td>⚠️ 可继续切图</td></tr>
+    <tr><td>音频</td><td>—</td><td>0</td><td>❌ 空白</td></tr>
+    <tr><td>场景图</td><td>—</td><td>0</td><td>❌ 空白</td></tr>
+    <tr><td>关卡角色</td><td>—</td><td>0</td><td>❌ 空白</td></tr>
+    <tr><td>文物道具图</td><td>—</td><td>0</td><td>❌ 空白</td></tr>
+    <tr><td>记忆 CG</td><td>—</td><td>0</td><td>❌ 空白</td></tr>
+    <tr><td>机关解谜图</td><td>—</td><td>0</td><td>❌ 空白</td></tr>
+  </table>
+  </div>
+
+  <p style="text-align:center;color:#8b6a4a;margin-top:24px">
+    📊 已有 <strong>53</strong> 个文件，约 <strong>44 MB</strong> · 场景/角色/文物/解谜/CG/音频均为空白
+  </p>
+</section>
+
+<!-- ==================== 第三章：新增资源总览 ==================== -->
+<section id="s3">
+  <h2 class="section-title"><span class="num">三</span>需要新增的美术资源总览</h2>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>大类</th><th>子类</th><th>数量</th><th>优先级</th></tr>
+    <tr><td>角色立绘</td><td>蓝阿婆（正常+虚影）、匠灵</td><td>3</td><td><span class="badge badge-p0">P0</span></td></tr>
+    <tr><td>角色精灵图</td><td>蓝阿婆待机/对话/消散动画</td><td>~15帧</td><td><span class="badge badge-p1">P1</span></td></tr>
+    <tr><td>场景背景图</td><td>3 个区域的静态大场景</td><td>3</td><td><span class="badge badge-p0">P0</span></td></tr>
+    <tr><td>文物道具图</td><td>5 件文物的图标/立绘</td><td>5</td><td><span class="badge badge-p0">P0</span></td></tr>
+    <tr><td>记忆 CG 图</td><td>4 段匠人记忆的 CG 画面</td><td>4~8</td><td><span class="badge badge-p1">P1</span></td></tr>
+    <tr><td>机关解谜图</td><td>织布机/晾晒架/年轮/石壁拼图</td><td>4 套</td><td><span class="badge badge-p0">P0</span></td></tr>
+    <tr><td>图腾纹样</td><td>盘瓠/山河/花草/凤凰</td><td>4~8</td><td><span class="badge badge-p0">P0</span></td></tr>
+    <tr><td>环境氛围</td><td>薄雾/远山/邪气纹理/古寨全景</td><td>4~6</td><td><span class="badge badge-p1">P1</span></td></tr>
+    <tr><td>UI 扩展</td><td>区域导航图标、文物图标、弹窗装饰</td><td>10+</td><td><span class="badge badge-p1">P1</span></td></tr>
+    <tr><td>音频</td><td>BGM / 环境音 / 山歌</td><td>若干</td><td><span class="badge badge-p2">P2</span></td></tr>
+    <tr><td>特效序列帧</td><td>五色流光/彩线飘散/黑雾消散</td><td>3 套</td><td><span class="badge badge-p2">P2</span></td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ==================== 第四章：第一关详细需求 ==================== -->
+<section id="s4">
+  <h2 class="section-title"><span class="num">四</span>第一关详细需求 · 畲族刺绣</h2>
+
+  <h3>4.1 角色立绘与精灵图</h3>
+  <blockquote><strong>风格分工</strong>：立绘（半身/全身/虚影）为水墨手绘风格，用于对话界面和大场景站位；精灵帧动画（待机/消散/诞生等）为<span class="badge-warn">像素风（Pixel Art）</span>，用于场景内动画表现。</blockquote>
+
+  <h4>4.1.1 蓝阿婆（Lan Apo）—— 守艺匠人</h4>
+  <blockquote>
+    <strong>角色身份</strong>：畲族刺绣省级非遗传承人，老年女性<br>
+    <strong>外观描述</strong>：身着褪色畲族传统蓝衣，头戴畲族头帕，面容慈祥温柔，眼神沧桑而怅然，手部粗糙有刺绣痕迹<br>
+    <strong>气质</strong>：温柔治愈、历经沧桑、对文脉凋零的怅然
+  </blockquote>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>编号</th><th>资产名称</th><th>类型</th><th>规格</th><th>用途</th></tr>
+    <tr><td>L1-CHAR-01</td><td>蓝阿婆 · 半身立绘</td><td>立绘</td><td>≥ 1024×1536</td><td>对话界面展示</td></tr>
+    <tr><td>L1-CHAR-02</td><td>蓝阿婆 · 全身立绘</td><td>立绘</td><td>≥ 1024×2048</td><td>场景门口站位</td></tr>
+    <tr><td>L1-CHAR-03</td><td>蓝阿婆 · 虚影形态</td><td>立绘</td><td>≥ 1024×2048</td><td>开场/结尾灵魂虚影</td></tr>
+    <tr><td>L1-CHAR-04</td><td>蓝阿婆 · 待机精灵帧</td><td>像素风精灵图</td><td>≥64×128, 4~8帧</td><td>站立轻飘动画</td></tr>
+    <tr><td>L1-CHAR-05</td><td>蓝阿婆 · 消散精灵帧</td><td>像素风精灵图</td><td>≥64×128, 6~10帧</td><td>化作彩线微光</td></tr>
+    <tr><td>L1-CHAR-06</td><td>蓝阿婆 · 告别立绘</td><td>立绘</td><td>≥ 1024×1536</td><td>终局颔首微笑</td></tr>
+  </table>
+  </div>
+
+  <h4>4.1.2 畲绣匠灵（Craft Spirit）</h4>
+  <blockquote>
+    <strong>角色身份</strong>：畲族刺绣的守护匠灵，由文脉灵气凝聚<br>
+    <strong>外观描述</strong>：身着完整畲族传统凤凰彩带盛装，头戴畲族刺绣头帕，周身环绕流动五色彩线，半透明发光<br>
+    <strong>气质</strong>：神圣温柔、充满传承感
+  </blockquote>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>编号</th><th>资产名称</th><th>类型</th><th>规格</th><th>用途</th></tr>
+    <tr><td>L1-SPIRIT-01</td><td>匠灵 · 全身立绘</td><td>立绘</td><td>≥ 1024×2048</td><td>终局匠灵现身</td></tr>
+    <tr><td>L1-SPIRIT-02</td><td>匠灵 · 诞生序列帧</td><td>像素风精灵图</td><td>≥64×128, 8~12帧</td><td>彩线凝聚人形</td></tr>
+    <tr><td>L1-SPIRIT-03</td><td>匠灵 · 悬浮待机帧</td><td>像素风精灵图</td><td>≥64×128, 4~6帧(循环)</td><td>半空轻微浮动</td></tr>
+  </table>
+  </div>
+
+  <h4>4.1.3 忆境中的年轻蓝阿婆</h4>
+  <div class="table-wrap">
+  <table>
+    <tr><th>编号</th><th>资产名称</th><th>规格</th><th>用途</th></tr>
+    <tr><td>L1-MEM-01</td><td>少年蓝阿婆</td><td>≥ 800×1200</td><td>记忆1「山野学染织」——赤脚山路、背竹篓、采蓝草</td></tr>
+    <tr><td>L1-MEM-02</td><td>青年蓝阿婆</td><td>≥ 800×1200</td><td>记忆2「婚嫁绣嫁衣」——灯下连夜赶绣凤凰嫁衣</td></tr>
+    <tr><td>L1-MEM-03</td><td>中年蓝阿婆</td><td>≥ 800×1200</td><td>记忆3「开坊传艺」——手把手教学</td></tr>
+    <tr><td>L1-MEM-04</td><td>晚年蓝阿婆</td><td>≥ 800×1200</td><td>记忆4「空寨守艺」——独自整理纹样底稿</td></tr>
+  </table>
+  </div>
+
+  <h3>4.2 场景背景图</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>编号</th><th>名称</th><th>画面描述</th></tr>
+    <tr><td>L1-BG-01</td><td><strong>绣花古宅</strong></td><td>昏暗古宅室内：老式绣花台、竹制绣绷架上有半幅未绣完的盘瓠纹样、桌面落薄灰、绣线凌乱散落、木箱在角落、窗台飘零散彩线、墙面挂满褪色旧绣帕。整体覆淡灰黑气</td></tr>
+    <tr><td>L1-BG-02</td><td><strong>后山染布晒场</strong></td><td>向阳山坡：五组空竹制晾晒架排列、染缸干涸布满灰尘、草木堆竹筐中有染料布袋、晒布竹架旧绳架空荡、地面残留蓝草/栀子干枯痕迹、山泉引水渠干涸。远处畲族群山</td></tr>
+    <tr><td>L1-BG-03</td><td><strong>畲族文化祠堂</strong></td><td>空旷祠堂：中央巨型石壁（四层空白图腾凹槽）、石壁上黯淡发黑纹样痕迹、祭祖长案蒙灰上有木盒和古老织机、织机丝线断裂、两侧墙壁畲族祖纹壁画。整间祠堂流动稀薄黑雾</td></tr>
+    <tr><td>L1-BG-04</td><td><strong>畲族古寨全景</strong></td><td>关卡结束定格：连绵畲山远景、暖金色夕阳悬山头、山间云雾轻薄透亮、完整古寨全景（祠堂/古宅/晒场依次排布）、到处飘着彩带彩线微光</td></tr>
+  </table>
+  </div>
+
+  <h3>4.3 文物道具图</h3>
+  <blockquote>五件文物是核心收集目标，每件需「默认状态」+「邪气状态」两个版本。</blockquote>
+  <div class="table-wrap">
+  <table>
+    <tr><th>编号</th><th>文物名称</th><th>规格</th><th>描述</th></tr>
+    <tr><td>L1-ITEM-01</td><td><strong>老式绣花绷架</strong></td><td>≥ 300×400</td><td>百年竹制绷架，竹身布满岁月磨痕，边缘缠绕残存五彩绣线，绷面可见半幅未绣完的盘瓠纹样</td></tr>
+    <tr><td>L1-ITEM-02</td><td><strong>七彩畲族丝线束</strong></td><td>≥ 300×400</td><td>五捆丝线：赤/青/黑/绿/黄。丝线色泽暗沉发灰，表层缠绕细碎黑气。外裹老旧蓝土布，布面绣极小凤凰暗纹</td></tr>
+    <tr><td>L1-ITEM-03</td><td><strong>祖传纹样底稿</strong></td><td>≥ 300×400</td><td>一叠泛黄棉纸手稿，四页分别绘制盘瓠/凤凰/山河/花草纹样。纸面墨色淡褪，边角沾植物染料黄/蓝渍</td></tr>
+    <tr><td>L1-ITEM-04</td><td><strong>天然植物染料包</strong></td><td>≥ 300×400</td><td>四个粗布小布袋，分别装蓝草叶片/栀子果/茶籽/草木灰。布袋褪色发白，袋口系五色细线</td></tr>
+    <tr><td>L1-ITEM-05</td><td><strong>残缺婚嫁凤冠绣片</strong></td><td>≥ 400×500</td><td>银边凤凰刺绣残片，凤凰翅膀纹样只绣一半，金线氧化暗沉。绣片边角破损，缠绕一缕黑色邪气丝线</td></tr>
+  </table>
+  </div>
+
+  <h3>4.4 记忆 CG 画面</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>编号</th><th>名称</th><th>画面描述</th></tr>
+    <tr><td>L1-CG-01a</td><td>记忆1 · 山野学染织</td><td>年幼蓝阿婆赤脚走畲山山路，背竹篓，正伸手采蓝草。云雾缭绕的畲族群山，阳光透过树梢洒落。色调偏暖绿</td></tr>
+    <tr><td>L1-CG-01b</td><td>记忆1 · 揉染汁特写</td><td>手部特写：稚嫩手指被针扎破，渗出血珠，贴草木止血。旁边石板上放着刚揉好的蓝草染汁</td></tr>
+    <tr><td>L1-CG-02</td><td>记忆2 · 婚嫁绣嫁衣</td><td>畲寨婚嫁场景全景：全村张灯结彩，蓝阿婆灯下连夜赶绣凤凰嫁衣。窗外可见庆祝人群剪影。色调暖红</td></tr>
+    <tr><td>L1-CG-03</td><td>记忆3 · 开坊传艺</td><td>绣坊内：妇女围坐一圈，满屋彩线满墙纹样。中年蓝阿婆站在中央手把手教授刺绣。色调温暖明亮</td></tr>
+    <tr><td>L1-CG-04</td><td>记忆4 · 空寨守艺</td><td>村寨冷清空旷，年轻人离去背影模糊。晚年蓝阿婆独坐祠堂长案旁，铺着厚厚一叠纹样底稿，神情寂寥却坚定。色调偏青灰</td></tr>
+  </table>
+  </div>
+
+  <h3>4.5 机关解谜素材</h3>
+
+  <h4>解谜 1：织布机走线</h4>
+  <div class="table-wrap">
+  <table><tr><th>编号</th><th>资产</th><th>用途</th></tr>
+    <tr><td>L1-PZL-01a</td><td>织布机解谜面板背景 ≥ 800×600</td><td>2D 俯视面板，竹编纹理底</td></tr>
+    <tr><td>L1-PZL-01b</td><td>网格经纬节点 SVG/PNG</td><td>24 内部点 + 8 顶点</td></tr>
+    <tr><td>L1-PZL-01c</td><td>走线线条素材 SVG</td><td>可绘制/擦除的经纬线条</td></tr>
+    <tr><td>L1-PZL-01d</td><td>织布机实景图 ≥ 400×300</td><td>灰色锁定态 & 发光可交互态</td></tr>
+  </table>
+  </div>
+
+  <h4>解谜 2：植物染料晾晒</h4>
+  <div class="table-wrap">
+  <table><tr><th>编号</th><th>资产</th><th>用途</th></tr>
+    <tr><td>L1-PZL-02a</td><td>晾晒架面板背景 ≥ 800×400</td><td>木质纹理面板</td></tr>
+    <tr><td>L1-PZL-02b</td><td>五组晾晒架空位</td><td>可拖入布袋</td></tr>
+    <tr><td>L1-PZL-02c</td><td>染料布袋 × 5 个</td><td>栀子黄/草木绿/蓝草蓝/苏木红/茶籽黑</td></tr>
+  </table>
+  </div>
+
+  <h4>解谜 3：古树年轮密码</h4>
+  <div class="table-wrap">
+  <table><tr><th>编号</th><th>资产</th><th>用途</th></tr>
+    <tr><td>L1-PZL-03a</td><td>古树年轮特写 ≥ 600×600</td><td>四层同心圆，内密外疏</td></tr>
+    <tr><td>L1-PZL-03b</td><td>树干交互入口 ≥ 300×400</td><td>千年老榕树局部特写</td></tr>
+  </table>
+  </div>
+
+  <h4>解谜 4（终极）：石壁图腾拼图</h4>
+  <div class="table-wrap">
+  <table><tr><th>编号</th><th>资产</th><th>用途</th></tr>
+    <tr><td>L1-PZL-04a</td><td>石壁空凹槽界面 ≥ 800×600</td><td>四层凹槽，可拖入石板</td></tr>
+    <tr><td>L1-PZL-04b</td><td>盘瓠纹石板 ≥ 150×150</td><td>畲族始祖盘瓠纹样</td></tr>
+    <tr><td>L1-PZL-04c</td><td>山河纹石板 ≥ 150×150</td><td>畲民山河基底纹样</td></tr>
+    <tr><td>L1-PZL-04d</td><td>花草纹石板 ≥ 150×150</td><td>山野花草点缀纹样</td></tr>
+    <tr><td>L1-PZL-04e</td><td>凤凰纹石板 ≥ 150×150</td><td>畲族婚嫁凤凰主纹样，可旋转</td></tr>
+  </table>
+  </div>
+
+  <h3>4.6 图腾纹样设计稿</h3>
+  <div class="table-wrap">
+  <table><tr><th>编号</th><th>名称</th><th>规格</th><th>文化依据</th></tr>
+    <tr><td>L1-PAT-01</td><td>盘瓠祖纹</td><td>矢量 + PNG ≥ 512×512</td><td>畲族始祖传说图腾</td></tr>
+    <tr><td>L1-PAT-02</td><td>山河基底纹</td><td>矢量 + PNG ≥ 512×512</td><td>畲民山居耕作记录</td></tr>
+    <tr><td>L1-PAT-03</td><td>花草点缀纹</td><td>矢量 + PNG ≥ 512×512</td><td>山野草木染织祈福</td></tr>
+    <tr><td>L1-PAT-04</td><td>凤凰婚嫁纹</td><td>矢量 + PNG ≥ 1024×512</td><td>畲族婚嫁最高礼仪图腾</td></tr>
+    <tr><td>L1-PAT-05</td><td>畲族五色色卡</td><td>色板</td><td>黑/青/红/绿/黄 配色参考</td></tr>
+  </table>
+  </div>
+
+  <h3>4.7 环境与氛围</h3>
+  <div class="table-wrap">
+  <table><tr><th>编号</th><th>资产</th><th>规格</th></tr>
+    <tr><td>L1-ENV-01</td><td>山间薄雾纹理</td><td>≥ 512×256，平铺</td></tr>
+    <tr><td>L1-ENV-02</td><td>邪气黑气纹理</td><td>≥ 512×256，平铺</td></tr>
+    <tr><td>L1-ENV-03</td><td>远山剪影</td><td>≥ 1920×300</td></tr>
+    <tr><td>L1-ENV-04</td><td>寨口老榕树</td><td>≥ 600×800</td></tr>
+    <tr><td>L1-ENV-05</td><td>蓝阿婆虚影光点</td><td>≥ 128×128</td></tr>
+  </table>
+  </div>
+
+  <h3>4.8 音频需求</h3>
+  <div class="table-wrap">
+  <table><tr><th>编号</th><th>名称</th><th>类型</th><th>时长</th></tr>
+    <tr><td>L1-SFX-01</td><td>第一关 BGM</td><td>背景音乐</td><td>循环 ≥ 2min</td></tr>
+    <tr><td>L1-SFX-02</td><td>空山鸟鸣</td><td>环境音</td><td>循环 ≥ 30s</td></tr>
+    <tr><td>L1-SFX-03</td><td>溪流细风</td><td>环境音</td><td>循环 ≥ 30s</td></tr>
+    <tr><td>L1-SFX-04</td><td>丝线轻颤声</td><td>音效</td><td>2~4s</td></tr>
+    <tr><td>L1-SFX-05</td><td>空寨回声</td><td>环境音</td><td>≥ 20s</td></tr>
+    <tr><td>L1-SFX-06</td><td>织布机工作声</td><td>音效</td><td>循环 3~6s</td></tr>
+    <tr><td>L1-SFX-07</td><td>五色流光音效</td><td>音效</td><td>2~4s</td></tr>
+    <tr><td>L1-SFX-08</td><td>通关结算 BGM</td><td>背景音乐</td><td>≥ 30s</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ==================== 第五章：通用资源 ==================== -->
+<section id="s5">
+  <h2 class="section-title"><span class="num">五</span>通用资源需求（跨关卡）</h2>
+
+  <h3>5.1 主角林望补充动画</h3>
+  <blockquote>精灵动画沿用现有<span class="badge-warn">像素风（Pixel Art）</span>风格，与 <code>protagonist_move/</code> 系列保持一致。</blockquote>
+  <div class="table-wrap">
+  <table><tr><th>编号</th><th>资产</th><th>类型</th><th>用途</th></tr>
+    <tr><td>GEN-CHAR-01</td><td>林望 · 拾取动作帧 8~12帧</td><td>像素风精灵图</td><td>文物拾取伸手动画</td></tr>
+    <tr><td>GEN-CHAR-02</td><td>林望 · 攀爬动作帧 8~12帧</td><td>像素风精灵图</td><td>后山晒场爬坡</td></tr>
+    <tr><td>GEN-CHAR-03</td><td>林望 · 左侧行走帧 30帧</td><td>像素风精灵图</td><td>目前仅有右侧</td></tr>
+    <tr><td>GEN-CHAR-04</td><td>林望 · 对话表情差分 × 4</td><td>水墨手绘立绘</td><td>普通/惊讶/坚定/感动</td></tr>
+  </table>
+  </div>
+
+  <h3>5.2 UI 通用扩展</h3>
+  <div class="table-wrap">
+  <table><tr><th>编号</th><th>资产</th><th>用途</th></tr>
+    <tr><td>GEN-UI-01</td><td>区域导航按钮图标 × 3</td><td>古宅/晒场/祠堂图标</td></tr>
+    <tr><td>GEN-UI-02</td><td>文物图标集 × 5</td><td>HUD 进度显示</td></tr>
+    <tr><td>GEN-UI-03</td><td>弹窗按钮</td><td>关闭/确认通用按钮</td></tr>
+    <tr><td>GEN-UI-04</td><td>民俗科普弹窗装饰框</td><td>竹纹/绣品边框</td></tr>
+    <tr><td>GEN-UI-05</td><td>记忆CG播放框</td><td>过场CG边框遮罩</td></tr>
+  </table>
+  </div>
+
+  <h3>5.3 地图界面</h3>
+  <div class="table-wrap">
+  <table><tr><th>编号</th><th>资产</th><th>用途</th></tr>
+    <tr><td>GEN-MAP-01</td><td>浙江地图底图 ≥ 800×600</td><td>浙江全境手绘风格</td></tr>
+    <tr><td>GEN-MAP-02</td><td>关卡节点图标 × 3</td><td>丽水/东阳/乐清</td></tr>
+    <tr><td>GEN-MAP-03</td><td>地图卷轴边框 ≥ 900×700</td><td>羊皮纸卷轴质感</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ==================== 第六章：优先级 ==================== -->
+<section id="s6">
+  <h2 class="section-title"><span class="num">六</span>资源优先级与排期建议</h2>
+
+  <h3><span class="badge badge-p0">P0</span> 核心体验必选项（最先产出）</h3>
+  <ol class="priority-list">
+    <li><span class="seq">1</span> L1-BG-01/02/03 场景背景图 × 3 —— 玩家进入关卡的基础画面</li>
+    <li><span class="seq">2</span> L1-CHAR-01 蓝阿婆半身立绘 —— 开场对话的核心角色</li>
+    <li><span class="seq">3</span> L1-ITEM-01~05 文物道具图 × 5 —— 核心收集玩法</li>
+    <li><span class="seq">4</span> L1-PAT-01~04 四类图腾纹样 —— 终极解谜 + 多处引用</li>
+    <li><span class="seq">5</span> L1-PZL-04a~04e 石壁拼图素材 —— 终极解谜界面</li>
+    <li><span class="seq">6</span> L1-PZL-02a~02c 晾晒架 + 染料布袋 —— 染料晾晒解谜</li>
+  </ol>
+
+  <h3><span class="badge badge-p1">P1</span> 增强体验（第二批）</h3>
+  <ol class="priority-list" start="7">
+    <li><span class="seq">7</span> L1-CG-01~04 记忆CG画面 × 5</li>
+    <li><span class="seq">8</span> L1-CHAR-02~06 蓝阿婆完整立绘族</li>
+    <li><span class="seq">9</span> L1-SPIRIT-01~03 匠灵立绘 / 动画</li>
+    <li><span class="seq">10</span> L1-PZL-01a~01d 织布机解谜素材</li>
+    <li><span class="seq">11</span> L1-PZL-03a~03b 古树年轮素材</li>
+    <li><span class="seq">12</span> L1-ENV-01~05 环境氛围素材</li>
+    <li><span class="seq">13</span> GEN-UI-01~05 UI 通用扩展</li>
+    <li><span class="seq">14</span> L1-MEM-01~04 年轻蓝阿婆立绘</li>
+  </ol>
+
+  <h3><span class="badge badge-p2">P2</span> 锦上添花（第三批）</h3>
+  <ol class="priority-list" start="15">
+    <li><span class="seq">15</span> L1-SFX-01~08 音频全套</li>
+    <li><span class="seq">16</span> GEN-CHAR-01~04 主角补充动画</li>
+    <li><span class="seq">17</span> L1-BG-04 古寨全景</li>
+    <li><span class="seq">18</span> GEN-MAP-01~03 地图素材</li>
+  </ol>
+</section>
+
+<!-- ==================== 第七章：目录规范 ==================== -->
+<section id="s7">
+  <h2 class="section-title"><span class="num">七</span>文件命名与目录规范</h2>
+
+  <h3>7.1 建议新增目录</h3>
+  <pre>assets/
+├── images/
+│   ├── npc/level1/           # 关卡 NPC 立绘/精灵图
+│   │   ├── lan_apo_stand.png
+│   │   ├── lan_apo_portrait.png
+│   │   ├── lan_apo_ghost.png
+│   │   ├── lan_apo_young.png
+│   │   ├── lan_apo_youth.png
+│   │   ├── lan_apo_middle.png
+│   │   ├── lan_apo_old.png
+│   │   └── spirit.png
+│   ├── scenes/level1/         # 关卡场景背景
+│   │   ├── house_bg.png
+│   │   ├── yard_bg.png
+│   │   ├── hall_bg.png
+│   │   └── panorama.png
+│   ├── items/level1/          # 文物道具图
+│   │   ├── item_01_embroidery_frame.png
+│   │   ├── item_02_silk_threads.png
+│   │   ├── item_03_pattern_manuscript.png
+│   │   ├── item_04_dye_bags.png
+│   │   └── item_05_phoenix_crown.png
+│   ├── puzzles/level1/        # 解谜机关
+│   │   ├── loom/  drying/  tree_ring/  totem/
+│   ├── patterns/              # 图腾纹样
+│   │   ├── pattern_panhu.png
+│   │   ├── pattern_mountain.png
+│   │   ├── pattern_flower.png
+│   │   └── pattern_phoenix.png
+│   ├── effects/               # 特效
+│   │   ├── mist_texture.png
+│   │   ├── dark_air_texture.png
+│   │   └── silk_light.png
+│   └── cg/level1/             # 记忆 CG
+│       ├── cg_01_learning_dye.png
+│       ├── cg_02_phoenix_wedding.png
+│       ├── cg_03_teaching.png
+│       └── cg_04_empty_village.png
+└── audio/
+    ├── bgm/level1_bgm.mp3
+    └── sfx/{birds,stream,loom,silk_light}.mp3</pre>
+
+  <h3>7.2 命名规则</h3>
+  <div class="table-wrap">
+  <table><tr><th>规范项</th><th>规则</th></tr>
+    <tr><td>文件名</td><td>全小写英文 + 下划线</td></tr>
+    <tr><td>层级前缀</td><td>L1- 第一关专用，GEN- 通用</td></tr>
+    <tr><td>用途后缀</td><td>_bg 背景、_portrait 半身、_stand 全身</td></tr>
+    <tr><td>格式</td><td>PNG 透明底，矢量保留 AI/SVG</td></tr>
+    <tr><td>分辨率</td><td>背景 ≥ 1920×1080，立绘 ≥ 1024×1536</td></tr>
+    <tr><td>交付物</td><td>PSD/AI 源文件 + PNG 导出</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ==================== 第八章：速查表 ==================== -->
+<section id="s8">
+  <h2 class="section-title"><span class="num">八</span>需求速查表</h2>
+
+  <div class="summary-cards">
+    <div class="summary-card"><div class="num">6</div><div class="label">蓝阿婆资产</div></div>
+    <div class="summary-card"><div class="num">4</div><div class="label">年轻蓝阿婆</div></div>
+    <div class="summary-card"><div class="num">3</div><div class="label">匠灵资产</div></div>
+    <div class="summary-card"><div class="num">4</div><div class="label">场景背景</div></div>
+    <div class="summary-card"><div class="num">10</div><div class="label">文物道具（含变体）</div></div>
+    <div class="summary-card"><div class="num">5</div><div class="label">记忆 CG</div></div>
+    <div class="summary-card"><div class="num">5</div><div class="label">图腾纹样</div></div>
+    <div class="summary-card"><div class="num">14</div><div class="label">解谜素材</div></div>
+    <div class="summary-card"><div class="num">5</div><div class="label">环境氛围</div></div>
+    <div class="summary-card"><div class="num">8</div><div class="label">音频</div></div>
+    <div class="summary-card"><div class="num">11</div><div class="label">通用 UI</div></div>
+    <div class="summary-card"><div class="num">6</div><div class="label">主角补充</div></div>
+    <div class="summary-card"><div class="num">5</div><div class="label">地图素材</div></div>
+    <div class="summary-card" style="border-color:#8b5a2b;background:rgba(139,90,43,0.06)">
+      <div class="num" style="color:#5a2d0c">≈ 81</div><div class="label" style="font-weight:700">总计</div>
+    </div>
+  </div>
+</section>
+
+</div><!-- .wrapper -->
+
+<footer>
+  <p>《匠灵：守护手艺传承》美术资源需求文档 v1.1</p>
+  <p>本文档随关卡开发进度持续更新。每项资产产出后请在对应行标记 ✅已完成。</p>
+  <p style="margin-top:12px;font-size:12px">© 2026 匠灵工作室</p>
+</footer>
+
+</body>
+</html>
