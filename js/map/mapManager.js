@@ -13,6 +13,18 @@ export const MapManager = {
             closeBtn.addEventListener('click', () => this.close());
         }
 
+        // 地图关节点点击 → 进入对应关卡
+        this.mapScreen.addEventListener('click', (e) => {
+            const node = e.target.closest('.map-node');
+            if (!node || node.classList.contains('locked')) return;
+            const level = node.dataset.level;
+            if (level === 'level1') {
+                this.close();
+                document.dispatchEvent(new CustomEvent('enterLevel1'));
+            }
+        });
+
+        // 地图按键（使用可配置按键绑定）
         document.addEventListener('keydown', (e) => {
             const key = e.key.toLowerCase();
             if (gameState.isPaused || gameState.dialogueActive) return;
@@ -37,9 +49,39 @@ export const MapManager = {
             this._showToast('你还没有获得地图！');
             return;
         }
+        this._updateNodeStatuses();
         this.mapScreen.style.display = 'flex';
     },
 
+    /**
+     * 更新地图关节点状态（已通关/解锁）
+     */
+    _updateNodeStatuses() {
+        const nodes = this.mapScreen.querySelectorAll('.map-node');
+        nodes.forEach(node => {
+            const level = node.dataset.level;
+            const statusEl = node.querySelector('.map-node-status');
+            if (level === 'level1') {
+                if (gameState.level1 && gameState.level1.completed) {
+                    node.classList.remove('locked');
+                    if (statusEl) statusEl.textContent = '✅ 已通关 · 可重玩';
+                } else {
+                    node.classList.remove('locked');
+                    if (statusEl) statusEl.textContent = '点击进入';
+                }
+            } else if (level === 'level2') {
+                // 第一关通关后解锁第二关
+                if (gameState.level1 && gameState.level1.completed) {
+                    node.classList.remove('locked');
+                    if (statusEl) statusEl.textContent = '点击进入';
+                }
+            }
+        });
+    },
+
+    /**
+     * 关闭地图
+     */
     close() {
         this.mapScreen.style.display = 'none';
     },

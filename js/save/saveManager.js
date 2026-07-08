@@ -335,12 +335,20 @@ export const SaveManager = {
         this.close();
         SceneManager.hide('main-menu');
         SceneManager.hide('intro-screen');
-        SceneManager.show('game-screen', 'block');
-        SceneManager.show('ui-hud', 'flex');
 
-        document.dispatchEvent(new CustomEvent('gameLoaded', {
-            detail: { slotIndex: slotIndex }
-        }));
+        // 如果存档在第一关，直接进入第一关
+        if (gameState.currentChapter === 'level1' && gameState.level1.entered) {
+            document.dispatchEvent(new CustomEvent('gameLoaded', {
+                detail: { slotIndex: slotIndex }
+            }));
+            document.dispatchEvent(new CustomEvent('enterLevel1'));
+        } else {
+            SceneManager.show('game-screen', 'block');
+            SceneManager.show('ui-hud', 'flex');
+            document.dispatchEvent(new CustomEvent('gameLoaded', {
+                detail: { slotIndex: slotIndex }
+            }));
+        }
 
         this._showToast(`已读取「存档${['一', '二', '三'][slotIndex]}」`);
     },

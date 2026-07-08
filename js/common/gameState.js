@@ -28,6 +28,26 @@ export const gameState = {
     // 章节追踪
     currentChapter: 'prologue',  // prologue | level1 | level2 | level3
 
+    // ========== 第一关进度 ==========
+    level1: {
+        entered: false,             // 是否已进入第一关
+        openingDone: false,         // 开场对话是否完成
+        // 文物收集（1~5）
+        artifacts: { 1: false, 2: false, 3: false, 4: false, 5: false },
+        // 匠人记忆观看（1~4）
+        memories:  { 1: false, 2: false, 3: false, 4: false },
+        // 解谜完成
+        puzzles: {
+            loom: false,        // 织布机走线
+            drying: false,      // 染料晾晒
+            treeRing: false,    // 古树年轮
+            totem: false        // 石壁图腾拼图（终极）
+        },
+        // 当前区域
+        currentArea: 'house',  // house | yard | hall
+        completed: false       // 关卡通关
+    },
+
     // 暂停状态
     isPaused: false,
 
@@ -80,7 +100,8 @@ export const gameState = {
             tutorialShown: this.tutorialShown,
             currentChapter: this.currentChapter,
             currentDialogueIndex: this.currentDialogueIndex,
-            playerSpeed: this.playerSpeed
+            playerSpeed: this.playerSpeed,
+            level1: JSON.parse(JSON.stringify(this.level1))
         };
     },
 
@@ -99,5 +120,8 @@ export const gameState = {
         this.playerSpeed = snap.playerSpeed ?? 5;
         this.isPaused = false;
         this.dialogueActive = false;
+        if (snap.level1) {
+            this.level1 = Object.assign(this.level1, snap.level1);
+        }
     }
 };

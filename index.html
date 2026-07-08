@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/settings.css">
     <link rel="stylesheet" href="css/save.css">
     <link rel="stylesheet" href="css/backpack.css">
+    <link rel="stylesheet" href="css/level1.css">
 </head>
 <body>
 
@@ -120,12 +121,99 @@
     <button class="map-close">×</button>
     <div class="map-container">
         <h2 class="map-title">浙 江 匠 灵 地 图</h2>
-        <div class="map-placeholder">
-            <div class="map-placeholder-icon">📜</div>
-            <div class="map-placeholder-text">暂 未 开 发</div>
+        <div class="map-nodes">
+            <!-- 第一关：丽水畲寨 -->
+            <div class="map-node" data-level="level1">
+                <div class="map-node-dot">1</div>
+                <div class="map-node-info">
+                    <div class="map-node-name">丽水 · 畲族古寨</div>
+                    <div class="map-node-desc">畲族刺绣 · 国家级非遗</div>
+                </div>
+                <div class="map-node-status">点击进入</div>
+            </div>
+            <!-- 第二关：东阳木雕（未解锁） -->
+            <div class="map-node locked" data-level="level2">
+                <div class="map-node-dot">2</div>
+                <div class="map-node-info">
+                    <div class="map-node-name">东阳 · 木雕古村</div>
+                    <div class="map-node-desc">东阳木雕 · 国家级非遗</div>
+                </div>
+                <div class="map-node-status">🔒 未解锁</div>
+            </div>
+            <!-- 第三关：乐清细纹刻纸（未解锁） -->
+            <div class="map-node locked" data-level="level3">
+                <div class="map-node-dot">3</div>
+                <div class="map-node-info">
+                    <div class="map-node-name">乐清 · 渔港</div>
+                    <div class="map-node-desc">细纹刻纸 · 国家级非遗</div>
+                </div>
+                <div class="map-node-status">🔒 未解锁</div>
+            </div>
         </div>
-        <p class="map-hint">更多地图内容敬请期待...</p>
+        <p class="map-hint">点击已解锁的关卡进入探索</p>
     </div>
+</div>
+
+<!-- ==================== 第一关：畲族古寨 ==================== -->
+<div id="level1-screen">
+    <!-- 顶部栏 -->
+    <div class="level1-topbar">
+        <h2 class="level1-title">第一章 · 丽水畲寨 · 畲族刺绣</h2>
+        <div class="level1-hud-right">
+            <span id="level1-hud-progress">文物 0/5 · 记忆 0/4 · 解谜 0/4</span>
+            <button class="level1-back-btn" id="level1-back-btn">返回序章</button>
+        </div>
+    </div>
+
+    <!-- 区域导航 -->
+    <div id="level1-area-nav">
+        <button class="area-nav-btn active" data-area="house">🏯 绣花古宅</button>
+        <button class="area-nav-btn" data-area="yard">🌿 后山晒场</button>
+        <button class="area-nav-btn" data-area="hall">🏮 畲族祠堂</button>
+    </div>
+
+    <!-- 场景区 -->
+    <div id="level1-area-scene">
+        <p id="level1-area-desc"></p>
+        <div class="level1-area-content">
+            <h3 class="area-section-title">可拾取文物</h3>
+            <div id="level1-artifacts"></div>
+            <h3 class="area-section-title">机关解谜</h3>
+            <div id="level1-puzzle-entry"></div>
+        </div>
+    </div>
+
+    <!-- 对话框 -->
+    <div id="level1-dialogue-box">
+        <div id="level1-dialogue-speaker">???</div>
+        <div id="level1-dialogue-text">...</div>
+        <div class="level1-dialogue-next">点击继续 ▼</div>
+    </div>
+
+    <!-- 民俗科普弹窗 -->
+    <div id="level1-popup-overlay">
+        <div id="level1-popup-content"></div>
+    </div>
+
+    <!-- 记忆CG -->
+    <div id="level1-memory-overlay">
+        <div class="memory-container">
+            <div class="memory-title"></div>
+            <div class="memory-desc"></div>
+            <div class="memory-subtitle"></div>
+            <div class="memory-clue"></div>
+            <div class="memory-progress"><div class="memory-progress-bar"></div></div>
+            <div class="memory-skip-hint">点击跳过</div>
+        </div>
+    </div>
+
+    <!-- 解谜面板 -->
+    <div id="level1-puzzle-overlay">
+        <div id="level1-puzzle-content"></div>
+    </div>
+
+    <!-- 通关特效 -->
+    <div id="level1-ending-fx"></div>
 </div>
 
 <!-- ==================== 暂停面板 ==================== -->

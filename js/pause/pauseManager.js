@@ -52,7 +52,10 @@ export const PauseManager = {
 
                 // 只在游戏进行中响应暂停
                 const gameScreen = document.getElementById('game-screen');
-                if (!gameScreen || gameScreen.style.display === 'none') return;
+                const level1Screen = document.getElementById('level1-screen');
+                const inGame = (gameScreen && gameScreen.style.display !== 'none') ||
+                               (level1Screen && level1Screen.style.display !== 'none');
+                if (!inGame) return;
 
                 // 对话或存档选择界面中不暂停
                 if (gameState.dialogueActive) return;
@@ -214,6 +217,7 @@ export const PauseManager = {
         SceneManager.hide('map-screen');
         SceneManager.hide('settings-overlay');
         SceneManager.hide('save-slots-overlay');
+        SceneManager.hide('level1-screen');
 
         gameState.playerPosPercent = 15;
         gameState.activeSlotIndex = -1;
