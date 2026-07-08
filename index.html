@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/map.css">
     <link rel="stylesheet" href="css/settings.css">
     <link rel="stylesheet" href="css/save.css">
+    <link rel="stylesheet" href="css/backpack.css">
 </head>
 <body>
 
@@ -80,10 +81,7 @@
 
     <!-- NPC 向导 -->
     <div id="npc-guide">
-        <div class="npc-body">
-            <div class="npc-head"></div>
-        </div>
-        <div class="npc-robe"></div>
+        <img id="npc-sprite" src="assets/images/image_npc/old_man.png" alt="老匠人">
         <div class="interact-prompt" id="npc-prompt">按 E 交互</div>
     </div>
 
@@ -97,13 +95,6 @@
         <div class="hud-item"><kbd>←→</kbd> 移动</div>
         <div class="hud-item"><kbd>E</kbd> 交互</div>
         <div class="hud-item"><kbd>M</kbd> 地图</div>
-    </div>
-
-    <!-- 对话框 -->
-    <div id="dialogue-box">
-        <div class="dialogue-speaker" id="dialogue-speaker">???</div>
-        <div class="dialogue-text" id="dialogue-text">...</div>
-        <div class="dialogue-next">点击继续 ▼</div>
     </div>
 </div>
 
@@ -195,6 +186,40 @@
             <button class="save-slots-btn danger" id="save-slots-delete" style="display:none;">删除存档</button>
         </div>
     </div>
+</div>
+
+<!-- ==================== 背包界面 ==================== -->
+<div id="backpack-overlay">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+        <div class="backpack-panel">
+            <!-- 左侧物品列表 -->
+            <div class="backpack-left">
+                <div class="backpack-left-title">物 品 栏</div>
+                <div class="backpack-item-list" id="backpack-item-list">
+                    <!-- JS 动态填充 -->
+                </div>
+                <div class="backpack-pagination" id="backpack-pagination">
+                    <!-- JS 动态填充 -->
+                </div>
+                <div class="backpack-hint">点击物品查看详情</div>
+            </div>
+            <!-- 右侧物品描述 -->
+            <div class="backpack-right">
+                <div class="backpack-right-title">物品详情</div>
+                <div class="backpack-detail" id="backpack-detail">
+                    <div class="backpack-detail-placeholder">← 点击左侧物品查看详情</div>
+                </div>
+            </div>
+        </div>
+        <button class="backpack-close-btn" id="backpack-close">关闭背包 (B)</button>
+    </div>
+</div>
+
+<!-- ==================== 对话框（全局） ==================== -->
+<div id="dialogue-box">
+    <div class="dialogue-speaker" id="dialogue-speaker">???</div>
+    <div class="dialogue-text" id="dialogue-text">...</div>
+    <div class="dialogue-next">点击继续 ▼</div>
 </div>
 
 <!-- ========== JS 入口（ES6 模块） ========== -->

@@ -83,8 +83,9 @@ export const PlayerController = {
         const gameVisible = gameScreen && gameScreen.style.display !== 'none';
         const mapOpen = document.getElementById('map-screen').style.display === 'flex';
         const settingsOpen = document.getElementById('settings-overlay').style.display === 'flex';
+        const backpackOpen = document.getElementById('backpack-overlay').style.display === 'flex';
         const canMove = gameVisible && !gameState.isPaused && !gameState.dialogueActive
-                        && !mapOpen && !settingsOpen;
+                        && !mapOpen && !settingsOpen && !backpackOpen;
 
         let moved = false;
 

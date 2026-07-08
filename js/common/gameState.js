@@ -22,6 +22,9 @@ export const gameState = {
     dialogueActive: false,
     currentDialogueIndex: 0,
 
+    // 背包
+    inventory: ['jade_token'],   // 初始拥有匠人玉牌
+
     // 章节追踪
     currentChapter: 'prologue',  // prologue | level1 | level2 | level3
 
@@ -43,6 +46,7 @@ export const gameState = {
         moveRight: { keys: ['arrowright', 'd'], label: '向右移动' },
         interact:  { keys: ['e'],             label: '交互' },
         openMap:   { keys: ['m'],             label: '打开地图' },
+        openBackpack: { keys: ['b'],          label: '打开背包' },
         pause:     { keys: ['escape'],        label: '暂停' }
     },
 
@@ -71,6 +75,7 @@ export const gameState = {
         return {
             playerPosPercent: this.playerPosPercent,
             playerDirection: this.playerDirection,
+            inventory: [...this.inventory],
             hasMap: this.hasMap,
             tutorialShown: this.tutorialShown,
             currentChapter: this.currentChapter,
@@ -86,6 +91,7 @@ export const gameState = {
         if (!snap) return;
         this.playerPosPercent = snap.playerPosPercent ?? 15;
         this.playerDirection = snap.playerDirection ?? 'right';
+        if (snap.inventory) this.inventory = [...snap.inventory];
         this.hasMap = snap.hasMap ?? false;
         this.tutorialShown = snap.tutorialShown ?? false;
         this.currentChapter = snap.currentChapter ?? 'prologue';

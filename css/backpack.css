@@ -1,0 +1,267 @@
+/* ========== 背包界面样式 ========== */
+
+#backpack-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 170;
+}
+
+.backpack-panel {
+    display: flex;
+    gap: 0;
+    background: rgba(245, 240, 232, 0.98);
+    border: 4px solid #8b5a2b;
+    border-radius: 16px;
+    overflow: hidden;
+    min-width: 700px;
+    max-width: 800px;
+    min-height: 460px;
+}
+
+/* ====== 左侧物品列表 ====== */
+
+.backpack-left {
+    flex: 1;
+    background: #faf6ef;
+    border-right: 2px solid #d4c5a9;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.backpack-left-title {
+    font-size: 20px;
+    color: #8b4513;
+    letter-spacing: 4px;
+    text-align: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #d4c5a9;
+}
+
+.backpack-item-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+}
+
+.backpack-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #fff;
+    border: 1px solid #e8dcc8;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.backpack-item:hover {
+    background: #f0e6d8;
+    border-color: #8b5a2b;
+}
+
+.backpack-item.selected {
+    background: #e8d5c0;
+    border-color: #8b4513;
+    box-shadow: inset 0 0 0 1px #8b4513;
+}
+
+.backpack-item-icon {
+    width: 40px;
+    height: 40px;
+    background: #f5f0e8;
+    border: 2px solid #d4c5a9;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.backpack-item-icon img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.backpack-item-name {
+    font-size: 16px;
+    color: #2c1810;
+    letter-spacing: 2px;
+}
+
+.backpack-empty {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #bbb;
+    font-size: 16px;
+    letter-spacing: 3px;
+}
+
+/* ====== 分页控件 ====== */
+
+.backpack-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #e8dcc8;
+    margin-top: 8px;
+}
+
+.backpack-page-btn {
+    width: 32px;
+    height: 32px;
+    background: #f5f0e8;
+    border: 1px solid #d4c5a9;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #5c3a1e;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.backpack-page-btn:hover:not(:disabled) {
+    background: #e8d5c0;
+    border-color: #8b5a2b;
+}
+
+.backpack-page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.backpack-page-info {
+    font-size: 14px;
+    color: #888;
+    letter-spacing: 2px;
+    min-width: 60px;
+    text-align: center;
+}
+
+/* ====== 右侧物品描述 ====== */
+
+.backpack-right {
+    flex: 1;
+    background: #f5f0e8;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.backpack-right-title {
+    font-size: 20px;
+    color: #8b4513;
+    letter-spacing: 4px;
+    text-align: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #d4c5a9;
+}
+
+.backpack-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.backpack-detail-placeholder {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    font-size: 16px;
+    letter-spacing: 3px;
+}
+
+.backpack-detail-icon {
+    width: 72px;
+    height: 72px;
+    background: #fff;
+    border: 3px solid #8b5a2b;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin-top: 12px;
+}
+
+.backpack-detail-icon img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+}
+
+.backpack-detail-name {
+    font-size: 22px;
+    color: #2c1810;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.backpack-detail-desc {
+    flex: 1;
+    font-size: 16px;
+    color: #5c3a1e;
+    line-height: 2;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 12px 8px;
+}
+
+/* ====== 底部关闭按钮 ====== */
+
+.backpack-footer {
+    padding: 16px 24px;
+    border-top: 2px solid #d4c5a9;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.backpack-close-btn {
+    padding: 10px 36px;
+    background: #8b4513;
+    color: #f5f0e8;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+.backpack-close-btn:hover {
+    background: #a0522d;
+    transform: scale(1.05);
+}
+
+.backpack-hint {
+    font-size: 13px;
+    color: #999;
+    letter-spacing: 1px;
+}

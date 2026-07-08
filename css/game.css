@@ -185,44 +185,19 @@
     image-rendering: pixelated;
 }
 
-/* NPC 向导 */
+/* NPC 向导（精灵图） */
 #npc-guide {
     position: absolute;
     bottom: 42%;
     left: calc(15% + 350px);
-    cursor: pointer;
     z-index: 49;
-    animation: npcIdle 2.5s ease-in-out infinite;
 }
 
-.npc-body {
-    width: 48px;
-    height: 72px;
-    background: #1565c0;
-    border: 2px solid #0d47a1;
-    position: relative;
-}
-
-.npc-head {
-    position: absolute;
-    top: -36px;
-    left: 4px;
-    width: 38px;
-    height: 38px;
-    background: #ffe0b2;
-    border: 2px solid #333;
-    border-radius: 50%;
-}
-
-.npc-robe {
-    position: absolute;
-    bottom: -20px;
-    left: -15px;
-    width: 80px;
-    height: 40px;
-    background: #1976d2;
-    border: 2px solid #0d47a1;
-    border-radius: 0 0 40px 40px;
+#npc-sprite {
+    display: block;
+    height: 120px;
+    width: auto;
+    image-rendering: auto;
 }
 
 /* 交互提示 */

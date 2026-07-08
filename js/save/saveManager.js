@@ -284,12 +284,18 @@ export const SaveManager = {
         gameState.playerPosPercent = 15;
         gameState.playerDirection = 'right';
         gameState.playerMoving = false;
+        gameState.inventory = ['jade_token'];
         gameState.hasMap = false;
         gameState.tutorialShown = false;
         gameState.dialogueActive = false;
         gameState.currentDialogueIndex = 0;
         gameState.currentChapter = 'prologue';
         gameState.isPaused = false;
+
+        // 将玩家移回主场景
+        const player = document.getElementById('player');
+        const gameScreen = document.getElementById('game-screen');
+        if (player && gameScreen) gameScreen.appendChild(player);
 
         this.close();
         SceneManager.hide('main-menu');

@@ -11,6 +11,7 @@ import { MapManager } from './map/mapManager.js';
 import { SettingsManager } from './settings/settingsManager.js';
 import { PauseManager } from './pause/pauseManager.js';
 import { SaveManager } from './save/saveManager.js';
+import { BackpackManager } from './backpack/backpackManager.js';
 
 /**
  * 初始化所有模块
@@ -57,6 +58,7 @@ function init() {
         // UI 模块
         TutorialManager.init();
         MapManager.init();
+        BackpackManager.init();
         SettingsManager.init();
         PauseManager.init();
 

@@ -50,6 +50,8 @@ export const DialogueSystem = {
     dialogueBox: null,
     speakerEl: null,
     textEl: null,
+    _currentDialogues: null,
+    _onEnd: null,
 
     /**
      * 初始化对话系统
@@ -67,10 +69,25 @@ export const DialogueSystem = {
     },
 
     /**
-     * 开始对话
+     * 开始对话（默认 NPC 对话）
      */
     start() {
         if (gameState.dialogueActive) return;
+        this._currentDialogues = dialogues;
+        gameState.dialogueActive = true;
+        gameState.currentDialogueIndex = 0;
+        this.showContent();
+    },
+
+    /**
+     * 开始自定义对话
+     * @param {Array} customDialogues - [{speaker, text}, ...]
+     * @param {Function} onEnd - 对话结束回调
+     */
+    startCustom(customDialogues, onEnd) {
+        if (gameState.dialogueActive) return;
+        this._currentDialogues = customDialogues;
+        this._onEnd = onEnd || null;
         gameState.dialogueActive = true;
         gameState.currentDialogueIndex = 0;
         this.showContent();
@@ -80,12 +97,13 @@ export const DialogueSystem = {
      * 显示当前对话内容
      */
     showContent() {
-        if (gameState.currentDialogueIndex >= dialogues.length) {
+        const list = this._currentDialogues || dialogues;
+        if (gameState.currentDialogueIndex >= list.length) {
             this.end();
             return;
         }
 
-        const dialogue = dialogues[gameState.currentDialogueIndex];
+        const dialogue = list[gameState.currentDialogueIndex];
         this.speakerEl.textContent = dialogue.speaker || '旁白';
         this.textEl.innerHTML = dialogue.text.replace(/\n/g, '<br>');
         this.dialogueBox.style.display = 'block';
@@ -93,6 +111,9 @@ export const DialogueSystem = {
         // 如果是获得地图
         if (dialogue.text.includes('获得')) {
             gameState.hasMap = true;
+            if (!gameState.inventory.includes('map')) {
+                gameState.inventory.push('map');
+            }
         }
     },
 
@@ -110,5 +131,10 @@ export const DialogueSystem = {
     end() {
         this.dialogueBox.style.display = 'none';
         gameState.dialogueActive = false;
+        if (this._onEnd) {
+            const cb = this._onEnd;
+            this._onEnd = null;
+            cb();
+        }
     }
 };

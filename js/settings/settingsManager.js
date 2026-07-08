@@ -8,8 +8,9 @@ const DEFAULT_KEY_BINDINGS = {
     moveLeft:  { keys: ['arrowleft', 'a'], label: '向左移动' },
     moveRight: { keys: ['arrowright', 'd'], label: '向右移动' },
     interact:  { keys: ['e'],             label: '交互' },
-    openMap:   { keys: ['m'],             label: '打开地图' },
-    pause:     { keys: ['escape'],        label: '暂停' }
+        openMap:   { keys: ['m'],             label: '打开地图' },
+        openBackpack: { keys: ['b'],          label: '打开背包' },
+        pause:     { keys: ['escape'],        label: '暂停' }
 };
 
 export const SettingsManager = {
