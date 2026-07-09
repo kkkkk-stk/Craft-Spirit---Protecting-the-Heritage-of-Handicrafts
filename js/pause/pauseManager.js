@@ -226,7 +226,10 @@ export const PauseManager = {
         // 将玩家移回游戏主场景
         const player = document.getElementById('player');
         const gameScreen = document.getElementById('game-screen');
-        if (player && gameScreen) gameScreen.appendChild(player);
+        if (player && gameScreen) {
+            player.style.display = 'block';
+            gameScreen.appendChild(player);
+        }
 
         SceneManager.show('main-menu', 'flex');
 

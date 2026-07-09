@@ -295,7 +295,10 @@ export const SaveManager = {
         // 将玩家移回主场景
         const player = document.getElementById('player');
         const gameScreen = document.getElementById('game-screen');
-        if (player && gameScreen) gameScreen.appendChild(player);
+        if (player && gameScreen) {
+            player.style.display = 'block';
+            gameScreen.appendChild(player);
+        }
 
         this.close();
         SceneManager.hide('main-menu');

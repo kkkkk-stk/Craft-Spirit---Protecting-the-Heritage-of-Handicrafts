@@ -19,6 +19,7 @@ export const MapManager = {
             if (!node || node.classList.contains('locked')) return;
             const level = node.dataset.level;
             if (level === 'level1') {
+                console.log('MapManager: 点击关卡1，准备进入');
                 this.close();
                 document.dispatchEvent(new CustomEvent('enterLevel1'));
             }

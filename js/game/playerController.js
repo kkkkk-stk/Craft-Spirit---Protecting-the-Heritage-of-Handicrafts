@@ -80,7 +80,9 @@ export const PlayerController = {
         this._lastFrameTime = timestamp;
 
         const gameScreen = document.getElementById('game-screen');
-        const gameVisible = gameScreen && gameScreen.style.display !== 'none';
+        const level1Screen = document.getElementById('level1-screen');
+        const gameVisible = (gameScreen && gameScreen.style.display !== 'none')
+                         || (level1Screen && level1Screen.style.display !== 'none');
         const mapOpen = document.getElementById('map-screen').style.display === 'flex';
         const settingsOpen = document.getElementById('settings-overlay').style.display === 'flex';
         const backpackOpen = document.getElementById('backpack-overlay').style.display === 'flex';
@@ -91,12 +93,12 @@ export const PlayerController = {
 
         if (canMove) {
             if (this._isMoveLeft()) {
-                gameState.playerPosPercent = Math.max(5, gameState.playerPosPercent - gameState.playerSpeed * 0.03);
+                gameState.playerPosPercent = Math.max(3, gameState.playerPosPercent - gameState.playerSpeed * 0.03);
                 gameState.playerDirection = 'left';
                 moved = true;
             }
             if (this._isMoveRight()) {
-                gameState.playerPosPercent = Math.min(85, gameState.playerPosPercent + gameState.playerSpeed * 0.03);
+                gameState.playerPosPercent = Math.min(87, gameState.playerPosPercent + gameState.playerSpeed * 0.03);
                 gameState.playerDirection = 'right';
                 moved = true;
             }

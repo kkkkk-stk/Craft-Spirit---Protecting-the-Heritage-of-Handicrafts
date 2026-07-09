@@ -1,725 +1,97 @@
-/* ========== 第一关样式（畲族刺绣）========== */
+/* ========== 第一关：畲族古寨 ========== */
 
-/* ---------- 场景容器 ---------- */
-#level1-screen {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    display: none;
-    flex-direction: column;
-    background: linear-gradient(180deg, #6b7a6e 0%, #8a9a8d 40%, #a8b5a0 70%, #c4c4a8 100%);
-    overflow: hidden;
-    z-index: 100;
-    font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
-    color: #2c1810;
-}
+#level1-screen { width: 100vw; height: 100vh; display: none; flex-direction: column; position: relative; overflow: hidden; background: #1a1a1a; }
+.level1-scene { flex: 1; position: relative; overflow: hidden; }
+.level1-topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 24px; background: rgba(0,0,0,0.7); z-index: 50; }
+.level1-title { color: #d4af37; font-size: 18px; letter-spacing: 3px; }
+.level1-hud-right { display: flex; gap: 16px; align-items: center; }
+#level1-hud-progress { color: #ccc; font-size: 14px; }
+.level1-back-btn { background: #8b4513; color: #fff; border: none; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; }
 
-/* 山雾背景 */
-#level1-screen::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background:
-        radial-gradient(ellipse at 20% 30%, rgba(180,190,175,0.5) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(160,170,155,0.4) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 80%, rgba(140,150,135,0.3) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-}
+/* 场景一 */
+#scene-village-gate { background: linear-gradient(180deg, #7a9db5, #a8c8d8 40%, #c8dbe8 60%, #8a9a70); }
+.gate-sky { position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(180deg, #6a8da0, #9ab8c8); }
+.gate-mountains { position: absolute; top: 50%; left: 0; right: 0; height: 25%; background: linear-gradient(180deg, #7a8e6a, #5a6e4a); clip-path: polygon(0% 60%, 10% 30%, 20% 50%, 35% 20%, 50% 45%, 65% 25%, 80% 40%, 100% 20%, 100% 100%, 0% 100%); }
+.gate-trees { position: absolute; bottom: 40%; right: 5%; width: 100px; height: 140px; background: radial-gradient(ellipse, #4a7a30, #3a5a20 70%); border-radius: 50%; }
+.gate-path { position: absolute; bottom: 8%; left: 0; right: 0; height: 24%; background: linear-gradient(180deg, #c4a87c, #a08050); }
+.gate-grass-l { position: absolute; bottom: 7%; left: 0; width: 25%; height: 22%; background: linear-gradient(180deg, #6a8a30, #4a6a20); clip-path: polygon(0% 40%, 100% 0%, 100% 100%, 0% 100%); }
+.gate-grass-r { position: absolute; bottom: 7%; right: 0; width: 12%; height: 22%; background: linear-gradient(180deg, #6a8a30, #4a6a20); clip-path: polygon(0% 0%, 100% 35%, 100% 100%, 0% 100%); }
+#village-gate-structure { position: absolute; bottom: 24%; right: 3%; }
+.gate-wall { width: 90px; height: 100px; background: #d4c0a0; border: 3px solid #5a3a20; }
+.gate-roof { position: absolute; top: -22px; left: -10px; width: 110px; height: 25px; background: #5a3020; clip-path: polygon(10% 100%, 50% 0%, 90% 100%); }
+.gate-door { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 35px; height: 55px; background: #4a2a18; border-radius: 4px 4px 0 0; }
+.scene-hint { position: absolute; bottom: 10px; color: rgba(255,255,255,0.6); font-size: 14px; letter-spacing: 2px; z-index: 5; }
 
-/* 远山剪影 */
-#level1-screen::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 45%;
-    background:
-        linear-gradient(180deg, transparent 0%, rgba(90,100,85,0.3) 100%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 400' preserveAspectRatio='none'%3E%3Cpath d='M0,400 L0,250 Q100,180 200,220 T400,200 Q500,150 600,190 T800,170 Q900,130 1000,180 T1200,160 L1200,400 Z' fill='%23758070' opacity='0.6'/%3E%3Cpath d='M0,400 L0,300 Q150,250 300,280 T600,260 Q750,220 900,260 T1200,240 L1200,400 Z' fill='%23656f5e' opacity='0.7'/%3E%3C/svg%3E") no-repeat bottom/100% 100%;
-    pointer-events: none;
-    z-index: 0;
-}
+/* 场景二 */
+#scene-village-inside { background: linear-gradient(180deg, #8a9a80, #6a7a60, #4a5a40); }
+.village-bg { position: absolute; inset: 0; background: linear-gradient(180deg, #a0b090, #7a8a6a 60%, #5a6a4a); }
+.village-ground { position: absolute; bottom: 0; left: 0; right: 0; height: 18%; background: linear-gradient(180deg, #8a7a5a, #6a5a3a); }
+.village-mist { position: absolute; inset: 0; background: rgba(200,210,200,0.08); pointer-events: none; }
+.village-stage { position: absolute; bottom: 18%; left: 15%; z-index: 5; text-align: center; }
+.village-stage .stage-roof { width: 140px; height: 20px; background: #4a3020; clip-path: polygon(8% 100%, 50% 0%, 92% 100%); }
+.village-stage .stage-body { width: 120px; height: 60px; background: #6a4a2a; border: 2px solid #3a1a08; line-height: 60px; color: #a08060; font-size: 13px; }
+.village-house { position: absolute; bottom: 18%; left: 55%; transform: translateX(-50%); z-index: 5; }
+.village-house .house-roof { width: 130px; height: 22px; background: #5a3020; clip-path: polygon(8% 100%, 50% 0%, 92% 100%); margin-left: -5px; }
+.village-house .house-wall { width: 120px; height: 90px; background: #d4c0a0; border: 2px solid #5a3a20; position: relative; }
+.village-house .house-door { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 36px; height: 55px; background: #4a2a18; border-radius: 4px 4px 0 0; cursor: pointer; }
+.village-granny { position: absolute; bottom: 18%; right: 12%; z-index: 5; }
+.village-granny .granny-sprite { width: 36px; height: 72px; background: #4a6a8a; border: 2px solid #2a4a6a; border-radius: 4px; opacity: 0.85; }
+.village-granny .granny-glow { position: absolute; inset: -8px; border-radius: 8px; background: radial-gradient(ellipse, rgba(180,200,255,0.3), transparent); animation: pulse 3s infinite; pointer-events: none; }
 
-/* ---------- 顶部栏 ---------- */
-.level1-topbar {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 24px;
-    background: rgba(44, 24, 16, 0.75);
-    color: #f5f0e8;
-    backdrop-filter: blur(4px);
-}
+/* 场景三 */
+#scene-house-inside { background: linear-gradient(180deg, #3a2a1a, #2a1a0a); }
+.house-interior-bg { position: absolute; inset: 0; background: linear-gradient(180deg, #4a3020, #3a2010); }
+.level1-area-content { position: relative; z-index: 2; padding: 20px 40px; color: #d4c0a0; }
+.area-section-title { color: #8b5a2b; margin: 16px 0 8px; }
+#level1-artifacts { display: flex; gap: 12px; flex-wrap: wrap; }
+.artifact-hotspot { background: rgba(255,255,255,0.08); border: 1px solid #5a4a3a; padding: 12px; border-radius: 8px; cursor: pointer; min-width: 120px; text-align: center; transition: all 0.3s; }
+.artifact-hotspot:hover { background: rgba(255,255,255,0.15); }
+.artifact-hotspot.collected { opacity: 0.5; cursor: default; }
+.artifact-hotspot.locked { opacity: 0.4; cursor: not-allowed; }
+.artifact-name { font-size: 14px; margin: 4px 0; }
+.artifact-status { font-size: 12px; color: #888; }
+#level1-puzzle-entry { margin-top: 8px; }
+.puzzle-entry { background: rgba(255,255,255,0.08); padding: 10px 16px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.puzzle-entry:hover { background: rgba(255,255,255,0.15); }
+.puzzle-entry.solved { opacity: 0.5; cursor: default; }
 
-.level1-title {
-    font-size: 20px;
-    letter-spacing: 4px;
-    color: #e8d5b0;
-    margin: 0;
-}
+/* 对话框 */
+#level1-dialogue-box { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 85%; max-width: 900px; min-height: 120px; background: rgba(240,230,215,0.97); border: 4px solid #2c1810; border-radius: 12px; padding: 20px 28px; display: none; z-index: 200; cursor: pointer; }
+#level1-dialogue-speaker { font-size: 20px; color: #8b4513; font-weight: bold; margin-bottom: 8px; }
+#level1-dialogue-text { font-size: 16px; color: #2c1810; line-height: 1.8; }
+.level1-dialogue-next { position: absolute; bottom: 10px; right: 20px; color: #888; font-size: 13px; animation: pulse 1.5s infinite; }
 
-.level1-hud-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
+/* 弹窗/记忆/解谜 */
+#level1-popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 250; display: none; align-items: center; justify-content: center; }
+#level1-popup-content { background: #f5f0e8; padding: 30px 40px; border-radius: 12px; max-width: 500px; text-align: center; color: #2c1810; line-height: 1.8; }
+#level1-popup-content button { margin-top: 16px; padding: 8px 28px; background: #8b4513; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+#level1-memory-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 260; display: none; align-items: center; justify-content: center; }
+.memory-container { text-align: center; color: #e8dcc8; max-width: 600px; }
+.memory-title { font-size: 28px; color: #d4af37; margin-bottom: 16px; }
+.memory-desc { font-size: 16px; line-height: 2; }
+.memory-subtitle { font-size: 14px; color: #aaa; margin-top: 12px; }
+.memory-clue { font-size: 15px; color: #d4af37; margin-top: 16px; }
+.memory-progress { height: 4px; background: #333; margin-top: 20px; border-radius: 2px; }
+.memory-progress-bar { height: 100%; background: #d4af37; animation: memoryBar 8s linear forwards; }
+@keyframes memoryBar { from { width: 100%; } to { width: 0%; } }
+.memory-skip-hint { font-size: 12px; color: #666; margin-top: 8px; }
+#level1-puzzle-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999; display: none; align-items: center; justify-content: center; }
+#level1-puzzle-content { background: #f5f0e8; padding: 30px 40px; border-radius: 12px; text-align: center; min-width: 360px; max-width: 560px; max-height: 80vh; overflow-y: auto; color: #2c1810; }
+.loom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+.loom-cell { width: 80px; height: 80px; background: #e8dcc8; border: 2px solid #8b5a2b; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; margin: 0 auto; transition: all 0.3s; }
+.loom-cell:hover { background: #d4c0a0; }
+.loom-cell.clicked { background: #8b5a2b; color: #fff; }
+.interact-prompt { position: absolute; top: -36px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: #fff; padding: 4px 12px; border-radius: 4px; font-size: 13px; white-space: nowrap; display: none; animation: bounce 1s infinite; pointer-events: none; z-index: 10; }
 
-#level1-hud-progress {
-    font-size: 14px;
-    color: #c4a882;
-    letter-spacing: 1px;
-}
+/* 关卡中玩家定位 */
+#level1-screen #player { bottom: 18%; }
 
-.level1-back-btn {
-    background: rgba(139, 90, 43, 0.8);
-    color: #f5f0e8;
-    border: 1px solid #a0522d;
-    border-radius: 6px;
-    padding: 6px 16px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.level1-back-btn:hover {
-    background: #8b5a2b;
-    transform: scale(1.05);
-}
-
-/* ---------- 区域导航 ---------- */
-#level1-area-nav {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    padding: 10px;
-    background: rgba(60, 40, 28, 0.6);
-}
-
-.area-nav-btn {
-    background: rgba(245, 240, 232, 0.15);
-    border: 2px solid rgba(139, 90, 43, 0.5);
-    color: #f5f0e8;
-    border-radius: 10px;
-    padding: 10px 24px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.area-nav-btn:hover {
-    background: rgba(139, 90, 43, 0.4);
-    border-color: #c4a882;
-}
-.area-nav-btn.active {
-    background: rgba(139, 90, 43, 0.7);
-    border-color: #e8d5b0;
-    box-shadow: 0 0 12px rgba(232, 213, 160, 0.4);
-}
-
-/* ---------- 场景区 ---------- */
-#level1-area-scene {
-    position: relative;
-    z-index: 1;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 24px 40px;
-    overflow-y: auto;
-}
-
-#level1-area-desc {
-    color: #3a2a1a;
-    font-size: 14px;
-    text-align: center;
-    max-width: 600px;
-    margin-bottom: 20px;
-    padding: 10px 20px;
-    background: rgba(245, 240, 232, 0.7);
-    border-radius: 8px;
-    border-left: 4px solid #8b5a2b;
-}
-
-/* 邪气覆盖效果 */
-.level1-area-content {
-    width: 100%;
-    max-width: 900px;
-    position: relative;
-    z-index: 1;
-}
-
-.area-section-title {
-    font-size: 16px;
-    color: #3a2a1a;
-    margin: 16px 0 12px;
-    padding-left: 12px;
-    border-left: 4px solid #8b5a2b;
-    letter-spacing: 2px;
-}
-
-#level1-artifacts, #level1-puzzle-entry {
-    position: relative;
-    z-index: 1;
-}
-
-/* ---------- 文物热点 ---------- */
-#level1-artifacts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    justify-content: center;
-    margin-bottom: 24px;
-}
-
-.artifact-hotspot {
-    width: 180px;
-    background: rgba(245, 240, 232, 0.9);
-    border: 3px solid #8b5a2b;
-    border-radius: 12px;
-    padding: 16px 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
-}
-.artifact-hotspot:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 20px rgba(139, 90, 43, 0.4);
-    border-color: #c4a882;
-}
-.artifact-hotspot.collected {
-    opacity: 0.6;
-    cursor: default;
-    border-color: #6a8a5a;
-}
-.artifact-hotspot.collected:hover {
-    transform: none;
-    box-shadow: none;
-}
-.artifact-hotspot.locked {
-    opacity: 0.4;
-    cursor: not-allowed;
-    border-color: #888;
-    border-style: dashed;
-}
-
-.artifact-icon {
-    font-size: 40px;
-    margin-bottom: 8px;
-}
-.artifact-name {
-    font-size: 15px;
-    font-weight: bold;
-    color: #2c1810;
-    margin-bottom: 6px;
-}
-.artifact-status {
-    font-size: 12px;
-    color: #8b5a2b;
-}
-
-/* ---------- 解谜入口 ---------- */
-#level1-puzzle-entry {
-    display: flex;
-    justify-content: center;
-}
-
-.puzzle-entry {
-    width: 320px;
-    background: rgba(245, 240, 232, 0.9);
-    border: 3px solid #5a4a3a;
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-.puzzle-entry:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 20px rgba(90, 74, 58, 0.5);
-}
-.puzzle-entry.done {
-    border-color: #6a8a5a;
-    cursor: default;
-}
-.puzzle-entry.done:hover { transform: none; }
-.puzzle-entry.locked {
-    opacity: 0.5;
-    cursor: not-allowed;
-    border-style: dashed;
-}
-.puzzle-entry.locked:hover { transform: none; box-shadow: none; }
-
-.puzzle-entry-icon { font-size: 32px; margin-bottom: 6px; }
-.puzzle-entry-name { font-size: 16px; font-weight: bold; color: #2c1810; margin-bottom: 4px; }
-.puzzle-entry-status { font-size: 12px; color: #8b5a2b; }
-
-/* ---------- 对话框 ---------- */
-#level1-dialogue-box {
-    display: none;
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    max-width: 700px;
-    background: rgba(20, 12, 8, 0.92);
-    border: 2px solid #8b5a2b;
-    border-radius: 12px;
-    padding: 20px 28px;
-    z-index: 210;
-    cursor: pointer;
-    color: #f5f0e8;
-    box-shadow: 0 -4px 30px rgba(0,0,0,0.5);
-}
-
-#level1-dialogue-speaker {
-    font-size: 16px;
-    font-weight: bold;
-    color: #e8d5b0;
-    margin-bottom: 8px;
-    letter-spacing: 2px;
-}
-#level1-dialogue-text {
-    font-size: 15px;
-    line-height: 1.8;
-    color: #ddd0c0;
-}
-.level1-dialogue-next {
-    text-align: right;
-    font-size: 12px;
-    color: #8b5a2b;
-    margin-top: 8px;
-}
-
-/* ---------- 弹窗（民俗科普）---------- */
-#level1-popup-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0,0,0,0.75);
-    justify-content: center;
-    align-items: center;
-    z-index: 220;
-}
-
-#level1-popup-content {
-    background: #f5f0e8;
-    border: 4px solid #8b5a2b;
-    border-radius: 16px;
-    padding: 36px 44px;
-    max-width: 560px;
-    max-height: 80vh;
-    overflow-y: auto;
-    text-align: left;
-}
-
-.popup-title {
-    font-size: 22px;
-    color: #8b4513;
-    margin-bottom: 16px;
-    letter-spacing: 2px;
-}
-.popup-desc {
-    font-size: 14px;
-    color: #5a4a3a;
-    line-height: 1.8;
-    margin-bottom: 12px;
-}
-.popup-divider {
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #8b5a2b, transparent);
-    margin: 16px 0;
-}
-.popup-story {
-    font-size: 14px;
-    color: #3a2a1a;
-    line-height: 2;
-    text-indent: 2em;
-    margin-bottom: 20px;
-}
-
-/* ---------- 记忆CG ---------- */
-#level1-memory-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: radial-gradient(ellipse at center, rgba(60,40,20,0.85), rgba(0,0,0,0.95));
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 230;
-    cursor: pointer;
-    color: #f5f0e8;
-}
-
-.memory-container {
-    text-align: center;
-    max-width: 600px;
-    padding: 40px;
-}
-
-.memory-title {
-    font-size: 26px;
-    color: #e8d5b0;
-    letter-spacing: 4px;
-    margin-bottom: 20px;
-}
-.memory-desc {
-    font-size: 16px;
-    line-height: 2;
-    color: #ddd0c0;
-    margin-bottom: 20px;
-}
-.memory-subtitle {
-    font-size: 18px;
-    color: #c4a882;
-    letter-spacing: 3px;
-    margin-bottom: 24px;
-}
-.memory-clue {
-    font-size: 15px;
-    color: #d4b882;
-    line-height: 1.8;
-    padding: 16px;
-    background: rgba(139, 90, 43, 0.2);
-    border: 1px solid rgba(196, 168, 130, 0.4);
-    border-radius: 8px;
-}
-.memory-progress {
-    width: 300px;
-    height: 4px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 2px;
-    margin: 24px auto 0;
-    overflow: hidden;
-}
-.memory-progress-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #c4a882, #e8d5b0);
-    border-radius: 2px;
-}
-.memory-skip-hint {
-    font-size: 12px;
-    color: #888;
-    margin-top: 16px;
-    opacity: 0;
-    transition: opacity 0.5s;
-}
-
-/* ---------- 解谜面板 ---------- */
-#level1-puzzle-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0,0,0,0.8);
-    justify-content: center;
-    align-items: center;
-    z-index: 240;
-}
-
-#level1-puzzle-content {
-    background: #f5f0e8;
-    border: 4px solid #8b5a2b;
-    border-radius: 16px;
-    padding: 32px 40px;
-    max-width: 720px;
-    max-height: 85vh;
-    overflow-y: auto;
-    text-align: left;
-}
-
-.puzzle-title {
-    font-size: 22px;
-    color: #8b4513;
-    margin-bottom: 12px;
-    letter-spacing: 2px;
-}
-.puzzle-rule {
-    font-size: 14px;
-    color: #5a4a3a;
-    line-height: 1.8;
-    margin-bottom: 20px;
-    padding: 10px 16px;
-    background: rgba(139, 90, 43, 0.08);
-    border-radius: 8px;
-    border-left: 3px solid #8b5a2b;
-}
-
-/* 解谜步骤（织布机） */
-.puzzle-steps { margin-bottom: 16px; }
-.puzzle-step {
-    background: #fff;
-    border: 2px solid #c4a882;
-    border-radius: 10px;
-    padding: 14px 18px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.puzzle-step:hover { border-color: #8b5a2b; background: #faf5ed; }
-.puzzle-step.selected {
-    border-color: #6a8a5a;
-    background: #f0f5ee;
-}
-.step-label { font-weight: bold; font-size: 15px; color: #2c1810; }
-.step-desc { font-size: 13px; color: #6a5a4a; margin-top: 4px; }
-.step-order { color: #6a8a5a; font-weight: bold; }
-
-/* 染料晾晒 */
-.drying-layout {
-    display: flex;
-    gap: 24px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-}
-.drying-items {
-    flex: 1;
-    min-width: 200px;
-    background: rgba(139, 90, 43, 0.08);
-    border-radius: 10px;
-    padding: 12px;
-    min-height: 200px;
-}
-.drying-rack {
-    flex: 1.5;
-    min-width: 280px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-content: flex-start;
-}
-.dye-item {
-    background: #8b5a2b;
-    color: #f5f0e8;
-    border-radius: 8px;
-    padding: 10px 14px;
-    margin-bottom: 8px;
-    cursor: grab;
-    font-size: 14px;
-    text-align: center;
-}
-.dye-item:active { cursor: grabbing; }
-.rack-slot {
-    width: 90px;
-    background: #fff;
-    border: 2px dashed #c4a882;
-    border-radius: 8px;
-    padding: 8px 4px;
-    text-align: center;
-    min-height: 70px;
-}
-.slot-num { font-size: 11px; color: #8b5a2b; margin-bottom: 4px; }
-.slot-drop { font-size: 12px; color: #aaa; min-height: 30px; display: flex; align-items: center; justify-content: center; }
-
-/* 古树年轮 */
-.tree-ring-layout { margin-bottom: 16px; }
-.ring-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #fff;
-    border: 2px solid #c4a882;
-    border-radius: 10px;
-    padding: 10px 14px;
-    margin-bottom: 8px;
-}
-.ring-label { font-size: 14px; color: #2c1810; width: 180px; flex-shrink: 0; }
-.ring-slider { display: flex; gap: 6px; }
-.ring-btn {
-    width: 36px; height: 36px;
-    border: 2px solid #c4a882;
-    background: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 15px;
-    transition: all 0.2s;
-}
-.ring-btn:hover { border-color: #8b5a2b; }
-.ring-btn.selected {
-    background: #8b5a2b;
-    color: #f5f0e8;
-    border-color: #8b5a2b;
-}
-.ring-answer { font-size: 14px; color: #6a8a5a; font-weight: bold; }
-
-/* 图腾拼图 */
-.totem-layout {
-    display: flex;
-    gap: 24px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-}
-.totem-stones {
-    flex: 1;
-    min-width: 180px;
-    background: rgba(139, 90, 43, 0.08);
-    border-radius: 10px;
-    padding: 12px;
-    min-height: 200px;
-}
-.totem-stones-title, .totem-wall-title {
-    font-size: 13px;
-    color: #8b5a2b;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-.totem-stone {
-    background: #5a4a3a;
-    color: #e8d5b0;
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 8px;
-    cursor: grab;
-    font-size: 14px;
-    text-align: center;
-    border: 2px solid #8b5a2b;
-}
-.totem-stone:active { cursor: grabbing; }
-.totem-wall {
-    flex: 1.5;
-    min-width: 280px;
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 8px;
-}
-.totem-slot {
-    background: #fff;
-    border: 2px solid #c4a882;
-    border-radius: 8px;
-    padding: 8px 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 50px;
-}
-.totem-slot-label { font-size: 13px; color: #2c1810; font-weight: bold; width: 90px; flex-shrink: 0; }
-.totem-slot-desc { font-size: 12px; color: #6a5a4a; flex: 1; }
-.totem-slot-drop {
-    font-size: 13px;
-    color: #aaa;
-    min-width: 80px;
-    text-align: center;
-    padding: 6px;
-    border: 1px dashed #ddd;
-    border-radius: 6px;
-}
-
-/* 反馈 & 按钮 */
-.puzzle-feedback {
-    font-size: 14px;
-    line-height: 1.8;
-    margin: 12px 0;
-    padding: 10px 16px;
-    border-radius: 8px;
-    min-height: 20px;
-}
-.puzzle-feedback.error {
-    color: #a04040;
-    background: rgba(160, 64, 64, 0.1);
-    border: 1px solid rgba(160, 64, 64, 0.3);
-}
-.puzzle-feedback.success {
-    color: #4a7a3a;
-    background: rgba(74, 122, 58, 0.1);
-    border: 1px solid rgba(74, 122, 58, 0.3);
-}
-
-.puzzle-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin-top: 16px;
-}
-
-.level1-btn {
-    background: #8b5a2b;
-    color: #f5f0e8;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 24px;
-    font-size: 15px;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 1px;
-}
-.level1-btn:hover {
-    background: #a0522d;
-    transform: scale(1.05);
-}
-.level1-btn.secondary {
-    background: #6a5a4a;
-}
-.level1-btn.secondary:hover {
-    background: #7a6a5a;
-}
-
-/* ---------- 通关特效 ---------- */
-#level1-ending-fx {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: radial-gradient(ellipse at center, rgba(232,213,160,0.3), rgba(0,0,0,0.9));
-    justify-content: center;
-    align-items: center;
-    z-index: 250;
-    animation: endingGlow 2.5s ease-in-out;
-}
-@keyframes endingGlow {
-    0% { opacity: 0; }
-    50% { opacity: 1; }
-    100% { opacity: 0.6; }
-}
-#level1-ending-fx::before {
-    content: '✨';
-    font-size: 80px;
-    animation: spinGlow 2s linear infinite;
-}
-@keyframes spinGlow {
-    from { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.3); }
-    to { transform: rotate(360deg) scale(1); }
-}
-
-/* ---------- 结局画面 ---------- */
-.ending-screen {
-    text-align: center;
-    padding: 20px;
-}
-.ending-title {
-    font-size: 28px;
-    color: #8b4513;
-    letter-spacing: 6px;
-    margin-bottom: 24px;
-}
-.ending-info {
-    font-size: 15px;
-    color: #2c1810;
-    line-height: 2.2;
-    margin-bottom: 20px;
-}
-.ending-stats {
-    font-size: 14px;
-    color: #6a5a4a;
-    line-height: 1.8;
-    padding: 16px;
-    background: rgba(139, 90, 43, 0.08);
-    border-radius: 8px;
-    margin-bottom: 24px;
-}
-.ending-btn {
-    font-size: 18px;
-    padding: 12px 48px;
-    letter-spacing: 4px;
-}
+/* ====== 场景三：后山区域 ====== */
+#scene-hub { background: linear-gradient(180deg, #8a9a80, #7a8a6a 50%, #6a7a50); }
+.hub-bg { position: absolute; inset: 0; background: linear-gradient(180deg, #a0b090 0%, #809070 50%, #607050 100%); }
+.hub-ground { position: absolute; bottom: 0; left: 0; right: 0; height: 18%; background: linear-gradient(180deg, #8a7a5a, #6a5a3a); }
+.hub-yard { position: absolute; bottom: 18%; left: 20%; text-align: center; z-index: 5; }
+.hub-hall { position: absolute; bottom: 18%; right: 18%; text-align: center; z-index: 5; }
+.hub-icon { font-size: 48px; margin-bottom: 4px; }
+.hub-label { color: #e8dcc8; font-size: 16px; letter-spacing: 2px; background: rgba(0,0,0,0.5); padding: 4px 14px; border-radius: 6px; }
+#hub-left-hint { position: absolute; bottom: 8px; left: 16px; color: rgba(255,255,255,0.5); font-size: 14px; z-index: 5; }
