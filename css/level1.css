@@ -469,30 +469,30 @@
 }
 #house-exit-btn:hover { transform: translate(-2px, -2px); box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 5px 5px 0 #0d0618; }
 
-/* 关卡中玩家定位 */
 #level1-screen #player { bottom: 18%; }
 
 /* ========================================================
-   真实素材替换层（覆盖几何占位）
+   真实素材替换层（覆盖几何占位）v2
    ======================================================== */
 
-/* 村口场景 — 隐藏已被实底背景替换的层 */
-#scene-village-gate .gate-sky,
-#scene-village-gate .gate-mountains-far,
-#scene-village-gate .gate-mountains-mid,
-#scene-village-gate .gate-village-silhouette,
-#scene-village-gate .gate-mountains {
+/* ---------- 村口 ---------- */
+/* 实底背景图已包含地面/远山，隐藏冲突的几何层 */
+#scene-village-gate .gate-path,
+#scene-village-gate .gate-grass-l,
+#scene-village-gate .gate-grass-r {
     display: none;
 }
 
-/* 村口 — 寨门建筑 */
+/* 寨门：缩小到 200x267，调低位置 */
 #village-gate-structure {
-    width: 300px;
-    height: 400px;
+    width: 200px;
+    height: 267px;
     background-image: url('../assets/images/scences/level1/gate_structure.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
+    bottom: 14%;
+    right: 10%;
 }
 #village-gate-structure .gate-wall,
 #village-gate-structure .gate-roof,
@@ -500,45 +500,48 @@
     display: none;
 }
 
-/* 村口 — 前景大树 */
+/* 村口 — 前景大树（缩小到80x88，更融入） */
 #scene-village-gate .gate-trees {
     background: none;
-    width: 90px;
-    height: 98px;
+    width: 80px;
+    height: 88px;
     background-image: url('../assets/images/scences/level1/fg_tree.png');
     background-size: contain;
     background-repeat: no-repeat;
     clip-path: none;
     box-shadow: none;
+    bottom: 15%;
 }
 
-/* 村口 — 前景栅栏 */
+/* 村口 — 前景栅栏（缩小到100x60） */
 #scene-village-gate .gate-fence {
     background: none;
-    width: 130px;
-    height: 80px;
+    width: 100px;
+    height: 60px;
     background-image: url('../assets/images/scences/level1/fg_fence.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
+    bottom: 15%;
 }
 
-/* 村口 — 前景灌木 */
+/* 村口 — 前景灌木（缩小到50x32） */
 #scene-village-gate .gate-bush-l,
 #scene-village-gate .gate-bush-r {
     background: none;
-    width: 76px;
-    height: 48px;
+    width: 50px;
+    height: 32px;
     background-image: url('../assets/images/scences/level1/fg_bush.png');
     background-size: contain;
     background-repeat: no-repeat;
     clip-path: none;
 }
 
-/* 村内 — 大戏台 */
+/* ---------- 村内 ---------- */
+/* 大戏台：缩小到 200x267 */
 #scene-village-inside .village-stage {
-    width: 300px;
-    height: 400px;
+    width: 200px;
+    height: 267px;
     background-image: url('../assets/images/scences/level1/stage.png');
     background-size: contain;
     background-repeat: no-repeat;
@@ -550,14 +553,15 @@
     display: none;
 }
 
-/* 村内 — 绣花古宅 */
+/* 绣花古宅：缩小到 250x312，调低位置 */
 #scene-village-inside .village-house {
-    width: 400px;
-    height: 500px;
+    width: 250px;
+    height: 312px;
     background-image: url('../assets/images/scences/level1/house_exterior.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
+    bottom: 16%;
 }
 #scene-village-inside .village-house .house-roof,
 #scene-village-inside .village-house .house-wall {
@@ -567,15 +571,15 @@
     background: transparent;
     border: none;
     box-shadow: none;
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
 }
 
-/* 村内 — 灯笼 */
+/* 灯笼：缩小到 16x24 */
 #scene-village-inside .village-lantern {
     background: none;
-    width: 28px;
-    height: 48px;
+    width: 16px;
+    height: 24px;
     background-image: url('../assets/images/scences/level1/fg_lantern.png');
     background-size: contain;
     background-repeat: no-repeat;
@@ -586,21 +590,22 @@
     display: none;
 }
 
-/* 后山场景 — 隐藏已被实底背景替换的层 */
-#scene-hub .hub-bg,
-#scene-hub .hub-mountains-far,
-#scene-hub .hub-mid-trees {
+/* ---------- 后山 ---------- */
+/* 实底背景图已包含地面/梯田，隐藏冲突的地面层 */
+#scene-hub .hub-ground {
     display: none;
 }
 
-/* 后山 — 祠堂 */
+/* 祠堂：缩小到 250x312，调低位置 */
 #scene-hub .hub-hall {
-    width: 400px;
-    height: 500px;
+    width: 250px;
+    height: 312px;
     background-image: url('../assets/images/scences/level1/hall_exterior.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
+    bottom: 14%;
+    right: 12%;
 }
 #scene-hub .hub-hall .hub-icon,
 #scene-hub .hub-hall .hub-label {
