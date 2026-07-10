@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>匠灵：守护手艺传承</title>
     <link rel="icon" href="data:,">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <!-- ========== CSS 模块 ========== -->
     <link rel="stylesheet" href="css/main.css">
@@ -167,12 +168,30 @@
 
     <!-- 场景一：村口泥路 -->
     <div id="scene-village-gate" class="level1-scene">
+        <!-- ===== 远景层 ===== -->
         <div class="gate-sky"></div>
+        <div class="gate-mountains-far"></div>
+        <div class="gate-fog-far"></div>
+        <div class="gate-mountains-mid"></div>
+        <!-- 远处村舍剪影 -->
+        <div class="gate-village-silhouette">
+            <div class="sil-house" style="left:10%;bottom:48%;"></div>
+            <div class="sil-house" style="left:22%;bottom:46%;width:50px;height:40px;"></div>
+            <div class="sil-house" style="left:70%;bottom:47%;width:45px;height:38px;"></div>
+            <div class="sil-house" style="left:82%;bottom:45%;width:55px;height:42px;"></div>
+        </div>
         <div class="gate-mountains"></div>
-        <div class="gate-trees"></div>
+        <!-- ===== 中景层 ===== -->
+        <div class="gate-fog-mid"></div>
+        <!-- ===== 近景层 ===== -->
         <div class="gate-path"></div>
         <div class="gate-grass-l"></div>
         <div class="gate-grass-r"></div>
+        <div class="gate-fence"></div>
+        <div class="gate-trees"></div>
+        <div class="gate-bush-l"></div>
+        <div class="gate-bush-r"></div>
+        <!-- 交互物 -->
         <div id="village-gate-structure">
             <div class="gate-wall"></div>
             <div class="gate-roof"></div>
@@ -183,7 +202,29 @@
 
     <!-- 场景二：村内 -->
     <div id="scene-village-inside" class="level1-scene" style="display:none;">
+        <!-- ===== 远景层 ===== -->
         <div class="village-bg"></div>
+        <div class="village-mountains-far"></div>
+        <div class="village-fog-far"></div>
+        <!-- 远处村舍 -->
+        <div class="village-silhouette">
+            <div class="sil-house" style="left:5%;bottom:55%;width:40px;height:32px;"></div>
+            <div class="sil-house" style="left:88%;bottom:56%;width:45px;height:35px;"></div>
+        </div>
+        <!-- ===== 中景层 ===== -->
+        <div class="village-mid-buildings">
+            <!-- 远处民房 -->
+            <div class="mid-house" style="left:8%;bottom:30%;">
+                <div class="mid-house-roof"></div>
+                <div class="mid-house-wall"></div>
+            </div>
+            <div class="mid-house" style="left:80%;bottom:28%;width:90px;">
+                <div class="mid-house-roof"></div>
+                <div class="mid-house-wall"></div>
+            </div>
+        </div>
+        <div class="village-fog-mid"></div>
+        <!-- ===== 近景层 ===== -->
         <div class="village-ground"></div>
         <div class="village-mist"></div>
 
@@ -191,12 +232,17 @@
         <div class="village-stage">
             <div class="stage-roof"></div>
             <div class="stage-body">大戏台</div>
+            <div class="stage-pillars">
+                <div class="pillar"></div>
+                <div class="pillar"></div>
+            </div>
         </div>
 
         <!-- 绣花古宅（中间） -->
         <div class="village-house" id="village-house">
             <div class="house-roof"></div>
             <div class="house-wall">
+                <div class="house-window"></div>
                 <div class="house-door" id="house-door-interact"></div>
             </div>
             <div class="interact-prompt" id="door-prompt">按 E 进入</div>
@@ -209,12 +255,25 @@
             <div class="interact-prompt" id="granny-prompt">按 E 对话</div>
         </div>
 
+        <!-- 前景装饰 -->
+        <div class="village-bush-front" style="left:3%;bottom:14%;"></div>
+        <div class="village-bush-front" style="right:5%;bottom:13%;width:70px;height:30px;"></div>
+        <div class="village-lantern" style="left:40%;bottom:50%;"></div>
+        <div class="village-lantern" style="right:35%;bottom:48%;"></div>
+
         <div class="scene-hint" id="village-left-hint">← 返回村口</div>
     </div>
 
     <!-- 场景三：后山区域（晒场 + 祠堂） -->
     <div id="scene-hub" class="level1-scene" style="display:none;">
+        <!-- ===== 远景层 ===== -->
         <div class="hub-bg"></div>
+        <div class="hub-mountains-far"></div>
+        <div class="hub-fog-far"></div>
+        <!-- ===== 中景层 ===== -->
+        <div class="hub-mid-trees"></div>
+        <div class="hub-fog-mid"></div>
+        <!-- ===== 近景层 ===== -->
         <div class="hub-ground"></div>
         <!-- 后山染布晒场 -->
         <div class="hub-yard" id="hub-yard">
@@ -228,6 +287,9 @@
             <div class="hub-label">畲族文化祠堂</div>
             <div class="interact-prompt" id="hall-prompt">按 E 交互</div>
         </div>
+        <!-- 前景装饰 -->
+        <div class="hub-bush-front" style="left:5%;bottom:14%;"></div>
+        <div class="hub-bush-front" style="right:8%;bottom:13%;width:60px;height:28px;"></div>
         <div class="scene-hint" id="hub-left-hint">← 返回村内</div>
     </div>
 

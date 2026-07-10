@@ -1,97 +1,612 @@
-/* ========== 第一关：畲族古寨 ========== */
+/* ========== 第一关：畲族古寨 · 复古 8-bit 像素风格 · 景深场景 ========== */
 
-#level1-screen { width: 100vw; height: 100vh; display: none; flex-direction: column; position: relative; overflow: hidden; background: #1a1a1a; }
-.level1-scene { flex: 1; position: relative; overflow: hidden; }
-.level1-topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 24px; background: rgba(0,0,0,0.7); z-index: 50; }
-.level1-title { color: #d4af37; font-size: 18px; letter-spacing: 3px; }
+#level1-screen {
+    width: 100vw; height: 100vh; display: none; flex-direction: column;
+    position: relative; overflow: hidden;
+    background: #1a0d2b;
+    font-family: 'Press Start 2P', monospace;
+    image-rendering: pixelated;
+}
+.level1-scene { flex: 1; position: relative; overflow: hidden; image-rendering: pixelated; }
+
+/* ---------- 顶栏 ---------- */
+.level1-topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 24px;
+    background: #3d2a5c;
+    border-bottom: 2px solid #1a0d2b;
+    box-shadow: 0 4px 0 #0d0618;
+    z-index: 50;
+}
+.level1-title { color: #ffd62e; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-shadow: 2px 2px 0 #0d0618; }
 .level1-hud-right { display: flex; gap: 16px; align-items: center; }
-#level1-hud-progress { color: #ccc; font-size: 14px; }
-.level1-back-btn { background: #8b4513; color: #fff; border: none; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+#level1-hud-progress { color: #e89ac7; font-size: 10px; letter-spacing: 1px; text-shadow: 2px 2px 0 #0d0618; }
+.level1-back-btn {
+    background: #7a5ba8; color: #ffd62e;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    padding: 6px 16px; cursor: pointer;
+    font-family: 'Press Start 2P', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 1px;
+    box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 3px 3px 0 #0d0618;
+    transition: none;
+}
+.level1-back-btn:hover { transform: translate(-2px, -2px); box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 5px 5px 0 #0d0618; }
 
-/* 场景一 */
-#scene-village-gate { background: linear-gradient(180deg, #7a9db5, #a8c8d8 40%, #c8dbe8 60%, #8a9a70); }
-.gate-sky { position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(180deg, #6a8da0, #9ab8c8); }
-.gate-mountains { position: absolute; top: 50%; left: 0; right: 0; height: 25%; background: linear-gradient(180deg, #7a8e6a, #5a6e4a); clip-path: polygon(0% 60%, 10% 30%, 20% 50%, 35% 20%, 50% 45%, 65% 25%, 80% 40%, 100% 20%, 100% 100%, 0% 100%); }
-.gate-trees { position: absolute; bottom: 40%; right: 5%; width: 100px; height: 140px; background: radial-gradient(ellipse, #4a7a30, #3a5a20 70%); border-radius: 50%; }
-.gate-path { position: absolute; bottom: 8%; left: 0; right: 0; height: 24%; background: linear-gradient(180deg, #c4a87c, #a08050); }
-.gate-grass-l { position: absolute; bottom: 7%; left: 0; width: 25%; height: 22%; background: linear-gradient(180deg, #6a8a30, #4a6a20); clip-path: polygon(0% 40%, 100% 0%, 100% 100%, 0% 100%); }
-.gate-grass-r { position: absolute; bottom: 7%; right: 0; width: 12%; height: 22%; background: linear-gradient(180deg, #6a8a30, #4a6a20); clip-path: polygon(0% 0%, 100% 35%, 100% 100%, 0% 100%); }
-#village-gate-structure { position: absolute; bottom: 24%; right: 3%; }
-.gate-wall { width: 90px; height: 100px; background: #d4c0a0; border: 3px solid #5a3a20; }
-.gate-roof { position: absolute; top: -22px; left: -10px; width: 110px; height: 25px; background: #5a3020; clip-path: polygon(10% 100%, 50% 0%, 90% 100%); }
-.gate-door { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 35px; height: 55px; background: #4a2a18; border-radius: 4px 4px 0 0; }
-.scene-hint { position: absolute; bottom: 10px; color: rgba(255,255,255,0.6); font-size: 14px; letter-spacing: 2px; z-index: 5; }
+/* ========================================================
+   场景一：村口 — 三层景深
+   ======================================================== */
+#scene-village-gate {
+    background: #e8e0d0 url('../assets/images/scences/level1/gate_bg.png') center bottom / cover;
+}
 
-/* 场景二 */
-#scene-village-inside { background: linear-gradient(180deg, #8a9a80, #6a7a60, #4a5a40); }
-.village-bg { position: absolute; inset: 0; background: linear-gradient(180deg, #a0b090, #7a8a6a 60%, #5a6a4a); }
-.village-ground { position: absolute; bottom: 0; left: 0; right: 0; height: 18%; background: linear-gradient(180deg, #8a7a5a, #6a5a3a); }
-.village-mist { position: absolute; inset: 0; background: rgba(200,210,200,0.08); pointer-events: none; }
-.village-stage { position: absolute; bottom: 18%; left: 15%; z-index: 5; text-align: center; }
-.village-stage .stage-roof { width: 140px; height: 20px; background: #4a3020; clip-path: polygon(8% 100%, 50% 0%, 92% 100%); }
-.village-stage .stage-body { width: 120px; height: 60px; background: #6a4a2a; border: 2px solid #3a1a08; line-height: 60px; color: #a08060; font-size: 13px; }
-.village-house { position: absolute; bottom: 18%; left: 55%; transform: translateX(-50%); z-index: 5; }
-.village-house .house-roof { width: 130px; height: 22px; background: #5a3020; clip-path: polygon(8% 100%, 50% 0%, 92% 100%); margin-left: -5px; }
-.village-house .house-wall { width: 120px; height: 90px; background: #d4c0a0; border: 2px solid #5a3a20; position: relative; }
-.village-house .house-door { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 36px; height: 55px; background: #4a2a18; border-radius: 4px 4px 0 0; cursor: pointer; }
-.village-granny { position: absolute; bottom: 18%; right: 12%; z-index: 5; }
-.village-granny .granny-sprite { width: 36px; height: 72px; background: #4a6a8a; border: 2px solid #2a4a6a; border-radius: 4px; opacity: 0.85; }
-.village-granny .granny-glow { position: absolute; inset: -8px; border-radius: 8px; background: radial-gradient(ellipse, rgba(180,200,255,0.3), transparent); animation: pulse 3s infinite; pointer-events: none; }
+/* ===== 远景层 ===== */
+.gate-sky {
+    position: absolute; top: 0; left: 0; right: 0; height: 65%;
+    background: #e8e0d0;
+    background-image:
+        radial-gradient(circle, #ffd62e 1px, transparent 1px),
+        radial-gradient(circle, #7a5ba8 1px, transparent 1px),
+        radial-gradient(circle, #e89ac7 1px, transparent 1px);
+    background-size: 120px 80px, 200px 140px, 280px 180px;
+    background-position: 20px 30px, 80px 90px, 15px 160px;
+}
+/* 远山（最浅） */
+.gate-mountains-far {
+    position: absolute; top: 30%; left: -5%; right: -5%; height: 22%;
+    background: #c8c0b8;
+    clip-path: polygon(0% 70%, 6% 40%, 12% 50%, 18% 25%, 26% 45%, 34% 20%, 42% 40%, 50% 15%, 58% 35%, 66% 20%, 74% 45%, 82% 25%, 90% 40%, 96% 30%, 100% 45%, 100% 100%, 0% 100%);
+    opacity: 0.6;
+}
+/* 远雾 */
+.gate-fog-far {
+    position: absolute; top: 38%; left: 0; right: 0; height: 12%;
+    background: linear-gradient(180deg, transparent, rgba(232,224,208,0.7));
+    pointer-events: none;
+}
+/* 中山（稍深） */
+.gate-mountains-mid {
+    position: absolute; top: 40%; left: -3%; right: -3%; height: 18%;
+    background: #a8a098;
+    clip-path: polygon(0% 60%, 5% 35%, 12% 50%, 20% 25%, 28% 45%, 36% 15%, 44% 40%, 52% 10%, 60% 35%, 68% 20%, 76% 45%, 84% 25%, 92% 40%, 100% 30%, 100% 100%, 0% 100%);
+    opacity: 0.75;
+}
+/* 远处村舍剪影 */
+.gate-village-silhouette { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
+.sil-house {
+    position: absolute; width: 60px; height: 45px; background: #9a8a7a; opacity: 0.4;
+    border-top: 12px solid #7a6a5a;
+    clip-path: polygon(0% 100%, 0% 30%, 15% 0%, 85% 0%, 100% 30%, 100% 100%);
+    image-rendering: pixelated;
+}
+/* 近山（最深） */
+.gate-mountains {
+    position: absolute; top: 48%; left: -2%; right: -2%; height: 16%;
+    background: #8a8278;
+    clip-path: polygon(0% 55%, 8% 30%, 16% 50%, 24% 20%, 32% 45%, 40% 15%, 48% 40%, 56% 10%, 64% 35%, 72% 20%, 80% 45%, 88% 25%, 96% 40%, 100% 30%, 100% 100%, 0% 100%);
+}
 
-/* 场景三 */
-#scene-house-inside { background: linear-gradient(180deg, #3a2a1a, #2a1a0a); }
-.house-interior-bg { position: absolute; inset: 0; background: linear-gradient(180deg, #4a3020, #3a2010); }
-.level1-area-content { position: relative; z-index: 2; padding: 20px 40px; color: #d4c0a0; }
-.area-section-title { color: #8b5a2b; margin: 16px 0 8px; }
+/* ===== 中景层 ===== */
+.gate-fog-mid {
+    position: absolute; top: 52%; left: 0; right: 0; height: 8%;
+    background: linear-gradient(180deg, rgba(232,224,208,0.4), transparent);
+    pointer-events: none; z-index: 3;
+}
+
+/* ===== 近景层 ===== */
+.gate-path {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 24%;
+    background: #b8a888;
+    background-image: repeating-linear-gradient(0deg, #a89878 0px, #a89878 4px, #b8a888 4px, #b8a888 8px);
+    z-index: 4;
+}
+.gate-grass-l {
+    position: absolute; bottom: 20%; left: 0; width: 25%; height: 8%;
+    background: #6a8a3a;
+    clip-path: polygon(0% 30%, 100% 0%, 100% 100%, 0% 100%);
+    z-index: 5;
+}
+.gate-grass-r {
+    position: absolute; bottom: 20%; right: 0; width: 12%; height: 8%;
+    background: #6a8a3a;
+    clip-path: polygon(0% 0%, 100% 35%, 100% 100%, 0% 100%);
+    z-index: 5;
+}
+/* 前景栅栏 */
+.gate-fence {
+    position: absolute; bottom: 22%; left: 30%; width: 200px; height: 24px;
+    background: #5a4a3a;
+    background-image: repeating-linear-gradient(90deg, transparent 0px, transparent 16px, #3a2a1a 16px, #3a2a1a 20px, transparent 20px, transparent 36px);
+    border-bottom: 4px solid #3a2a1a;
+    z-index: 6; opacity: 0.8;
+}
+/* 前景大树 */
+.gate-trees {
+    position: absolute; bottom: 20%; right: 3%; width: 90px; height: 140px;
+    background: #4a6a2a;
+    clip-path: polygon(30% 100%, 30% 70%, 20% 70%, 20% 45%, 10% 45%, 10% 25%, 20% 25%, 20% 10%, 35% 10%, 35% 0%, 65% 0%, 65% 10%, 80% 10%, 80% 25%, 90% 25%, 90% 45%, 80% 45%, 80% 70%, 70% 70%, 70% 100%);
+    z-index: 7;
+    box-shadow: -4px 0 0 #3a5a1a;
+}
+/* 前景草丛 */
+.gate-bush-l {
+    position: absolute; bottom: 21%; left: 2%; width: 60px; height: 24px;
+    background: #5a7a2a;
+    clip-path: polygon(0% 100%, 10% 50%, 25% 70%, 40% 30%, 55% 60%, 70% 20%, 85% 50%, 100% 40%, 100% 100%);
+    z-index: 7;
+}
+.gate-bush-r {
+    position: absolute; bottom: 21%; right: 28%; width: 50px; height: 20px;
+    background: #5a7a2a;
+    clip-path: polygon(0% 100%, 15% 40%, 30% 60%, 50% 20%, 70% 50%, 85% 30%, 100% 50%, 100% 100%);
+    z-index: 7;
+}
+
+/* 村门建筑 */
+#village-gate-structure { position: absolute; bottom: 24%; right: 8%; z-index: 8; image-rendering: pixelated; }
+.gate-wall {
+    width: 90px; height: 100px; background: #d5c6b3;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 2px 2px 0 #f5e6d3, inset -2px -2px 0 #b5a693, 4px 4px 0 #0d0618;
+}
+.gate-roof {
+    position: absolute; top: -26px; left: -12px; width: 114px; height: 30px;
+    background: #7a5ba8;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 4px 4px 0 #0d0618;
+    clip-path: polygon(8% 100%, 16% 70%, 30% 40%, 50% 0%, 70% 40%, 84% 70%, 92% 100%);
+}
+.gate-door {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 35px; height: 55px; background: #453210;
+    border: 2px solid #1a0d2b;
+    box-shadow: inset 2px 2px 0 #654321, inset -2px -2px 0 #2a1a0a;
+}
+.scene-hint { position: absolute; bottom: 10px; color: #7a5ba8; font-size: 10px; letter-spacing: 1px; z-index: 9; text-shadow: 2px 2px 0 #e8e0d0; }
+
+/* ========================================================
+   场景二：村内 — 三层景深
+   ======================================================== */
+#scene-village-inside { background: #d8d0c0; }
+.village-bg {
+    position: absolute; inset: 0; background: #d8d0c0;
+    background-image: radial-gradient(circle, #c8c0b0 2px, transparent 2px);
+    background-size: 40px 40px;
+}
+/* 远山 */
+.village-mountains-far {
+    position: absolute; top: 20%; left: -5%; right: -5%; height: 20%;
+    background: #b8b0a8;
+    clip-path: polygon(0% 60%, 8% 30%, 18% 50%, 28% 20%, 38% 45%, 50% 10%, 62% 35%, 72% 15%, 82% 40%, 92% 25%, 100% 40%, 100% 100%, 0% 100%);
+    opacity: 0.5;
+}
+.village-fog-far {
+    position: absolute; top: 32%; left: 0; right: 0; height: 10%;
+    background: linear-gradient(180deg, transparent, rgba(216,208,192,0.6));
+    pointer-events: none;
+}
+.village-silhouette { position: absolute; inset: 0; pointer-events: none; }
+
+/* 中景建筑 */
+.village-mid-buildings { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.mid-house { position: absolute; width: 80px; }
+.mid-house-roof {
+    width: 90px; height: 20px; background: #6a5a4a;
+    margin-left: -5px;
+    clip-path: polygon(8% 100%, 30% 30%, 50% 0%, 70% 30%, 92% 100%);
+    opacity: 0.6;
+}
+.mid-house-wall {
+    width: 80px; height: 50px; background: #b5a690;
+    border: 2px solid #6a5a4a;
+    opacity: 0.6;
+}
+.village-fog-mid {
+    position: absolute; top: 45%; left: 0; right: 0; height: 8%;
+    background: linear-gradient(180deg, rgba(216,208,192,0.3), transparent);
+    pointer-events: none; z-index: 3;
+}
+
+/* 近景地面 */
+.village-ground {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 18%;
+    background: #8a7a5a;
+    background-image: repeating-linear-gradient(0deg, #7a6a4a 0px, #7a6a4a 4px, #8a7a5a 4px, #8a7a5a 8px);
+    z-index: 4;
+}
+.village-mist { position: absolute; inset: 0; background: rgba(200,210,200,0.04); pointer-events: none; z-index: 5; }
+
+/* 大戏台 */
+.village-stage { position: absolute; bottom: 18%; left: 8%; z-index: 6; text-align: center; image-rendering: pixelated; }
+.village-stage .stage-roof {
+    width: 140px; height: 28px; background: #7a5ba8;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 3px 3px 0 #0d0618;
+    clip-path: polygon(8% 100%, 20% 50%, 35% 20%, 50% 0%, 65% 20%, 80% 50%, 92% 100%);
+}
+.village-stage .stage-body {
+    width: 120px; height: 60px; background: #5a3b88;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 2px 2px 0 #7a5ba8, inset -2px -2px 0 #3d2a5c, 3px 3px 0 #0d0618;
+    line-height: 60px; color: #ffd62e; font-size: 10px;
+    text-shadow: 2px 2px 0 #0d0618; margin: 0 auto;
+}
+.stage-pillars { display: flex; justify-content: space-between; width: 100px; margin: -60px auto 0; position: relative; z-index: -1; }
+.stage-pillars .pillar { width: 8px; height: 60px; background: #4a3a5a; border: 2px solid #1a0d2b; }
+
+/* 绣花古宅 */
+.village-house { position: absolute; bottom: 18%; left: 50%; transform: translateX(-50%); z-index: 7; image-rendering: pixelated; }
+.village-house .house-roof {
+    width: 140px; height: 30px; background: #7a5ba8;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 3px 3px 0 #0d0618;
+    clip-path: polygon(8% 100%, 20% 50%, 35% 20%, 50% 0%, 65% 20%, 80% 50%, 92% 100%);
+    margin-left: -10px;
+}
+.village-house .house-wall {
+    width: 120px; height: 100px; background: #d5c6b3;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 2px 2px 0 #f5e6d3, inset -2px -2px 0 #b5a693, 3px 3px 0 #0d0618;
+    position: relative;
+}
+.village-house .house-window {
+    position: absolute; top: 12px; left: 12px; width: 28px; height: 28px;
+    background: #ffd62e;
+    border: 2px solid #1a0d2b;
+    box-shadow: inset 1px 1px 0 #fff5a0, 2px 2px 0 #0d0618;
+}
+.village-house .house-door {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 36px; height: 55px; background: #453210;
+    border: 2px solid #1a0d2b;
+    box-shadow: inset 2px 2px 0 #654321, inset -2px -2px 0 #2a1a0a;
+    cursor: pointer;
+}
+
+/* 蓝阿婆 */
+.village-granny { position: absolute; bottom: 18%; right: 18%; z-index: 7; }
+.village-granny .granny-sprite {
+    width: 36px; height: 72px; background: #3d2a5c;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 2px 2px 0 #5a3b88, inset -2px -2px 0 #1a0d2b, 3px 3px 0 #0d0618;
+    opacity: 0.9; image-rendering: pixelated;
+}
+.village-granny .granny-glow {
+    position: absolute; inset: -8px;
+    background: radial-gradient(circle, rgba(255,214,46,0.2), transparent 70%);
+    animation: pulsePixel 2s steps(4) infinite; pointer-events: none;
+}
+
+/* 前景草丛 */
+.village-bush-front {
+    position: absolute; width: 60px; height: 24px; background: #5a7a2a;
+    clip-path: polygon(0% 100%, 10% 50%, 25% 70%, 40% 30%, 55% 60%, 70% 20%, 85% 50%, 100% 40%, 100% 100%);
+    z-index: 8;
+}
+/* 灯笼 */
+.village-lantern {
+    position: absolute; width: 16px; height: 20px; background: #e89ac7;
+    border: 2px solid #1a0d2b;
+    box-shadow: inset 1px 1px 0 #f5badd, 2px 2px 0 #0d0618, 0 0 8px rgba(232,154,199,0.4);
+    z-index: 8;
+}
+.village-lantern::before { content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%); width: 2px; height: 8px; background: #1a0d2b; }
+
+/* ========================================================
+   场景三：后山枢纽 — 三层景深
+   ======================================================== */
+#scene-hub {
+    background: #d0c8b8 url('../assets/images/scences/level1/hub_bg.png') center bottom / cover;
+}
+.hub-bg {
+    position: absolute; inset: 0; background: #d0c8b8;
+    background-image: radial-gradient(circle, #c0b8a8 2px, transparent 2px);
+    background-size: 50px 50px;
+}
+/* 远山 */
+.hub-mountains-far {
+    position: absolute; top: 15%; left: -5%; right: -5%; height: 25%;
+    background: #b0a898;
+    clip-path: polygon(0% 50%, 6% 25%, 14% 45%, 22% 15%, 30% 40%, 40% 10%, 50% 35%, 60% 5%, 70% 30%, 78% 15%, 88% 40%, 96% 20%, 100% 35%, 100% 100%, 0% 100%);
+    opacity: 0.5;
+}
+.hub-fog-far {
+    position: absolute; top: 30%; left: 0; right: 0; height: 12%;
+    background: linear-gradient(180deg, transparent, rgba(208,200,184,0.6));
+    pointer-events: none;
+}
+/* 中景树林 */
+.hub-mid-trees {
+    position: absolute; top: 35%; left: 0; right: 0; height: 15%;
+    background: transparent;
+    background-image: repeating-linear-gradient(90deg, transparent 0px, transparent 40px, #5a6a3a 40px, #5a6a3a 44px, transparent 44px, transparent 80px);
+    opacity: 0.4; z-index: 2;
+}
+.hub-fog-mid {
+    position: absolute; top: 42%; left: 0; right: 0; height: 8%;
+    background: linear-gradient(180deg, rgba(208,200,184,0.3), transparent);
+    pointer-events: none; z-index: 3;
+}
+/* 近景地面 */
+.hub-ground {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 18%;
+    background: #8a7a5a;
+    background-image: repeating-linear-gradient(0deg, #7a6a4a 0px, #7a6a4a 4px, #8a7a5a 4px, #8a7a5a 8px);
+    z-index: 4;
+}
+/* 晒场/祠堂入口 */
+.hub-yard { position: absolute; bottom: 18%; left: 15%; text-align: center; z-index: 6; }
+.hub-hall { position: absolute; bottom: 18%; right: 15%; text-align: center; z-index: 6; }
+.hub-icon { font-size: 48px; margin-bottom: 4px; }
+.hub-label {
+    color: #ffd62e; font-size: 10px; letter-spacing: 1px;
+    background: #5a3b88; padding: 4px 14px;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 1px 1px 0 #7a5ba8, 3px 3px 0 #0d0618;
+    text-shadow: 2px 2px 0 #0d0618; text-transform: uppercase;
+}
+/* 前景草丛 */
+.hub-bush-front {
+    position: absolute; width: 60px; height: 24px; background: #5a7a2a;
+    clip-path: polygon(0% 100%, 10% 50%, 25% 70%, 40% 30%, 55% 60%, 70% 20%, 85% 50%, 100% 40%, 100% 100%);
+    z-index: 8;
+}
+#hub-left-hint { position: absolute; bottom: 8px; left: 16px; color: #7a5ba8; font-size: 8px; z-index: 9; text-shadow: 2px 2px 0 #d0c8b8; }
+
+/* ========================================================
+   绣花古宅内部（解谜区）
+   ======================================================== */
+#scene-house-inside { background: #2a1a3a; }
+.house-interior-bg {
+    position: absolute; inset: 0; background: #3d2a5c;
+    background-image: repeating-linear-gradient(90deg, transparent 0px, transparent 40px, rgba(0,0,0,0.1) 40px, rgba(0,0,0,0.1) 44px);
+}
+.level1-area-content { position: relative; z-index: 2; padding: 20px 40px; color: #ffd62e; }
+.area-section-title { color: #ffd62e; margin: 16px 0 8px; font-size: 12px; letter-spacing: 1px; text-shadow: 2px 2px 0 #0d0618; text-transform: uppercase; }
 #level1-artifacts { display: flex; gap: 12px; flex-wrap: wrap; }
-.artifact-hotspot { background: rgba(255,255,255,0.08); border: 1px solid #5a4a3a; padding: 12px; border-radius: 8px; cursor: pointer; min-width: 120px; text-align: center; transition: all 0.3s; }
-.artifact-hotspot:hover { background: rgba(255,255,255,0.15); }
-.artifact-hotspot.collected { opacity: 0.5; cursor: default; }
-.artifact-hotspot.locked { opacity: 0.4; cursor: not-allowed; }
-.artifact-name { font-size: 14px; margin: 4px 0; }
-.artifact-status { font-size: 12px; color: #888; }
+.artifact-hotspot {
+    background: #5a3b88; border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    padding: 12px; cursor: pointer; min-width: 120px; text-align: center;
+    box-shadow: inset 2px 2px 0 #7a5ba8, inset -2px -2px 0 #3d2a5c, 3px 3px 0 #0d0618;
+    transition: none;
+}
+.artifact-hotspot:hover { transform: translate(-2px, -2px); box-shadow: inset 2px 2px 0 #7a5ba8, inset -2px -2px 0 #3d2a5c, 5px 5px 0 #0d0618; }
+.artifact-hotspot.collected { opacity: 0.5; cursor: default; background: #3d2a5c; }
+.artifact-hotspot.locked { opacity: 0.4; cursor: not-allowed; background: #2a1a3a; border-style: dashed; }
+.artifact-name { font-size: 10px; margin: 4px 0; color: #ffd62e; text-shadow: 2px 2px 0 #0d0618; }
+.artifact-status { font-size: 8px; color: #e89ac7; }
 #level1-puzzle-entry { margin-top: 8px; }
-.puzzle-entry { background: rgba(255,255,255,0.08); padding: 10px 16px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-.puzzle-entry:hover { background: rgba(255,255,255,0.15); }
-.puzzle-entry.solved { opacity: 0.5; cursor: default; }
+.puzzle-entry {
+    background: #5a3b88; padding: 10px 16px; cursor: pointer;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 2px 2px 0 #7a5ba8, inset -2px -2px 0 #3d2a5c, 3px 3px 0 #0d0618;
+    display: flex; justify-content: space-between; align-items: center; transition: none;
+}
+.puzzle-entry:hover { transform: translate(-2px, -2px); box-shadow: inset 2px 2px 0 #7a5ba8, inset -2px -2px 0 #3d2a5c, 5px 5px 0 #0d0618; }
+.puzzle-entry.solved { opacity: 0.5; cursor: default; background: #3d2a5c; }
 
-/* 对话框 */
-#level1-dialogue-box { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 85%; max-width: 900px; min-height: 120px; background: rgba(240,230,215,0.97); border: 4px solid #2c1810; border-radius: 12px; padding: 20px 28px; display: none; z-index: 200; cursor: pointer; }
-#level1-dialogue-speaker { font-size: 20px; color: #8b4513; font-weight: bold; margin-bottom: 8px; }
-#level1-dialogue-text { font-size: 16px; color: #2c1810; line-height: 1.8; }
-.level1-dialogue-next { position: absolute; bottom: 10px; right: 20px; color: #888; font-size: 13px; animation: pulse 1.5s infinite; }
+/* ========================================================
+   对话框 / 弹窗 / 记忆 / 解谜面板
+   ======================================================== */
+#level1-dialogue-box {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    width: 85%; max-width: 900px; min-height: 120px;
+    background: #f5e6d3;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 3px 3px 0 #ffffff, inset -3px -3px 0 #d5c6b3, 4px 6px 0 #0d0618;
+    padding: 20px 28px; display: none; z-index: 200; cursor: pointer;
+}
+#level1-dialogue-speaker { font-size: 12px; color: #5a3b88; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; text-shadow: 2px 2px 0 #d5c6b3; }
+#level1-dialogue-text { font-size: 11px; color: #2c1810; line-height: 1.8; letter-spacing: 0.5px; }
+.level1-dialogue-next { position: absolute; bottom: 10px; right: 20px; color: #7a5ba8; font-size: 8px; animation: pulsePixel 1s steps(2) infinite; }
 
-/* 弹窗/记忆/解谜 */
-#level1-popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 250; display: none; align-items: center; justify-content: center; }
-#level1-popup-content { background: #f5f0e8; padding: 30px 40px; border-radius: 12px; max-width: 500px; text-align: center; color: #2c1810; line-height: 1.8; }
-#level1-popup-content button { margin-top: 16px; padding: 8px 28px; background: #8b4513; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
-#level1-memory-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 260; display: none; align-items: center; justify-content: center; }
+#level1-popup-overlay { position: fixed; inset: 0; background: rgba(13,6,24,0.85); z-index: 250; display: none; align-items: center; justify-content: center; }
+#level1-popup-content {
+    background: #f5e6d3; padding: 30px 40px;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 3px 3px 0 #ffffff, inset -3px -3px 0 #d5c6b3, 6px 8px 0 #0d0618;
+    max-width: 500px; text-align: center; color: #2c1810; line-height: 1.8;
+}
+#level1-popup-content button {
+    margin-top: 16px; padding: 8px 28px;
+    background: #7a5ba8; color: #ffd62e;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 3px 3px 0 #0d0618;
+    cursor: pointer; font-family: 'Press Start 2P', monospace; font-size: 10px;
+    text-transform: uppercase; transition: none;
+}
+#level1-popup-content button:hover { transform: translate(-2px, -2px); box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 5px 5px 0 #0d0618; }
+
+#level1-memory-overlay { position: fixed; inset: 0; background: rgba(13,6,24,0.95); z-index: 260; display: none; align-items: center; justify-content: center; }
 .memory-container { text-align: center; color: #e8dcc8; max-width: 600px; }
-.memory-title { font-size: 28px; color: #d4af37; margin-bottom: 16px; }
-.memory-desc { font-size: 16px; line-height: 2; }
-.memory-subtitle { font-size: 14px; color: #aaa; margin-top: 12px; }
-.memory-clue { font-size: 15px; color: #d4af37; margin-top: 16px; }
-.memory-progress { height: 4px; background: #333; margin-top: 20px; border-radius: 2px; }
-.memory-progress-bar { height: 100%; background: #d4af37; animation: memoryBar 8s linear forwards; }
+.memory-title { font-size: 14px; color: #ffd62e; margin-bottom: 16px; letter-spacing: 2px; text-shadow: 2px 2px 0 #0d0618; }
+.memory-desc { font-size: 11px; line-height: 2; color: #d5c6b3; }
+.memory-subtitle { font-size: 10px; color: #e89ac7; margin-top: 12px; letter-spacing: 1px; }
+.memory-clue { font-size: 10px; color: #ffd62e; margin-top: 16px; padding: 12px; background: #3d2a5c; border: 2px solid #1a0d2b; box-shadow: inset 2px 2px 0 #5a3b88, 3px 3px 0 #0d0618; text-shadow: 1px 1px 0 #0d0618; }
+.memory-progress { height: 6px; background: #1a0d2b; margin-top: 20px; border: 2px solid #0d0618; }
+.memory-progress-bar { height: 100%; background: #ffd62e; animation: memoryBar 8s steps(32) forwards; }
 @keyframes memoryBar { from { width: 100%; } to { width: 0%; } }
-.memory-skip-hint { font-size: 12px; color: #666; margin-top: 8px; }
-#level1-puzzle-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999; display: none; align-items: center; justify-content: center; }
-#level1-puzzle-content { background: #f5f0e8; padding: 30px 40px; border-radius: 12px; text-align: center; min-width: 360px; max-width: 560px; max-height: 80vh; overflow-y: auto; color: #2c1810; }
+.memory-skip-hint { font-size: 8px; color: #7a5ba8; margin-top: 8px; }
+
+#level1-puzzle-overlay { position: fixed; inset: 0; background: rgba(13,6,24,0.9); z-index: 999; display: none; align-items: center; justify-content: center; }
+#level1-puzzle-content {
+    background: #f5e6d3; padding: 30px 40px;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 3px 3px 0 #ffffff, inset -3px -3px 0 #d5c6b3, 6px 8px 0 #0d0618;
+    text-align: center; min-width: 360px; max-width: 560px; max-height: 80vh; overflow-y: auto; color: #2c1810;
+}
 .loom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-.loom-cell { width: 80px; height: 80px; background: #e8dcc8; border: 2px solid #8b5a2b; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; margin: 0 auto; transition: all 0.3s; }
-.loom-cell:hover { background: #d4c0a0; }
-.loom-cell.clicked { background: #8b5a2b; color: #fff; }
-.interact-prompt { position: absolute; top: -36px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: #fff; padding: 4px 12px; border-radius: 4px; font-size: 13px; white-space: nowrap; display: none; animation: bounce 1s infinite; pointer-events: none; z-index: 10; }
+.loom-cell {
+    width: 80px; height: 80px; background: #d5c6b3;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 2px 2px 0 #f5e6d3, inset -2px -2px 0 #b5a693, 3px 3px 0 #0d0618;
+    display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; margin: 0 auto; transition: none;
+}
+.loom-cell:hover { transform: translate(-2px, -2px); box-shadow: inset 2px 2px 0 #f5e6d3, inset -2px -2px 0 #b5a693, 5px 5px 0 #0d0618; }
+.loom-cell.clicked { background: #7a5ba8; color: #ffd62e; }
+
+/* 交互提示 */
+.interact-prompt {
+    position: absolute; top: -36px; left: 50%; transform: translateX(-50%);
+    background: #3d2a5c; color: #ffd62e; padding: 4px 12px;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: inset 1px 1px 0 #5a3b88, 3px 3px 0 #0d0618;
+    font-family: 'Press Start 2P', monospace; font-size: 8px;
+    white-space: nowrap; display: none;
+    animation: bouncePixel 1s steps(4) infinite; pointer-events: none; z-index: 10;
+}
+@keyframes bouncePixel { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-4px); } }
+@keyframes pulsePixel { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* 离开古宅按钮 */
+#house-exit-btn {
+    position: absolute; top: 12px; right: 16px; z-index: 10;
+    background: #7a5ba8; color: #ffd62e;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    padding: 6px 18px; cursor: pointer;
+    font-family: 'Press Start 2P', monospace; font-size: 10px;
+    box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 3px 3px 0 #0d0618;
+    transition: none;
+}
+#house-exit-btn:hover { transform: translate(-2px, -2px); box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 5px 5px 0 #0d0618; }
 
 /* 关卡中玩家定位 */
 #level1-screen #player { bottom: 18%; }
 
-/* ====== 场景三：后山区域 ====== */
-#scene-hub { background: linear-gradient(180deg, #8a9a80, #7a8a6a 50%, #6a7a50); }
-.hub-bg { position: absolute; inset: 0; background: linear-gradient(180deg, #a0b090 0%, #809070 50%, #607050 100%); }
-.hub-ground { position: absolute; bottom: 0; left: 0; right: 0; height: 18%; background: linear-gradient(180deg, #8a7a5a, #6a5a3a); }
-.hub-yard { position: absolute; bottom: 18%; left: 20%; text-align: center; z-index: 5; }
-.hub-hall { position: absolute; bottom: 18%; right: 18%; text-align: center; z-index: 5; }
-.hub-icon { font-size: 48px; margin-bottom: 4px; }
-.hub-label { color: #e8dcc8; font-size: 16px; letter-spacing: 2px; background: rgba(0,0,0,0.5); padding: 4px 14px; border-radius: 6px; }
-#hub-left-hint { position: absolute; bottom: 8px; left: 16px; color: rgba(255,255,255,0.5); font-size: 14px; z-index: 5; }
+/* ========================================================
+   真实素材替换层（覆盖几何占位）
+   ======================================================== */
+
+/* 村口场景 — 隐藏已被实底背景替换的层 */
+#scene-village-gate .gate-sky,
+#scene-village-gate .gate-mountains-far,
+#scene-village-gate .gate-mountains-mid,
+#scene-village-gate .gate-village-silhouette,
+#scene-village-gate .gate-mountains {
+    display: none;
+}
+
+/* 村口 — 寨门建筑 */
+#village-gate-structure {
+    width: 300px;
+    height: 400px;
+    background-image: url('../assets/images/scences/level1/gate_structure.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+}
+#village-gate-structure .gate-wall,
+#village-gate-structure .gate-roof,
+#village-gate-structure .gate-door {
+    display: none;
+}
+
+/* 村口 — 前景大树 */
+#scene-village-gate .gate-trees {
+    background: none;
+    width: 90px;
+    height: 98px;
+    background-image: url('../assets/images/scences/level1/fg_tree.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    clip-path: none;
+    box-shadow: none;
+}
+
+/* 村口 — 前景栅栏 */
+#scene-village-gate .gate-fence {
+    background: none;
+    width: 130px;
+    height: 80px;
+    background-image: url('../assets/images/scences/level1/fg_fence.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+}
+
+/* 村口 — 前景灌木 */
+#scene-village-gate .gate-bush-l,
+#scene-village-gate .gate-bush-r {
+    background: none;
+    width: 76px;
+    height: 48px;
+    background-image: url('../assets/images/scences/level1/fg_bush.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    clip-path: none;
+}
+
+/* 村内 — 大戏台 */
+#scene-village-inside .village-stage {
+    width: 300px;
+    height: 400px;
+    background-image: url('../assets/images/scences/level1/stage.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+}
+#scene-village-inside .village-stage .stage-roof,
+#scene-village-inside .village-stage .stage-body,
+#scene-village-inside .village-stage .stage-pillars {
+    display: none;
+}
+
+/* 村内 — 绣花古宅 */
+#scene-village-inside .village-house {
+    width: 400px;
+    height: 500px;
+    background-image: url('../assets/images/scences/level1/house_exterior.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+}
+#scene-village-inside .village-house .house-roof,
+#scene-village-inside .village-house .house-wall {
+    display: none;
+}
+#scene-village-inside .village-house .house-door {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width: 100px;
+    height: 100px;
+}
+
+/* 村内 — 灯笼 */
+#scene-village-inside .village-lantern {
+    background: none;
+    width: 28px;
+    height: 48px;
+    background-image: url('../assets/images/scences/level1/fg_lantern.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    box-shadow: none;
+}
+#scene-village-inside .village-lantern::before {
+    display: none;
+}
+
+/* 后山场景 — 隐藏已被实底背景替换的层 */
+#scene-hub .hub-bg,
+#scene-hub .hub-mountains-far,
+#scene-hub .hub-mid-trees {
+    display: none;
+}
+
+/* 后山 — 祠堂 */
+#scene-hub .hub-hall {
+    width: 400px;
+    height: 500px;
+    background-image: url('../assets/images/scences/level1/hall_exterior.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+}
+#scene-hub .hub-hall .hub-icon,
+#scene-hub .hub-hall .hub-label {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}

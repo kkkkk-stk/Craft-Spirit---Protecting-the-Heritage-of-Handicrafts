@@ -1,85 +1,250 @@
-/* ========== 游戏场景样式 ========== */
+/* ========== 游戏场景样式 · 复古 8-bit 像素风格 ========== */
+/* 配色：浅米背景 + 紫面板 + 亮黄霓虹 + 粉色强调 */
 
+/* ---------- 像素根变量 ---------- */
+:root {
+    --px-sky: #e8e0d0;
+    --px-sky-dark: #d0c8b8;
+    --px-ground: #7a6a5a;
+    --px-ground-dark: #5a4a3a;
+    --px-building: #f5e6d3;
+    --px-building-dark: #d5c6b3;
+    --px-roof: #7a5ba8;
+    --px-roof-dark: #5a3b88;
+    --px-roof-light: #9a7bc8;
+    --px-window: #add8e6;
+    --px-window-glow: #ffd62e;
+    --px-door: #654321;
+    --px-door-dark: #453210;
+    --px-border-inner: #1a0d2b;
+    --px-border-outer: #0d0618;
+    --px-highlight: #ffd62e;
+    --px-danger: #e89ac7;
+    --px-text: #2c1810;
+    --px-shadow: #0d0618;
+}
+
+/* ---------- 场景容器 ---------- */
 #game-screen {
     width: 100vw;
     height: 100vh;
-    background: #87ceeb;
+    background: var(--px-sky);
     display: none;
     position: relative;
     overflow: hidden;
     image-rendering: pixelated;
+    font-family: 'Press Start 2P', monospace;
 }
 
-/* 天空渐变 */
+/* ---------- 像素天空（浅色背景 + 像素星星）---------- */
 .sky {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 60%;
-    background: linear-gradient(180deg, #4a90a4 0%, #7ec8e3 60%, #b4d7e8 100%);
+    background: var(--px-sky);
 }
 
-/* 云朵 */
+/* 像素星星点缀 */
+.sky::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+        /* 小星星：用 2x2 像素块模拟 */
+        radial-gradient(circle, var(--px-highlight) 1px, transparent 1px),
+        radial-gradient(circle, var(--px-roof) 1px, transparent 1px),
+        radial-gradient(circle, var(--px-danger) 1px, transparent 1px);
+    background-size: 120px 80px, 180px 120px, 240px 160px;
+    background-position: 20px 30px, 60px 80px, 10px 150px;
+    opacity: 0.3;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+/* ---------- 像素云朵（像素方块组合）---------- */
 .cloud {
     position: absolute;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 20px;
-    animation: cloudFloat 20s linear infinite;
+    background: transparent;
+    image-rendering: pixelated;
+    animation: cloudFloatPixel 30s steps(60) infinite;
 }
 
-.cloud:nth-child(1) { width: 120px; height: 40px; top: 10%; left: -150px; }
-.cloud:nth-child(2) { width: 160px; height: 50px; top: 18%; left: -200px; animation-delay: -7s; }
-.cloud:nth-child(3) { width: 100px; height: 35px; top: 8%; left: -130px; animation-delay: -13s; }
+/* 像素云：由多个像素方块组成 */
+.cloud::before {
+    content: '';
+    position: absolute;
+    width: 60px; height: 20px;
+    background: #ffffff;
+    box-shadow:
+        /* 双层描边 - 外层 */
+        -2px -2px 0 0 #b0a090,
+        -2px 2px 0 0 #b0a090,
+        2px -2px 0 0 #b0a090,
+        2px 2px 0 0 #b0a090,
+        /* 像素云主体 - 8-bit 方块拼接 */
+        0 0 0 20px #ffffff,
+        20px 0 0 20px #ffffff,
+        -20px 0 0 20px #ffffff,
+        40px 0 0 20px #ffffff,
+        -40px 0 0 20px #ffffff;
+}
 
-/* 地面 */
+/* 云动画 - steps 跳帧 */
+@keyframes cloudFloatPixel {
+    from { transform: translateX(-100vw); }
+    to { transform: translateX(100vw); }
+}
+
+.cloud:nth-child(1) { width: 100px; height: 40px; top: 12%; left: -100px; animation-delay: 0s; }
+.cloud:nth-child(2) { width: 120px; height: 50px; top: 22%; left: -120px; animation-delay: -10s; opacity: 0.7; }
+.cloud:nth-child(3) { width: 80px; height: 30px; top: 8%; left: -80px; animation-delay: -20s; opacity: 0.5; }
+
+/* ---------- 像素地面（像素砖/土路）---------- */
 .ground {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 42%;
-    background: linear-gradient(180deg, #7cb342 0%, #558b2f 5%, #4a7c28 100%);
+    background:
+        repeating-linear-gradient(
+            0deg,
+            var(--px-ground-dark) 0px,
+            var(--px-ground-dark) 4px,
+            var(--px-ground) 4px,
+            var(--px-ground) 8px
+        );
+    background-size: 100% 16px;
+    image-rendering: pixelated;
 }
 
-/* 草地细节 */
+/* 地面像素纹理 */
+.ground::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px, transparent 16px,
+            rgba(0,0,0,0.05) 16px, rgba(0,0,0,0.05) 20px,
+            transparent 20px, transparent 32px
+        );
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+/* ---------- 像素草地（顶部像素装饰线）---------- */
 .grass-detail {
     position: absolute;
     bottom: 41.5%;
     left: 0;
     right: 0;
-    height: 15px;
-    background-image: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 8px,
-        #6b9b37 8px,
-        #6b9b37 10px,
-        transparent 10px,
-        transparent 15px
-    );
+    height: 4px;
+    background: #8a9a6a;
+    image-rendering: pixelated;
 }
 
-/* 建筑 - 左侧大房子 */
+/* ---------- 像素建筑通用样式 ---------- */
+/* 像素阶梯角 clip-path：8-bit 锯齿轮廓 */
+.pixel-corner {
+    /* 基础像素边框 */
+    border: 2px solid var(--px-border-inner);
+    /* 双层描边 - 外层 */
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    /* 立体斜角：左上高光 + 右下暗角 */
+    box-shadow:
+        inset 2px 2px 0 var(--px-roof-light),      /* 左上高光 */
+        inset -2px -2px 0 var(--px-shadow),         /* 右下暗角 */
+        4px 4px 0 var(--px-shadow);                 /* 硬投影 */
+    image-rendering: pixelated;
+    transition: none;
+}
+
+/* 像素屋顶（三角，带阶梯角） */
+.pixel-roof {
+    /* 像素阶梯三角形：用 clip-path 模拟锯齿屋顶 */
+    clip-path: polygon(
+        0% 100%,
+        4px calc(100% - 8px), 4px calc(100% - 12px),
+        8px calc(100% - 12px), 8px calc(100% - 16px),
+        12px calc(100% - 16px), 12px calc(100% - 20px),
+        16px calc(100% - 20px), 16px calc(100% - 24px),
+        20px calc(100% - 24px), 20px calc(100% - 28px),
+        24px calc(100% - 28px), 24px calc(100% - 32px),
+        28px calc(100% - 32px), 28px calc(100% - 36px),
+        32px calc(100% - 36px), 32px calc(100% - 40px),
+        36px calc(100% - 40px), 36px calc(100% - 44px),
+        40px calc(100% - 44px), 40px calc(100% - 48px),
+        44px calc(100% - 48px), 44px calc(100% - 52px),
+        48px calc(100% - 52px), 48px calc(100% - 56px),
+        52px calc(100% - 56px), 52px calc(100% - 60px),
+        50% 0%,                                   /* 顶点 */
+        calc(100% - 52px) calc(100% - 60px), calc(100% - 52px) calc(100% - 56px),
+        calc(100% - 48px) calc(100% - 56px), calc(100% - 48px) calc(100% - 52px),
+        calc(100% - 44px) calc(100% - 52px), calc(100% - 44px) calc(100% - 48px),
+        calc(100% - 40px) calc(100% - 48px), calc(100% - 40px) calc(100% - 44px),
+        calc(100% - 36px) calc(100% - 44px), calc(100% - 36px) calc(100% - 40px),
+        calc(100% - 32px) calc(100% - 40px), calc(100% - 32px) calc(100% - 36px),
+        calc(100% - 28px) calc(100% - 36px), calc(100% - 28px) calc(100% - 32px),
+        calc(100% - 24px) calc(100% - 32px), calc(100% - 24px) calc(100% - 28px),
+        calc(100% - 20px) calc(100% - 28px), calc(100% - 20px) calc(100% - 24px),
+        calc(100% - 16px) calc(100% - 24px), calc(100% - 16px) calc(100% - 20px),
+        calc(100% - 12px) calc(100% - 20px), calc(100% - 12px) calc(100% - 16px),
+        calc(100% - 8px) calc(100% - 16px), calc(100% - 8px) calc(100% - 12px),
+        calc(100% - 4px) calc(100% - 12px), calc(100% - 4px) calc(100% - 8px),
+        100% calc(100% - 8px),
+        100% 100%
+    );
+    background: var(--px-roof);
+    /* 立体斜角 + 硬投影 */
+    box-shadow:
+        inset 3px 3px 0 var(--px-roof-light),
+        inset -3px -3px 0 var(--px-roof-dark),
+        4px 6px 0 var(--px-shadow);
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    image-rendering: pixelated;
+}
+
+/* ---------- 建筑 - 左侧大房子（像素风格）---------- */
 .building-large {
     position: absolute;
     bottom: 42%;
     left: 15%;
     width: 280px;
     height: 300px;
-    background: #f5e6d3;
-    border: 4px solid #2c1810;
+    background: var(--px-building);
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 3px 3px 0 var(--px-building),
+        inset -3px -3px 0 var(--px-building-dark),
+        4px 6px 0 var(--px-shadow);
+    image-rendering: pixelated;
 }
 
 .building-roof-large {
     position: absolute;
-    top: -50px;
-    left: -20px;
-    width: 320px;
-    height: 70px;
-    background: #8b4513;
-    border: 4px solid #2c1810;
-    clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+    top: -52px;
+    left: -22px;
+    width: 324px;
+    height: 74px;
+    background: var(--px-roof);
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 3px 3px 0 var(--px-roof-light),
+        inset -3px -3px 0 var(--px-roof-dark),
+        4px 6px 0 var(--px-shadow);
+    clip-path: polygon(0% 100%, 8px 80%, 16px 60%, 32px 40%, 50% 0%, 68% 40%, 84% 60%, 92% 80%, 100% 100%);
+    image-rendering: pixelated;
 }
 
 .building-door-large {
@@ -88,9 +253,15 @@
     left: 110px;
     width: 60px;
     height: 100px;
-    background: #654321;
-    border: 3px solid #2c1810;
-    border-bottom: none;
+    background: var(--px-door);
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 2px 2px 0 var(--px-door-dark),
+        inset -2px -2px 0 #2a1a0a,
+        3px 3px 0 var(--px-shadow);
+    image-rendering: pixelated;
 }
 
 .window-large {
@@ -99,30 +270,51 @@
     left: 40px;
     width: 80px;
     height: 80px;
-    background: #87ceeb;
-    border: 3px solid #2c1810;
+    background: var(--px-window);
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 2px 2px 0 #ffffff,
+        inset -2px -2px 0 #7a9ab0,
+        3px 3px 0 var(--px-shadow);
+    image-rendering: pixelated;
 }
 
-/* 建筑 - 中间房子 */
+/* ---------- 建筑 - 中间房子（像素风格）---------- */
 .building-medium {
     position: absolute;
     bottom: 42%;
     left: 52%;
     width: 200px;
     height: 220px;
-    background: #ede0d4;
-    border: 4px solid #2c1810;
+    background: var(--px-building);
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 3px 3px 0 var(--px-building),
+        inset -3px -3px 0 var(--px-building-dark),
+        4px 6px 0 var(--px-shadow);
+    image-rendering: pixelated;
 }
 
 .building-roof-medium {
     position: absolute;
-    top: -40px;
-    left: -15px;
-    width: 230px;
-    height: 60px;
-    background: #a0522d;
-    border: 4px solid #2c1810;
-    clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+    top: -42px;
+    left: -17px;
+    width: 234px;
+    height: 64px;
+    background: var(--px-roof);
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 3px 3px 0 var(--px-roof-light),
+        inset -3px -3px 0 var(--px-roof-dark),
+        4px 6px 0 var(--px-shadow);
+    clip-path: polygon(0% 100%, 8px 80%, 16px 60%, 32px 40%, 50% 0%, 68% 40%, 84% 60%, 92% 80%, 100% 100%);
+    image-rendering: pixelated;
 }
 
 .door-medium {
@@ -131,9 +323,15 @@
     left: 70px;
     width: 50px;
     height: 80px;
-    background: #5c4033;
-    border: 3px solid #2c1810;
-    border-bottom: none;
+    background: var(--px-door);
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 2px 2px 0 var(--px-door-dark),
+        inset -2px -2px 0 #2a1a0a,
+        3px 3px 0 var(--px-shadow);
+    image-rendering: pixelated;
 }
 
 .window-medium {
@@ -142,33 +340,54 @@
     left: 30px;
     width: 60px;
     height: 60px;
-    background: #add8e6;
-    border: 3px solid #2c1810;
+    background: var(--px-window);
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 2px 2px 0 #ffffff,
+        inset -2px -2px 0 #7a9ab0,
+        3px 3px 0 var(--px-shadow);
+    image-rendering: pixelated;
 }
 
-/* 建筑 - 右侧小房子 */
+/* ---------- 建筑 - 右侧小房子（像素风格）---------- */
 .building-small {
     position: absolute;
     bottom: 42%;
     left: 76%;
     width: 140px;
     height: 170px;
-    background: #f0e0cc;
-    border: 4px solid #2c1810;
+    background: var(--px-building);
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 3px 3px 0 var(--px-building),
+        inset -3px -3px 0 var(--px-building-dark),
+        4px 6px 0 var(--px-shadow);
+    image-rendering: pixelated;
 }
 
 .roof-small {
     position: absolute;
-    top: -30px;
-    left: -10px;
-    width: 160px;
-    height: 45px;
-    background: #cd853f;
-    border: 4px solid #2c1810;
-    clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+    top: -32px;
+    left: -12px;
+    width: 164px;
+    height: 49px;
+    background: var(--px-roof);
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 3px 3px 0 var(--px-roof-light),
+        inset -3px -3px 0 var(--px-roof-dark),
+        4px 6px 0 var(--px-shadow);
+    clip-path: polygon(0% 100%, 8px 80%, 16px 60%, 32px 40%, 50% 0%, 68% 40%, 84% 60%, 92% 80%, 100% 100%);
+    image-rendering: pixelated;
 }
 
-/* 玩家角色（精灵动画） */
+/* ---------- 玩家角色（精灵动画 · 像素风）---------- */
 #player {
     position: absolute;
     bottom: 42%;
@@ -185,7 +404,7 @@
     image-rendering: pixelated;
 }
 
-/* NPC 向导（场景精灵图） */
+/* ---------- NPC 向导（场景精灵图 · 像素风）---------- */
 #npc-guide {
     position: absolute;
     bottom: 42%;
@@ -200,24 +419,40 @@
     image-rendering: pixelated;
 }
 
-/* 交互提示 */
+/* ---------- 交互提示（像素风格弹窗）---------- */
 .interact-prompt {
     position: absolute;
-    top: -40px;
+    top: -48px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.85);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 14px;
+    background: var(--px-roof-dark);
+    color: var(--px-highlight);
+    padding: 8px 16px;
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 2px 2px 0 var(--px-roof),
+        inset -2px -2px 0 var(--px-shadow),
+        4px 4px 0 var(--px-shadow);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
     white-space: nowrap;
     display: none;
-    animation: bounce 1s infinite;
+    animation: bouncePixel 1s steps(4) infinite;
     pointer-events: none;
+    image-rendering: pixelated;
 }
 
-/* HUD */
+/* 像素风格弹跳动画 */
+@keyframes bouncePixel {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-4px); }
+}
+
+/* ---------- HUD（像素风格按钮）---------- */
 #ui-hud {
     position: absolute;
     top: 20px;
@@ -228,19 +463,41 @@
 }
 
 .hud-item {
-    background: rgba(0, 0, 0, 0.65);
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    backdrop-filter: blur(4px);
+    background: var(--px-roof-dark);
+    color: var(--px-highlight);
+    padding: 8px 12px;
+    border: 2px solid var(--px-border-inner);
+    outline: 2px solid var(--px-border-outer);
+    outline-offset: 2px;
+    box-shadow:
+        inset 2px 2px 0 var(--px-roof),
+        inset -2px -2px 0 var(--px-shadow),
+        3px 3px 0 var(--px-shadow);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    image-rendering: pixelated;
+    /* hover 像素按压效果 */
+    transition: none;
+    user-select: none;
+}
+
+.hud-item:hover {
+    transform: translate(-2px, -2px);
+    box-shadow:
+        inset 2px 2px 0 var(--px-roof),
+        inset -2px -2px 0 var(--px-shadow),
+        5px 7px 0 var(--px-shadow);
 }
 
 .hud-item kbd {
-    background: #fff;
-    color: #333;
-    padding: 2px 8px;
-    border-radius: 4px;
+    background: var(--px-highlight);
+    color: var(--px-border-outer);
+    padding: 2px 6px;
     margin-right: 6px;
-    font-weight: bold;
+    border: 2px solid var(--px-border-inner);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    image-rendering: pixelated;
 }

@@ -1,0 +1,12 @@
+{
+  "inputs": {
+    "gate_bg_far.png":      { "out": "gate_bg_far.png",      "resize": [1920, 600] },
+    "gate_structure.png":   { "out": "gate_structure.png",   "resize": [300, 400] },
+    "house_exterior.png":   { "out": "house_exterior.png",   "resize": [400, 500] },
+    "stage.png":            { "out": "stage.png",            "resize": [300, 400] },
+    "hall_exterior.png":    { "out": "hall_exterior.png",    "resize": [400, 500] },
+    "hub_bg_far.png":       { "out": "hub_bg_far.png",       "resize": [1920, 600] },
+    "fg_deco.png":          { "out": "fg_deco.png",          "resize": [128, 128] },
+    "fog.png":              { "out": "fog.png",              "resize": [512, 256], "threshold": 999, "soft": 0 }
+  }
+}
