@@ -20,7 +20,7 @@
 }
 .level1-title { color: #ffd62e; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-shadow: 2px 2px 0 #0d0618; }
 .level1-hud-right { display: flex; gap: 16px; align-items: center; }
-#level1-hud-progress { color: #e89ac7; font-size: 10px; letter-spacing: 1px; text-shadow: 2px 2px 0 #0d0618; }
+#level1-hud-progress { color: #e89ac7; font-size: 16px; letter-spacing: 1px; text-shadow: 2px 2px 0 #0d0618; }
 .level1-back-btn {
     background: #7a5ba8; color: #ffd62e;
     border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
@@ -158,7 +158,7 @@
     border: 2px solid #1a0d2b;
     box-shadow: inset 2px 2px 0 #654321, inset -2px -2px 0 #2a1a0a;
 }
-.scene-hint { position: absolute; bottom: 10px; color: #7a5ba8; font-size: 10px; letter-spacing: 1px; z-index: 9; text-shadow: 2px 2px 0 #e8e0d0; }
+.scene-hint { position: absolute; bottom: 10px; right: 20px; color: #ffffff; font-size: 20px; letter-spacing: 1px; z-index: 9; }
 
 /* ========================================================
    场景二：村内 — 三层景深
@@ -205,8 +205,8 @@
 
 /* 近景地面 */
 .village-ground {
-    position: absolute; bottom: 11%; left: 0; right: 0; height: 24%;
-    background: url('../assets/images/scences/level1/differentground.png') center/cover no-repeat;
+    position: absolute; bottom: 0; left: 0; right: 0; height: 24%;
+    background: url('../assets/images/scences/level1/ground1.png') center/cover no-repeat;
     z-index: 4;
 }
 .village-mist { position: absolute; inset: 0; background: rgba(200,210,200,0.04); pointer-events: none; z-index: 5; }
@@ -334,7 +334,7 @@
     z-index: 8;
 }
 
-#hub-left-hint { position: absolute; bottom: 8px; left: 16px; color: #7a5ba8; font-size: 8px; z-index: 9; text-shadow: 2px 2px 0 #d0c8b8; }
+#hub-left-hint { position: absolute; bottom: 10px; right: 20px; color: #ffffff; font-size: 20px; z-index: 9; }
 
 /* ========================================================
    绣花古宅内部（解谜区）
@@ -687,7 +687,6 @@
 #scene-village-gate .gate-house-left { position: absolute; bottom: 14%; left: -3%; width: 300px; height: 225px; background: url('../assets/images/scences/level1/houses/house_01.png') center/contain no-repeat; z-index: 6; }
 #scene-village-gate .gate-house-mid { position: absolute; bottom: 16%; left: 35%; width: 375px; height: 22vh; background: url('../assets/images/scences/level1/houses/house_03.png') center/contain no-repeat; z-index: 6; }
 #scene-village-inside .village-stage-new { position: absolute; bottom: 14%; left: 5%; width: 420px; height: 300px; background: url('../assets/images/scences/level1/traditional Chinese village stage.png') center/contain no-repeat; z-index: 6; }
-#scene-village-inside::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 11%; background: #000; z-index: 3; }
 .gate-sky,.village-mountains-far,.gate-grass-l,.gate-grass-r,.gate-mountains-far,.gate-mountains,.gate-mountains-mid{display:none !important}
 .gate-fog-far,.gate-fog-mid,.gate-village-silhouette,.village-fog-far,.village-silhouette,.village-mid-buildings,.village-fog-mid,.village-mist,.village-lantern,.gate-mountains-mid{display:none !important}
 .village-bg{display:none !important}

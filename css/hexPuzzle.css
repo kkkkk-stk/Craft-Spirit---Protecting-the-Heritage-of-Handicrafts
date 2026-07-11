@@ -151,7 +151,7 @@
 .hex-board {
     position: relative;
     width: 600px;
-    height: 520px;
+    height: 600px;
     margin: 0 auto;
     background: #0d0a08;
     border: 1px solid #3d2e1e;
@@ -165,7 +165,7 @@
     top: 0; left: 0;
     width: 100%;
     height: 100%;
-    background-size: 600px 520px;
+    background-size: 600px 600px;
     background-repeat: no-repeat;
     opacity: 0;
     pointer-events: none;

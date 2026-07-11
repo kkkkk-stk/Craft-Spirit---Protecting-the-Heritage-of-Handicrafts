@@ -55,6 +55,29 @@ export const ITEMS = {
         type: 'quest'
     },
 
+    // 任务物品（线性流程奖励）
+    'dye_material': {
+        id: 'dye_material',
+        name: '染料材料',
+        icon: '🎨',
+        desc: '从后山采集并制作完成的植物染料。蓝草、栀子、苏木、茶籽，历经打靛制色，色泽浓郁纯正。蓝阿婆等待你将它带回。',
+        type: 'quest'
+    },
+    'colorful_threads': {
+        id: 'colorful_threads',
+        name: '五彩丝线',
+        icon: '🧵',
+        desc: '浸染晾晒完成的五色丝线——栀子黄、草木绿、蓝草蓝、苏木红、茶籽黑。畲族五色对应天地五行，是刺绣的灵魂所在。',
+        type: 'quest'
+    },
+    'first_cloth': {
+        id: 'first_cloth',
+        name: '第一块布',
+        icon: '🧶',
+        desc: '你在绣花古宅亲手缝制的第一块布。针脚虽稚嫩，却遵循了畲族织布古法——横先竖后、外框先稳、纹理后填。这是畲绣文脉延续的起点。',
+        type: 'quest'
+    },
+
     // 旧物品（保留兼容）
     'indigo_herb': {
         id: 'indigo_herb',

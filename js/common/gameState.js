@@ -46,11 +46,26 @@ export const gameState = {
         },
         // 当前区域
         currentArea: 'house',  // house | yard | hall
-        completed: false       // 关卡通关
+        completed: false,      // 关卡通关
+
+        // ===== 线性任务阶段 =====
+        // 0 = 寻找蓝婆婆中（禁止其他交互）
+        // 1 = 对话1完成，任务1已下达（采药制色）
+        // 2 = 采药制色完成，材料入背包，待找婆婆触发CG1
+        // 3 = CG1+对话2完成，任务2已下达（染线晒线）
+        // 4 = 染线晒线完成，五彩线入背包，待找婆婆触发CG2
+        // 5 = CG2+对话3完成，任务3已下达（老宅学缝制）
+        // 6 = 老宅缝制完成，第一块布入背包，待找婆婆触发CG3+对话4
+        // 7 = CG3+对话4完成，终极拼图已解锁
+        // 8 = 拼图完成，通关
+        taskPhase: 0
     },
 
     // 暂停状态
     isPaused: false,
+
+    // 场景转场中（禁止移动与相机更新，避免转场窗口内错误计算）
+    transitioning: false,
 
     // 活跃存档槽位（-1 表示未选择）
     activeSlotIndex: -1,
@@ -59,7 +74,7 @@ export const gameState = {
     settingsSource: null,
 
     // 游戏配置
-    playerSpeed: 16,
+    playerSpeed: 8,
 
     // 按键绑定
     keyBindings: {
@@ -118,7 +133,7 @@ export const gameState = {
         this.tutorialShown = snap.tutorialShown ?? false;
         this.currentChapter = snap.currentChapter ?? 'prologue';
         this.currentDialogueIndex = snap.currentDialogueIndex ?? 0;
-        this.playerSpeed = snap.playerSpeed ?? 5;
+        this.playerSpeed = snap.playerSpeed ?? 8;
         this.isPaused = false;
         this.dialogueActive = false;
         if (snap.level1) {

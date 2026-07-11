@@ -4,6 +4,7 @@
 import { MainMenu } from './menu/mainMenu.js';
 import { IntroController } from './intro/introController.js';
 import { PlayerController } from './game/playerController.js';
+import { CameraController } from './game/cameraController.js';
 import { NpcController } from './game/npcController.js';
 import { DialogueSystem } from './game/dialogueSystem.js';
 import { TutorialManager } from './tutorial/tutorialManager.js';
@@ -58,6 +59,7 @@ function init() {
         DialogueSystem.init();
         NpcController.init();
         PlayerController.init();
+        CameraController.init();
 
         // UI 模块
         TutorialManager.init();
