@@ -99,7 +99,8 @@
     background: #a0682f;
 }
 
-.dye-craft-btn:disabled {
+.dye-craft-btn:disabled,
+.dye-craft-btn.disabled {
     opacity: 0.4;
     cursor: not-allowed;
 }

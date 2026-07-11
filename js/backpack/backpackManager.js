@@ -111,7 +111,18 @@ export const BackpackManager = {
 
             const iconWrap = document.createElement('div');
             iconWrap.className = 'backpack-item-icon';
-            iconWrap.textContent = item.icon;
+            if (item.img) {
+                const img = document.createElement('img');
+                img.src = item.img;
+                img.alt = item.name;
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'contain';
+                img.style.imageRendering = 'pixelated';
+                iconWrap.appendChild(img);
+            } else {
+                iconWrap.textContent = item.icon;
+            }
 
             const nameEl = document.createElement('span');
             nameEl.className = 'backpack-item-name';
@@ -195,7 +206,7 @@ export const BackpackManager = {
         if (!item) return;
 
         this.detailArea.innerHTML = `
-            <div class="backpack-detail-icon">${item.icon}</div>
+            <div class="backpack-detail-icon">${item.img ? `<img src="${item.img}" alt="${item.name}" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated;">` : item.icon}</div>
             <div class="backpack-detail-name">${item.name}</div>
             <div class="backpack-detail-desc">${item.desc}</div>
         `;

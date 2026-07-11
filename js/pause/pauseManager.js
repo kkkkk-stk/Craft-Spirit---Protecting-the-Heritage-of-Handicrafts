@@ -62,6 +62,14 @@ export const PauseManager = {
                 const saveOverlay = document.getElementById('save-slots-overlay');
                 if (saveOverlay && saveOverlay.style.display === 'flex') return;
 
+                // 关卡一弹窗/解谜/记忆界面中不暂停
+                const puzzleOverlay = document.getElementById('level1-puzzle-overlay');
+                const popupOverlay = document.getElementById('level1-popup-overlay');
+                const memoryOverlay = document.getElementById('level1-memory-overlay');
+                if ((puzzleOverlay && puzzleOverlay.style.display === 'flex') ||
+                    (popupOverlay && popupOverlay.style.display === 'flex') ||
+                    (memoryOverlay && memoryOverlay.style.display === 'flex')) return;
+
                 this.toggle();
             }
         });

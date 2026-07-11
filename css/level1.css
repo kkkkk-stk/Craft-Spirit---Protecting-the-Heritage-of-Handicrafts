@@ -343,6 +343,7 @@
 .house-interior-bg {
     position: absolute; inset: 0; background: #3d2a5c;
     background-image: repeating-linear-gradient(90deg, transparent 0px, transparent 40px, rgba(0,0,0,0.1) 40px, rgba(0,0,0,0.1) 44px);
+    pointer-events: none;
 }
 .level1-area-content { position: relative; z-index: 2; padding: 20px 40px; color: #ffd62e; }
 .area-section-title { color: #ffd62e; margin: 16px 0 8px; font-size: 12px; letter-spacing: 1px; text-shadow: 2px 2px 0 #0d0618; text-transform: uppercase; }
@@ -426,6 +427,17 @@
 .memory-clue { font-size: 10px; color: #ffd62e; margin-top: 12px; padding: 10px; background: #3d2a5c; border: 2px solid #1a0d2b; box-shadow: inset 2px 2px 0 #5a3b88, 3px 3px 0 #0d0618; text-shadow: 1px 1px 0 #0d0618; }
 
 #level1-puzzle-overlay { position: fixed; inset: 0; background: rgba(13,6,24,0.9); z-index: 999; display: none; align-items: center; justify-content: center; }
+#puzzle-close-btn {
+    position: absolute; top: 16px; left: 16px; z-index: 1000;
+    width: 36px; height: 36px;
+    background: #5a3b88; color: #ffd62e;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    font-size: 18px; line-height: 1; cursor: pointer;
+    font-family: 'Press Start 2P', monospace;
+    box-shadow: inset 1px 1px 0 #7a5ba8, 3px 3px 0 #0d0618;
+    transition: none;
+}
+#puzzle-close-btn:hover { transform: translate(-2px, -2px); box-shadow: inset 1px 1px 0 #7a5ba8, 5px 5px 0 #0d0618; }
 #level1-puzzle-content {
     background: #f5e6d3; padding: 30px 40px;
     border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;

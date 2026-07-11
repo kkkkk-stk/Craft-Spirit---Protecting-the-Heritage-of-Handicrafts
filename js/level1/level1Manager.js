@@ -59,6 +59,15 @@ export const Level1Manager = {
             });
         }
 
+        // 六边拼图完成 → 标记并发放文物
+        document.addEventListener('hexPuzzleSolved', (e) => {
+            if (!e.detail || !e.detail.allDone) return;
+            gameState.level1.puzzles.totem = true;
+            if (!gameState.level1.artifacts[2]) this._collectArtifact(2);
+            if (!gameState.level1.artifacts[5]) setTimeout(() => this._collectArtifact(5), 2500);
+            this._updateProgressHud();
+        });
+
         // 行走监听
         document.addEventListener('playerMoved', () => {
             if (gameState.currentChapter !== 'level1') return;
@@ -68,7 +77,7 @@ export const Level1Manager = {
         // 按键：E交互 / ESC关闭弹窗
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                if (this.puzzleOverlay && this.puzzleOverlay.style.display === 'flex') { this.puzzleOverlay.style.display = 'none'; return; }
+                if (this.puzzleOverlay && this.puzzleOverlay.style.display === 'flex') { this._closePuzzle(); return; }
                 if (this.popupOverlay && this.popupOverlay.style.display === 'flex') { this.popupOverlay.style.display = 'none'; return; }
                 if (this.memoryOverlay && this.memoryOverlay.style.display === 'flex') { this.memoryOverlay.style.display = 'none'; return; }
             }
@@ -185,8 +194,19 @@ export const Level1Manager = {
         const bp2 = document.getElementById('bm-prompt2');
         if (gp) gp.style.display = (this._currentScene === 'village' && !this._grannyDone && pos > 65) ? 'block' : 'none';
         if (dp) dp.style.display = (this._currentScene === 'village' && this._grannyDone && pos > 48 && pos < 58) ? 'block' : 'none';
-        if (ep) ep.style.display = (this._currentScene === 'hub' && pos > 10 && pos < 30) ? 'block' : 'none';
-        if (hp) hp.style.display = (this._currentScene === 'hub' && pos > 60) ? 'block' : 'none';
+        if (ep) {
+            const show = this._currentScene === 'hub' && pos > 10 && pos < 30;
+            ep.style.display = show ? 'block' : 'none';
+            if (show) ep.textContent = gameState.level1.puzzles.dyeCraft ? '按 E 拾取文物' : '按 E 进入';
+        }
+        if (hp) {
+            const show = this._currentScene === 'hub' && pos > 60;
+            if (show) {
+                const allCollected = gameState.level1.artifacts[2] && gameState.level1.artifacts[5];
+                if (gameState.level1.puzzles.totem && allCollected) { hp.style.display = 'none'; }
+                else { hp.style.display = 'block'; hp.textContent = gameState.level1.puzzles.totem ? '按 E 拾取文物' : '按 E 交互'; }
+            } else { hp.style.display = 'none'; }
+        }
         if (bp1) bp1.style.display = (this._currentScene === 'back-mountain' && pos > 2 && pos < 22) ? 'block' : 'none';
         if (bp2) bp2.style.display = (this._currentScene === 'back-mountain' && pos > 48 && pos < 72) ? 'block' : 'none';
     },
@@ -211,16 +231,20 @@ export const Level1Manager = {
             this._renderArea('house');
         }
         if (this._currentScene === 'hub' && pos > 10 && pos < 30) {
-            // 后山入口：按E进入后山染坊
-            this.enter('back-mountain');
+            // 后山晒场：解密前进入，解密后拾取文物4
+            if (!gameState.level1.puzzles.dyeCraft) {
+                this.enter('back-mountain');
+            } else if (!gameState.level1.artifacts[4]) {
+                this._collectArtifact(4);
+            }
             return;
         }
         if (this._currentScene === 'back-mountain' && pos > 2 && pos < 22) {
-            // 采药制色
+            if (gameState.level1.puzzles.dyeCraft) return;
             this._startPuzzle('dyeCraft');
         }
         if (this._currentScene === 'back-mountain' && pos > 48 && pos < 72) {
-            // 浸染丝线（需先完成采药制色）
+            if (gameState.level1.puzzles.dyeThread) return;
             if (gameState.level1.puzzles.dyeCraft) {
                 this._startPuzzle('dyeThread');
             } else {
@@ -228,8 +252,13 @@ export const Level1Manager = {
             }
         }
         if (this._currentScene === 'hub' && pos > 60) {
-            // 祠堂交互：打开六边锦绣拼图（原图腾拼图改为图像还原拼图）
-            document.dispatchEvent(new CustomEvent('openHexPuzzle'));
+            // 祠堂：解密前打开拼图，解密后拾取文物2+5
+            if (!gameState.level1.puzzles.totem) {
+                document.dispatchEvent(new CustomEvent('openHexPuzzle'));
+            } else {
+                if (!gameState.level1.artifacts[2]) this._collectArtifact(2);
+                if (!gameState.level1.artifacts[5]) setTimeout(() => this._collectArtifact(5), 2500);
+            }
         }
     },
 
@@ -268,11 +297,13 @@ export const Level1Manager = {
         c.appendChild(el);
     },
 
-    _collectArtifact(id) {
+    _collectArtifact(id, skipMemory) {
         gameState.level1.artifacts[id] = true;
+        const itemId = 'cultural_relic_' + id;
+        if (gameState.inventory.indexOf(itemId) === -1) gameState.inventory.push(itemId);
         this._showPopup(ARTIFACTS[id]);
         this._updateProgressHud();
-        if (ARTIFACTS[id].memory) setTimeout(() => this._playMemory(ARTIFACTS[id].memory), 2000);
+        if (!skipMemory && ARTIFACTS[id].memory) setTimeout(() => this._playMemory(ARTIFACTS[id].memory), 2000);
         this._renderArea('house');
     },
 
@@ -280,6 +311,8 @@ export const Level1Manager = {
     _startPuzzle(pid) {
         const puzzle = PUZZLES[pid];
         if (!puzzle || !this.puzzleOverlay || !this.puzzleContent) return;
+        if (gameState.level1.puzzles[pid]) return;
+        this._prePuzzlePos = gameState.playerPosPercent;
         let html = '<h3 style="color:#8b4513;margin-bottom:12px;">' + puzzle.name + '</h3>';
         html += '<p style="color:#5c3a1e;margin-bottom:16px;">' + (puzzle.rule || puzzle.desc || '') + '</p>';
 
@@ -667,8 +700,18 @@ export const Level1Manager = {
     _bindPuzzleClose() {
         if (!this.puzzleOverlay) return;
         this.puzzleOverlay.addEventListener('click', (e) => {
-            if (e.target === this.puzzleOverlay) this.puzzleOverlay.style.display = 'none';
+            if (e.target === this.puzzleOverlay) this._closePuzzle();
         });
+        const closeBtn = document.getElementById('puzzle-close-btn');
+        if (closeBtn) closeBtn.addEventListener('click', () => this._closePuzzle());
+    },
+
+    _closePuzzle() {
+        if (this.puzzleOverlay) this.puzzleOverlay.style.display = 'none';
+        if (this._prePuzzlePos !== undefined) {
+            gameState.playerPosPercent = this._prePuzzlePos;
+            this._prePuzzlePos = undefined;
+        }
     },
 
     // ==================== HUD & 工具 ====================
