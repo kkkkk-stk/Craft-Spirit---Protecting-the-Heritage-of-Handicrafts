@@ -35,9 +35,7 @@
 /* ========================================================
    场景一：村口 — 三层景深
    ======================================================== */
-#scene-village-gate {
-    background: #e8e0d0 url('../assets/images/scences/level1/gate_bg.png') center bottom / cover;
-}
+#scene-village-gate { background: url('../assets/images/scences/level1/bg.png') center / cover; }
 
 /* ===== 远景层 ===== */
 .gate-sky {
@@ -95,8 +93,7 @@
 /* ===== 近景层 ===== */
 .gate-path {
     position: absolute; bottom: 0; left: 0; right: 0; height: 24%;
-    background: #b8a888;
-    background-image: repeating-linear-gradient(0deg, #a89878 0px, #a89878 4px, #b8a888 4px, #b8a888 8px);
+    background: url('../assets/images/scences/level1/ground1.png') center / cover;
     z-index: 4;
 }
 .gate-grass-l {
@@ -129,13 +126,13 @@
 }
 /* 前景草丛 */
 .gate-bush-l {
-    position: absolute; bottom: 21%; left: 2%; width: 60px; height: 24px;
+    position: absolute; bottom: 14%; left: 2%; width: 60px; height: 24px;
     background: #5a7a2a;
     clip-path: polygon(0% 100%, 10% 50%, 25% 70%, 40% 30%, 55% 60%, 70% 20%, 85% 50%, 100% 40%, 100% 100%);
     z-index: 7;
 }
 .gate-bush-r {
-    position: absolute; bottom: 21%; right: 28%; width: 50px; height: 20px;
+    position: absolute; bottom: 14%; right: 28%; width: 50px; height: 20px;
     background: #5a7a2a;
     clip-path: polygon(0% 100%, 15% 40%, 30% 60%, 50% 20%, 70% 50%, 85% 30%, 100% 50%, 100% 100%);
     z-index: 7;
@@ -166,7 +163,7 @@
 /* ========================================================
    场景二：村内 — 三层景深
    ======================================================== */
-#scene-village-inside { background: #d8d0c0; }
+#scene-village-inside { background: url('../assets/images/scences/level1/bg.png') center / cover; }
 .village-bg {
     position: absolute; inset: 0; background: #d8d0c0;
     background-image: radial-gradient(circle, #c8c0b0 2px, transparent 2px);
@@ -208,9 +205,8 @@
 
 /* 近景地面 */
 .village-ground {
-    position: absolute; bottom: 0; left: 0; right: 0; height: 18%;
-    background: #8a7a5a;
-    background-image: repeating-linear-gradient(0deg, #7a6a4a 0px, #7a6a4a 4px, #8a7a5a 4px, #8a7a5a 8px);
+    position: absolute; bottom: 11%; left: 0; right: 0; height: 18%;
+    background: url('../assets/images/scences/level1/differentground.png') center/100% 100% no-repeat;
     z-index: 4;
 }
 .village-mist { position: absolute; inset: 0; background: rgba(200,210,200,0.04); pointer-events: none; z-index: 5; }
@@ -295,44 +291,27 @@
    场景三：后山枢纽 — 三层景深
    ======================================================== */
 #scene-hub {
-    background: #d0c8b8 url('../assets/images/scences/level1/hub_bg.png') center bottom / cover;
+    background-color: #2d5a1e;
+    background-image: url('../assets/images/scences/level1/bg.png');
+    background-position: center;
+    background-size: cover;
 }
+
+/* ===== 远景层 ===== */
+/* 透明点状纹理叠加（不遮挡背景图） */
 .hub-bg {
-    position: absolute; inset: 0; background: #d0c8b8;
-    background-image: radial-gradient(circle, #c0b8a8 2px, transparent 2px);
-    background-size: 50px 50px;
-}
-/* 远山 */
-.hub-mountains-far {
-    position: absolute; top: 15%; left: -5%; right: -5%; height: 25%;
-    background: #b0a898;
-    clip-path: polygon(0% 50%, 6% 25%, 14% 45%, 22% 15%, 30% 40%, 40% 10%, 50% 35%, 60% 5%, 70% 30%, 78% 15%, 88% 40%, 96% 20%, 100% 35%, 100% 100%, 0% 100%);
-    opacity: 0.5;
-}
-.hub-fog-far {
-    position: absolute; top: 30%; left: 0; right: 0; height: 12%;
-    background: linear-gradient(180deg, transparent, rgba(208,200,184,0.6));
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(160,150,130,0.25) 1px, transparent 1px);
+    background-size: 40px 40px;
     pointer-events: none;
 }
-/* 中景树林 */
-.hub-mid-trees {
-    position: absolute; top: 35%; left: 0; right: 0; height: 15%;
-    background: transparent;
-    background-image: repeating-linear-gradient(90deg, transparent 0px, transparent 40px, #5a6a3a 40px, #5a6a3a 44px, transparent 44px, transparent 80px);
-    opacity: 0.4; z-index: 2;
-}
-.hub-fog-mid {
-    position: absolute; top: 42%; left: 0; right: 0; height: 8%;
-    background: linear-gradient(180deg, rgba(208,200,184,0.3), transparent);
-    pointer-events: none; z-index: 3;
-}
-/* 近景地面 */
+/* ===== 近景层 ===== */
 .hub-ground {
-    position: absolute; bottom: 0; left: 0; right: 0; height: 18%;
-    background: #8a7a5a;
-    background-image: repeating-linear-gradient(0deg, #7a6a4a 0px, #7a6a4a 4px, #8a7a5a 4px, #8a7a5a 8px);
+    position: absolute; bottom: 0; left: 0; right: 0; height: 24%;
+    background: url('../assets/images/scences/level1/ground1.png') center / cover;
     z-index: 4;
 }
+
 /* 晒场/祠堂入口 */
 .hub-yard { position: absolute; bottom: 18%; left: 15%; text-align: center; z-index: 6; }
 .hub-hall { position: absolute; bottom: 18%; right: 15%; text-align: center; z-index: 6; }
@@ -344,12 +323,14 @@
     box-shadow: inset 1px 1px 0 #7a5ba8, 3px 3px 0 #0d0618;
     text-shadow: 2px 2px 0 #0d0618; text-transform: uppercase;
 }
-/* 前景草丛 */
+
+/* 前景灌木 */
 .hub-bush-front {
-    position: absolute; width: 60px; height: 24px; background: #5a7a2a;
+    position: absolute; width: 55px; height: 26px; background: #5a7a2a;
     clip-path: polygon(0% 100%, 10% 50%, 25% 70%, 40% 30%, 55% 60%, 70% 20%, 85% 50%, 100% 40%, 100% 100%);
     z-index: 8;
 }
+
 #hub-left-hint { position: absolute; bottom: 8px; left: 16px; color: #7a5ba8; font-size: 8px; z-index: 9; text-shadow: 2px 2px 0 #d0c8b8; }
 
 /* ========================================================
@@ -469,7 +450,7 @@
 }
 #house-exit-btn:hover { transform: translate(-2px, -2px); box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 5px 5px 0 #0d0618; }
 
-#level1-screen #player { bottom: 18%; }
+#level1-screen #player { bottom: 14%; }
 
 /* ========================================================
    真实素材替换层（覆盖几何占位）v2
@@ -480,7 +461,7 @@
 #scene-village-gate .gate-path,
 #scene-village-gate .gate-grass-l,
 #scene-village-gate .gate-grass-r {
-    display: none;
+    display: block;
 }
 
 /* 寨门：缩小到 200x267，调低位置 */
@@ -555,13 +536,15 @@
 
 /* 绣花古宅：缩小到 250x312，调低位置 */
 #scene-village-inside .village-house {
-    width: 250px;
-    height: 312px;
-    background-image: url('../assets/images/scences/level1/house_exterior.png');
+    width: 500px;
+    height: 624px;
+    background-image: url('../assets/images/scences/level1/ethnic embroidery house.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
     bottom: 16%;
+    left: 35%;
+    transform: none;
 }
 #scene-village-inside .village-house .house-roof,
 #scene-village-inside .village-house .house-wall {
@@ -593,15 +576,15 @@
 /* ---------- 后山 ---------- */
 /* 实底背景图已包含地面/梯田，隐藏冲突的地面层 */
 #scene-hub .hub-ground {
-    display: none;
+    display: block;
 }
 
 /* 祠堂：缩小到 250x312，调低位置 */
 #scene-hub .hub-hall {
-    width: 250px;
-    height: 312px;
-    background-image: url('../assets/images/scences/level1/hall_exterior.png');
-    background-size: contain;
+    width: 500px;
+    height: 250px;
+    background-image: url('../assets/images/scences/level1/hall.png');
+    background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center bottom;
     bottom: 14%;
@@ -615,3 +598,14 @@
     transform: translateX(-50%);
     white-space: nowrap;
 }
+
+#scene-village-gate .gate-house-left { position: absolute; bottom: 14%; left: -3%; width: 300px; height: 225px; background: url('../assets/images/scences/level1/houses/house_01.png') center/contain no-repeat; z-index: 6; }
+#scene-village-gate .gate-house-mid { position: absolute; bottom: 16%; left: 35%; width: 375px; height: 22vh; background: url('../assets/images/scences/level1/houses/house_03.png') center/contain no-repeat; z-index: 6; }
+#scene-village-inside .village-stage-new { position: absolute; bottom: 14%; left: 5%; width: 420px; height: 300px; background: url('../assets/images/scences/level1/traditional Chinese village stage.png') center/contain no-repeat; z-index: 6; }
+#scene-village-inside::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 11%; background: #1a1a1a; z-index: 3; }
+.gate-sky,.village-mountains-far,.gate-grass-l,.gate-grass-r,.gate-mountains-far,.gate-mountains,.gate-mountains-mid{display:none !important}
+.gate-fog-far,.gate-fog-mid,.gate-village-silhouette,.village-fog-far,.village-silhouette,.village-mid-buildings,.village-fog-mid,.village-mist,.village-lantern,.gate-mountains-mid{display:none !important}
+.village-bg{display:none !important}
+#village-gate-structure{display:none !important}
+#scene-village-inside .village-stage{display:none !important}
+#scene-village-inside .village-house { bottom: 13%; }
