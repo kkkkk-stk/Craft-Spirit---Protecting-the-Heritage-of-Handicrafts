@@ -411,15 +411,16 @@
 #level1-popup-content button:hover { transform: translate(-2px, -2px); box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 5px 5px 0 #0d0618; }
 
 #level1-memory-overlay { position: fixed; inset: 0; background: rgba(13,6,24,0.95); z-index: 260; display: none; align-items: center; justify-content: center; }
-.memory-container { text-align: center; color: #e8dcc8; max-width: 600px; }
-.memory-title { font-size: 14px; color: #ffd62e; margin-bottom: 16px; letter-spacing: 2px; text-shadow: 2px 2px 0 #0d0618; }
-.memory-desc { font-size: 11px; line-height: 2; color: #d5c6b3; }
-.memory-subtitle { font-size: 10px; color: #e89ac7; margin-top: 12px; letter-spacing: 1px; }
-.memory-clue { font-size: 10px; color: #ffd62e; margin-top: 16px; padding: 12px; background: #3d2a5c; border: 2px solid #1a0d2b; box-shadow: inset 2px 2px 0 #5a3b88, 3px 3px 0 #0d0618; text-shadow: 1px 1px 0 #0d0618; }
-.memory-progress { height: 6px; background: #1a0d2b; margin-top: 20px; border: 2px solid #0d0618; }
-.memory-progress-bar { height: 100%; background: #ffd62e; animation: memoryBar 8s steps(32) forwards; }
-@keyframes memoryBar { from { width: 100%; } to { width: 0%; } }
-.memory-skip-hint { font-size: 8px; color: #7a5ba8; margin-top: 8px; }
+.memory-container { text-align: center; color: #e8dcc8; max-width: 720px; }
+.memory-video {
+    width: 100%; max-width: 640px;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: 4px 4px 0 #0d0618;
+    margin-bottom: 16px; background: #000;
+}
+.memory-title { font-size: 14px; color: #ffd62e; margin-bottom: 8px; letter-spacing: 2px; text-shadow: 2px 2px 0 #0d0618; }
+.memory-subtitle { font-size: 10px; color: #e89ac7; margin-top: 8px; letter-spacing: 1px; }
+.memory-clue { font-size: 10px; color: #ffd62e; margin-top: 12px; padding: 10px; background: #3d2a5c; border: 2px solid #1a0d2b; box-shadow: inset 2px 2px 0 #5a3b88, 3px 3px 0 #0d0618; text-shadow: 1px 1px 0 #0d0618; }
 
 #level1-puzzle-overlay { position: fixed; inset: 0; background: rgba(13,6,24,0.9); z-index: 999; display: none; align-items: center; justify-content: center; }
 #level1-puzzle-content {
