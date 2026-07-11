@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="css/save.css">
     <link rel="stylesheet" href="css/backpack.css">
     <link rel="stylesheet" href="css/level1.css">
+    <link rel="stylesheet" href="css/dyeCraft.css">
+    <link rel="stylesheet" href="css/dyeThread.css">
     <link rel="stylesheet" href="css/hexPuzzle.css">
 </head>
 <body>
@@ -167,6 +169,15 @@
         </div>
     </div>
 
+    <!-- ===== 测试面板（开发用，可随时删除） ===== -->
+    <div id="test-panel" style="position:absolute;top:50px;right:10px;z-index:999;background:rgba(0,0,0,0.85);border:1px solid #e8c547;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:6px;">
+        <div style="color:#e8c547;font-size:12px;text-align:center;margin-bottom:4px;">🧪 测试面板</div>
+        <button class="test-btn" id="test-dyeCraft" style="padding:6px 14px;background:#8b5a2b;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;">🌿 采药制色</button>
+        <button class="test-btn" id="test-dyeThread" style="padding:6px 14px;background:#8b5a2b;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;">🧵 浸染丝线</button>
+        <button class="test-btn" id="test-loom" style="padding:6px 14px;background:#8b5a2b;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;">🧶 织布走线</button>
+        <button class="test-btn" id="test-hex" style="padding:6px 14px;background:#8b5a2b;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;">🔷 六边拼图</button>
+    </div>
+
     <!-- 场景一：村口泥路 -->
     <div id="scene-village-gate" class="level1-scene">
         <!-- ===== 远景层 ===== -->
@@ -265,11 +276,11 @@
         <div class="hub-bg"></div>
         <!-- ===== 近景层 ===== -->
         <div class="hub-ground"></div>
-        <!-- 后山染布晒场 -->
-        <div class="hub-yard" id="hub-yard">
-            <div class="hub-icon">🌿</div>
-            <div class="hub-label">后山染布晒场</div>
-            <div class="interact-prompt" id="yard-prompt">按 E 交互</div>
+        <!-- 后山入口 -->
+        <div class="hub-yard hub-yard-entrance" id="hub-yard-entrance">
+            <div class="hub-icon">⛰️</div>
+            <div class="hub-label">后山染坊</div>
+            <div class="interact-prompt" id="yard-entrance-prompt">按 E 进入</div>
         </div>
         <!-- 畲族文化祠堂 -->
         <div class="hub-hall" id="hub-hall">
@@ -281,6 +292,27 @@
         <div class="hub-bush-front" style="left:5%;bottom:14%;"></div>
         <div class="hub-bush-front" style="right:8%;bottom:13%;width:60px;height:28px;"></div>
         <div class="scene-hint" id="hub-left-hint">← 返回村内</div>
+    </div>
+
+    <!-- 场景四：后山染坊（采药制色 + 浸染丝线） -->
+    <div id="scene-back-mountain" class="level1-scene" style="display:none;">
+        <div class="hub-bg"></div>
+        <div class="hub-ground"></div>
+        <!-- 畲山采药·制色 -->
+        <div class="hub-yard hub-yard-1" id="bm-yard1">
+            <div class="hub-icon">🌿</div>
+            <div class="hub-label">畲山采药·制色</div>
+            <div class="interact-prompt" id="bm-prompt1">按 E 交互</div>
+        </div>
+        <!-- 浸染丝线·晾晒 -->
+        <div class="hub-yard hub-yard-2" id="bm-yard2">
+            <div class="hub-icon">🧵</div>
+            <div class="hub-label">浸染丝线·晾晒</div>
+            <div class="interact-prompt" id="bm-prompt2">按 E 交互</div>
+        </div>
+        <div class="hub-bush-front" style="left:5%;bottom:14%;"></div>
+        <div class="hub-bush-front" style="right:8%;bottom:13%;width:60px;height:28px;"></div>
+        <div class="scene-hint" id="bm-left-hint">← 返回后山</div>
     </div>
 
     <!-- 绣花古宅内部（解密区） -->

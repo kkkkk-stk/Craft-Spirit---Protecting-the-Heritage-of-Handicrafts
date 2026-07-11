@@ -39,7 +39,8 @@ export const gameState = {
         // 解谜完成
         puzzles: {
             loom: false,        // 织布机走线
-            drying: false,      // 染料晾晒
+            dyeCraft: false,    // 畲山采药·打靛制色
+            dyeThread: false,   // 浸染丝线·晾晒
             treeRing: false,    // 古树年轮
             totem: false        // 石壁图腾拼图（终极）
         },

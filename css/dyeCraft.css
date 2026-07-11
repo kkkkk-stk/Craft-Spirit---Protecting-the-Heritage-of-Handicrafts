@@ -1,0 +1,744 @@
+/* ========== 畲山采药·打靛制色 小游戏样式 ========== */
+
+/* ---- 遮罩层 ---- */
+.dye-craft-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.88);
+    align-items: center;
+    justify-content: center;
+    font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+    user-select: none;
+}
+
+.dye-craft-overlay[style*="flex"] {
+    display: flex;
+}
+
+/* ---- 主面板 ---- */
+.dye-craft-panel {
+    width: 900px;
+    max-width: 95vw;
+    max-height: 95vh;
+    background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border: 2px solid #8b5a2b;
+    border-radius: 16px;
+    padding: 24px 32px;
+    color: #e8dcc8;
+    overflow-y: auto;
+    box-shadow: 0 0 40px rgba(139, 90, 43, 0.3);
+}
+
+.dye-craft-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.dye-craft-header h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #e8c547;
+    letter-spacing: 2px;
+}
+
+.dye-craft-close-btn {
+    background: none;
+    border: 1px solid #8b5a2b;
+    color: #e8dcc8;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.dye-craft-close-btn:hover {
+    background: #8b5a2b;
+    color: #fff;
+}
+
+.dye-craft-hint {
+    text-align: center;
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 16px;
+    min-height: 20px;
+}
+
+.dye-craft-hint b {
+    color: #e8c547;
+}
+
+.dye-craft-btn {
+    padding: 8px 20px;
+    background: transparent;
+    border: 1px solid #8b5a2b;
+    color: #e8dcc8;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.dye-craft-btn:hover:not(:disabled) {
+    background: #8b5a2b;
+    color: #fff;
+}
+
+.dye-craft-btn.primary {
+    background: #8b5a2b;
+    color: #fff;
+}
+
+.dye-craft-btn.primary:hover:not(:disabled) {
+    background: #a0682f;
+}
+
+.dye-craft-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ==================== 阶段1：山体采药 ==================== */
+.dye-craft-body {
+    display: flex;
+    gap: 24px;
+    min-height: 420px;
+}
+
+.mountain-stage {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 420px;
+}
+
+/* 左右导航按钮 */
+.mountain-nav {
+    position: absolute;
+    top: 42%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid rgba(232, 197, 71, 0.5);
+    background: rgba(0, 0, 0, 0.4);
+    color: #e8c547;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mountain-nav:hover {
+    background: rgba(232, 197, 71, 0.2);
+    border-color: #e8c547;
+}
+
+.mountain-nav.prev { left: 10px; }
+.mountain-nav.next { right: 10px; }
+
+/* 山体卡片视图（2D，带翻转动画） */
+.mountain-view {
+    width: 300px;
+    height: 340px;
+    perspective: 800px;
+    position: relative;
+}
+
+.mountain-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border: 2px solid rgba(139, 90, 43, 0.4);
+    border-radius: 12px;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    background: linear-gradient(180deg, #87CEEB 0%, #98D982 40%, #6B8E5A 70%, #4A6741 100%);
+}
+
+.mountain-scenery {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.mountain-peak {
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 80px solid transparent;
+    border-right: 80px solid transparent;
+    border-bottom: 120px solid rgba(255, 255, 255, 0.15);
+}
+
+.mountain-grass {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30%;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.2));
+}
+
+/* 可采集植物（纯2D，点击可靠） */
+.plant-collectible {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 10;
+    transition: opacity 0.3s;
+}
+
+.plant-icon {
+    font-size: 48px;
+    filter: drop-shadow(0 0 12px currentColor);
+    animation: plant-glow 2s ease-in-out infinite;
+    transition: transform 0.3s;
+}
+
+.plant-collectible:hover .plant-icon {
+    transform: scale(1.15);
+}
+
+.plant-label {
+    font-size: 13px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.plant-hint {
+    font-size: 11px;
+    color: #e8c547;
+    margin-top: 2px;
+}
+
+@keyframes plant-glow {
+    0%, 100% { filter: drop-shadow(0 0 8px currentColor); }
+    50% { filter: drop-shadow(0 0 20px currentColor); }
+}
+
+/* 圆点导航 */
+.mountain-dots {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.mountain-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mountain-dot.active {
+    background: #e8c547;
+    transform: scale(1.3);
+}
+
+.mountain-face-label {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #e8c547;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 16px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+}
+
+/* ---- 竹篓区域 ---- */
+.basket-area {
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.basket-title {
+    text-align: center;
+    font-size: 16px;
+    color: #e8c547;
+    border-bottom: 1px solid #8b5a2b;
+    padding-bottom: 8px;
+}
+
+.basket-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.basket-slot {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(139, 90, 43, 0.3);
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.basket-slot.collected {
+    background: rgba(139, 90, 43, 0.2);
+    border-color: #8b5a2b;
+}
+
+.basket-slot-icon {
+    font-size: 24px;
+    opacity: 0.4;
+}
+
+.basket-slot.collected .basket-slot-icon {
+    opacity: 1;
+}
+
+.basket-slot-name {
+    flex: 1;
+    font-size: 13px;
+    color: #ccc;
+}
+
+.basket-slot.collected .basket-slot-name {
+    color: #e8dcc8;
+}
+
+.basket-slot-status {
+    font-size: 11px;
+    color: #888;
+}
+
+.basket-slot.collected .basket-slot-status {
+    color: #4a9a30;
+}
+
+.basket-count {
+    text-align: center;
+    font-size: 14px;
+    color: #aaa;
+    padding: 8px 0;
+}
+
+/* ==================== 阶段2：打靛音游 ==================== */
+.rhythm-panel {
+    width: 950px;
+}
+
+.rhythm-body {
+    display: flex;
+    gap: 20px;
+    height: 480px;
+}
+
+/* ---- 石臼画面 ---- */
+.rhythm-mortar {
+    width: 200px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+}
+
+.mortar-bowl {
+    width: 140px;
+    height: 80px;
+    background: radial-gradient(ellipse at center top, #3a2817 30%, #2a1810 70%);
+    border: 3px solid #5a3825;
+    border-radius: 0 0 50% 50%;
+    position: relative;
+    z-index: 2;
+}
+
+.mortar-bowl::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 16px;
+    background: #1a0f08;
+    border-radius: 50%;
+}
+
+.mortar-pestle {
+    position: absolute;
+    bottom: 80px;
+    font-size: 32px;
+    z-index: 3;
+    transition: transform 0.1s;
+}
+
+.mortar-pestle.left { left: 30px; transform-origin: bottom center; }
+.mortar-pestle.right { right: 30px; transform-origin: bottom center; }
+
+.mortar-pestle.strike {
+    transform: rotate(-30deg) translateY(30px);
+}
+
+.mortar-pestle.right.strike {
+    transform: rotate(30deg) translateY(30px);
+}
+
+.mortar-splash {
+    position: absolute;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%) scale(1);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ---- 音游区域 ---- */
+.rhythm-game-area {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(20, 20, 40, 0.5) 100%);
+    border: 1px solid rgba(139, 90, 43, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.rhythm-lanes {
+    display: flex;
+    height: 100%;
+    position: relative;
+}
+
+.rhythm-lane {
+    flex: 1;
+    position: relative;
+    border-right: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.rhythm-lane:last-child {
+    border-right: none;
+}
+
+.left-lane {
+    background: linear-gradient(180deg, transparent, rgba(74, 144, 217, 0.05));
+}
+
+.right-lane {
+    background: linear-gradient(180deg, transparent, rgba(232, 197, 71, 0.05));
+}
+
+.lane-judgment-line {
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #e8c547, transparent);
+    box-shadow: 0 0 10px rgba(232, 197, 71, 0.5);
+}
+
+.lane-hit-zone {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.1s;
+}
+
+.lane-hit-zone:hover {
+    border-color: #e8c547;
+    color: #e8c547;
+    box-shadow: 0 0 15px rgba(232, 197, 71, 0.4);
+}
+
+.lane-hit-zone:active {
+    transform: translateX(-50%) scale(0.9);
+}
+
+/* ---- 音符 ---- */
+.rhythm-note-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.rhythm-note {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transform: translateX(-50%);
+    transition: opacity 0.3s;
+}
+
+.rhythm-note.left {
+    background: radial-gradient(circle, #4a90d9 30%, #2a6ab9 100%);
+    border: 2px solid #6ab0e9;
+    box-shadow: 0 0 12px rgba(74, 144, 217, 0.6);
+    color: #fff;
+}
+
+.rhythm-note.right {
+    background: radial-gradient(circle, #e8c547 30%, #c8a527 100%);
+    border: 2px solid #f0d567;
+    box-shadow: 0 0 12px rgba(232, 197, 71, 0.6);
+    color: #fff;
+}
+
+.rhythm-note.hit {
+    animation: note-hit 0.3s ease-out forwards;
+}
+
+.rhythm-note.miss {
+    animation: note-miss 0.3s ease-out forwards;
+}
+
+@keyframes note-hit {
+    0% { transform: translateX(-50%) scale(1); opacity: 1; }
+    100% { transform: translateX(-50%) scale(2); opacity: 0; }
+}
+
+@keyframes note-miss {
+    0% { transform: translateX(-50%) scale(1); opacity: 1; }
+    100% { transform: translateX(-50%) scale(0.5) translateY(20px); opacity: 0; }
+}
+
+/* ---- 侧栏 ---- */
+.rhythm-sidebar {
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.rhythm-stat {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(139, 90, 43, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #e8c547;
+}
+
+.purity-section {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(139, 90, 43, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+}
+
+.purity-bar {
+    width: 100%;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    margin: 8px 0;
+}
+
+.purity-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #4a90d9, #2a6ab9);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.purity-cells {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    pointer-events: none;
+}
+
+.purity-cell {
+    flex: 1;
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.purity-cell:last-child {
+    border-right: none;
+}
+
+.purity-cell.filled {
+    background: rgba(74, 144, 217, 0.3);
+}
+
+.purity-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #4a90d9;
+}
+
+.purity-target {
+    font-size: 11px;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* ---- 反馈文字 ---- */
+.rhythm-feedback {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    font-weight: bold;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+    text-shadow: 0 0 20px currentColor;
+}
+
+.rhythm-feedback.show {
+    animation: feedback-pop 0.5s ease-out;
+}
+
+.rhythm-feedback.success {
+    color: #4ade80;
+}
+
+.rhythm-feedback.fail {
+    color: #ef4444;
+}
+
+@keyframes feedback-pop {
+    0% { opacity: 0; transform: translate(-50%, -30%) scale(0.5); }
+    30% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    100% { opacity: 0; transform: translate(-50%, -70%) scale(1); }
+}
+
+.rhythm-controls {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+/* ==================== 结算画面 ==================== */
+.result-panel {
+    width: 600px;
+    text-align: center;
+}
+
+.result-body {
+    padding: 20px 0;
+}
+
+.result-grade {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 20px 0;
+    text-shadow: 0 0 30px currentColor;
+}
+
+.result-grade.pass {
+    color: #4ade80;
+}
+
+.result-grade.fail {
+    color: #ef4444;
+}
+
+.result-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+}
+
+.result-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.result-stat span {
+    font-size: 12px;
+    color: #888;
+}
+
+.result-stat b {
+    font-size: 24px;
+    color: #e8c547;
+}
+
+.result-message {
+    color: #ccc;
+    font-size: 14px;
+    line-height: 2;
+    margin: 20px 0;
+    padding: 0 20px;
+}
+
+.result-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 24px;
+}

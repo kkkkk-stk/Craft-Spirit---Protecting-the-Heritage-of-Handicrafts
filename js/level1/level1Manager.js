@@ -2,6 +2,8 @@
 import { gameState } from '../common/gameState.js';
 import { SceneManager } from '../common/sceneManager.js';
 import { OPENING_DIALOGUES, AREAS, ARTIFACTS, MEMORIES, PUZZLES, LOOM_LEVELS } from './level1Data.js';
+import { DyeCraftGame } from './dyeCraftGame.js';
+import { DyeThreadGame } from './dyeThreadGame.js';
 
 export const Level1Manager = {
     root: null, _currentScene: 'gate', _firstVillageVisit: true, _grannyDone: false, _player: null,
@@ -77,6 +79,16 @@ export const Level1Manager = {
         });
 
         console.log('Level1Manager: 初始化完成');
+
+        // ===== 测试面板按钮（开发用） =====
+        const testDyeCraft = document.getElementById('test-dyeCraft');
+        if (testDyeCraft) testDyeCraft.addEventListener('click', () => this._startPuzzle('dyeCraft'));
+        const testDyeThread = document.getElementById('test-dyeThread');
+        if (testDyeThread) testDyeThread.addEventListener('click', () => this._startPuzzle('dyeThread'));
+        const testLoom = document.getElementById('test-loom');
+        if (testLoom) testLoom.addEventListener('click', () => this._startPuzzle('loom'));
+        const testHex = document.getElementById('test-hex');
+        if (testHex) testHex.addEventListener('click', () => document.dispatchEvent(new CustomEvent('openHexPuzzle')));
     },
 
     // ==================== 进入关卡 ====================
@@ -110,11 +122,11 @@ export const Level1Manager = {
 
     // ==================== 场景切换 ====================
     _switchView(scene) {
-        ['scene-village-gate', 'scene-village-inside', 'scene-hub', 'scene-house-inside'].forEach(id => {
+        ['scene-village-gate', 'scene-village-inside', 'scene-hub', 'scene-back-mountain', 'scene-house-inside'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.style.display = 'none';
         });
-        const map = { gate: 'scene-village-gate', village: 'scene-village-inside', hub: 'scene-hub', house: 'scene-house-inside' };
+        const map = { gate: 'scene-village-gate', village: 'scene-village-inside', hub: 'scene-hub', 'back-mountain': 'scene-back-mountain', house: 'scene-house-inside' };
         const el = document.getElementById(map[scene]);
         if (el) el.style.display = 'block';
 
@@ -123,6 +135,7 @@ export const Level1Manager = {
             if (scene === 'gate') gameState.playerPosPercent = 8;
             else if (scene === 'village') gameState.playerPosPercent = 12;
             else if (scene === 'hub') gameState.playerPosPercent = 20;
+            else if (scene === 'back-mountain') gameState.playerPosPercent = 15;
         }
         document.dispatchEvent(new CustomEvent('gameLoaded'));
     },
@@ -153,18 +166,29 @@ export const Level1Manager = {
             document.dispatchEvent(new CustomEvent('gameLoaded'));
             return;
         }
+        if (this._currentScene === 'back-mountain' && pos <= 5 && movingLeft) {
+            console.log('transition: back-mountain→hub');
+            this.enter('hub');
+            gameState.playerPosPercent = 20;
+            document.dispatchEvent(new CustomEvent('gameLoaded'));
+            return;
+        }
         this._updatePrompts(pos);
     },
 
     _updatePrompts(pos) {
         const gp = document.getElementById('granny-prompt');
         const dp = document.getElementById('door-prompt');
-        const yp = document.getElementById('yard-prompt');
+        const ep = document.getElementById('yard-entrance-prompt');
         const hp = document.getElementById('hall-prompt');
+        const bp1 = document.getElementById('bm-prompt1');
+        const bp2 = document.getElementById('bm-prompt2');
         if (gp) gp.style.display = (this._currentScene === 'village' && !this._grannyDone && pos > 65) ? 'block' : 'none';
         if (dp) dp.style.display = (this._currentScene === 'village' && pos > 45 && pos < 65) ? 'block' : 'none';
-        if (yp) yp.style.display = (this._currentScene === 'hub' && pos > 20 && pos < 50) ? 'block' : 'none';
+        if (ep) ep.style.display = (this._currentScene === 'hub' && pos > 10 && pos < 30) ? 'block' : 'none';
         if (hp) hp.style.display = (this._currentScene === 'hub' && pos > 60) ? 'block' : 'none';
+        if (bp1) bp1.style.display = (this._currentScene === 'back-mountain' && pos > 2 && pos < 22) ? 'block' : 'none';
+        if (bp2) bp2.style.display = (this._currentScene === 'back-mountain' && pos > 48 && pos < 72) ? 'block' : 'none';
     },
 
     // ==================== E键交互 ====================
@@ -186,7 +210,23 @@ export const Level1Manager = {
             this._switchView('house');
             this._renderArea('house');
         }
-        if (this._currentScene === 'hub' && pos > 20 && pos < 50) this._startPuzzle('drying');
+        if (this._currentScene === 'hub' && pos > 10 && pos < 30) {
+            // 后山入口：按E进入后山染坊
+            this.enter('back-mountain');
+            return;
+        }
+        if (this._currentScene === 'back-mountain' && pos > 2 && pos < 22) {
+            // 采药制色
+            this._startPuzzle('dyeCraft');
+        }
+        if (this._currentScene === 'back-mountain' && pos > 48 && pos < 72) {
+            // 浸染丝线（需先完成采药制色）
+            if (gameState.level1.puzzles.dyeCraft) {
+                this._startPuzzle('dyeThread');
+            } else {
+                this._showToast('需要先完成「畲山采药·制色」获取染料');
+            }
+        }
         if (this._currentScene === 'hub' && pos > 60) {
             // 祠堂交互：打开六边锦绣拼图（原图腾拼图改为图像还原拼图）
             document.dispatchEvent(new CustomEvent('openHexPuzzle'));
@@ -488,29 +528,26 @@ export const Level1Manager = {
 
             // Init level 1
             loadLevel(0);
-        } else if (pid === 'drying') {
-            html += '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0;">';
-            html += puzzle.slots.map((s, i) => '<div class="dry-slot" data-idx="' + i + '" style="padding:10px 16px;background:#e8dcc8;border:2px solid #8b5a2b;border-radius:6px;cursor:pointer;">' + s + '</div>').join('');
-            html += '</div><p style="color:#888;">' + (puzzle.errorHint || '') + '</p>';
-            this.puzzleContent.innerHTML = html;
-            let dryClicked = [];
-            this.puzzleContent.querySelectorAll('.dry-slot').forEach(el => {
-                el.addEventListener('click', () => {
-                    if (el.classList.contains('done')) return;
-                    el.classList.add('done'); el.style.background = '#8b5a2b'; el.style.color = '#fff';
-                    dryClicked.push(+el.dataset.idx);
-                    if (dryClicked.length === puzzle.slots.length) {
-                        if (dryClicked.join(',') === puzzle.correctOrder.join(',')) {
-                            gameState.level1.puzzles[pid] = true; this._updateProgressHud();
-                            this.puzzleContent.innerHTML = '<h3 style="color:#4a7a30;">✅ 晾晒完成！</h3><p>染材按正确顺序摆放，光芒流转。</p>';
-                            setTimeout(() => { this.puzzleOverlay.style.display = 'none'; }, 1500);
-                        } else {
-                            dryClicked = [];
-                            this.puzzleContent.querySelectorAll('.dry-slot').forEach(e => { e.classList.remove('done'); e.style.background = '#e8dcc8'; e.style.color = '#2c1810'; });
-                        }
-                    }
-                });
+        } else if (pid === 'dyeCraft') {
+            // 畲山采药·打靛制色：调用独立游戏模块
+            if (this.puzzleOverlay) this.puzzleOverlay.style.display = 'none';
+            var self2 = this;
+            DyeCraftGame.open(function() {
+                gameState.level1.puzzles.dyeCraft = true;
+                self2._updateProgressHud();
+                self2._showToast('畲山采药·打靛制色 完成！染料已备齐，可以浸染丝线了');
             });
+            return;
+        } else if (pid === 'dyeThread') {
+            // 浸染丝线·晾晒：调用独立游戏模块
+            if (this.puzzleOverlay) this.puzzleOverlay.style.display = 'none';
+            var self3 = this;
+            DyeThreadGame.open(function() {
+                gameState.level1.puzzles.dyeThread = true;
+                self3._updateProgressHud();
+                self3._showToast('浸染丝线·晾晒 完成！五色丝线已就绪');
+            });
+            return;
         } else if (pid === 'totem') {
             html += '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0;">';
             html += puzzle.stones.map(s => '<div class="totem-stone" style="padding:10px 16px;background:#e8dcc8;border:2px solid #8b5a2b;border-radius:6px;cursor:pointer;">' + s + '</div>').join('');
@@ -620,7 +657,7 @@ export const Level1Manager = {
         const a = Object.values(gameState.level1.artifacts).filter(Boolean).length;
         const m = Object.values(gameState.level1.memories).filter(Boolean).length;
         const p = Object.values(gameState.level1.puzzles).filter(Boolean).length;
-        this.hudProgress.textContent = '文物 ' + a + '/5 · 记忆 ' + m + '/4 · 解谜 ' + p + '/4';
+        this.hudProgress.textContent = '文物 ' + a + '/5 · 记忆 ' + m + '/4 · 解谜 ' + p + '/5';
     },
 
     _showDesc(text) {

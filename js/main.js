@@ -13,6 +13,8 @@ import { PauseManager } from './pause/pauseManager.js';
 import { SaveManager } from './save/saveManager.js';
 import { BackpackManager } from './backpack/backpackManager.js';
 import { Level1Manager } from './level1/level1Manager.js';
+import { DyeCraftGame } from './level1/dyeCraftGame.js';
+import { DyeThreadGame } from './level1/dyeThreadGame.js';
 import { HexPuzzleManager } from './hexPuzzle/hexPuzzleManager.js';
 
 /**
@@ -66,6 +68,12 @@ function init() {
 
         // 第一关
         Level1Manager.init();
+
+        // 畲山采药·打靛制色小游戏
+        DyeCraftGame.init();
+
+        // 浸染丝线·晾晒小游戏
+        DyeThreadGame.init();
 
         // 六边锦绣拼图
         HexPuzzleManager.init();

@@ -313,7 +313,10 @@
 }
 
 /* 晒场/祠堂入口 */
-.hub-yard { position: absolute; bottom: 18%; left: 15%; text-align: center; z-index: 6; }
+.hub-yard { position: absolute; bottom: 18%; text-align: center; z-index: 6; }
+.hub-yard-entrance { left: 15%; }
+.hub-yard-1 { left: 12%; }
+.hub-yard-2 { left: 42%; }
 .hub-hall { position: absolute; bottom: 18%; right: 15%; text-align: center; z-index: 6; }
 .hub-icon { font-size: 48px; margin-bottom: 4px; }
 .hub-label {
@@ -597,6 +600,38 @@
 /* 实底背景图已包含地面/梯田，隐藏冲突的地面层 */
 #scene-hub .hub-ground {
     display: block;
+}
+
+/* ---------- 后山染坊场景 ---------- */
+#scene-back-mountain {
+    background-color: #2d5a1e;
+    background-image: url('../assets/images/scences/level1/bg.png');
+    background-position: center;
+    background-size: cover;
+}
+#scene-back-mountain .hub-ground {
+    display: block;
+}
+#scene-back-mountain .hub-yard {
+    width: 200px;
+}
+#scene-back-mountain .hub-yard-1 { left: 8%; }
+#scene-back-mountain .hub-yard-2 { left: 56%; }
+#scene-back-mountain .hub-icon {
+    font-size: 56px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    animation: bm-icon-float 3s ease-in-out infinite;
+}
+#scene-back-mountain .hub-label {
+    font-size: 12px;
+    margin-top: 4px;
+}
+#scene-back-mountain .interact-prompt {
+    margin-top: 4px;
+}
+@keyframes bm-icon-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
 }
 
 /* 祠堂：缩小到 250x312，调低位置 */

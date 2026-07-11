@@ -1,0 +1,677 @@
+/* ========== 浸染丝线·晾晒 小游戏样式 ========== */
+
+/* ---- 遮罩层 ---- */
+.dye-thread-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.88);
+    align-items: center;
+    justify-content: center;
+    font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+    user-select: none;
+}
+
+.dye-thread-overlay[style*="flex"] {
+    display: flex;
+}
+
+/* ---- 主面板 ---- */
+.dt-panel {
+    width: 920px;
+    max-width: 95vw;
+    max-height: 95vh;
+    background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border: 2px solid #8b5a2b;
+    border-radius: 16px;
+    padding: 24px 32px;
+    color: #e8dcc8;
+    overflow-y: auto;
+    box-shadow: 0 0 40px rgba(139, 90, 43, 0.3);
+}
+
+.dt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.dt-header h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #e8c547;
+    letter-spacing: 2px;
+}
+
+.dt-close-btn {
+    background: none;
+    border: 1px solid #8b5a2b;
+    color: #e8dcc8;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.dt-close-btn:hover {
+    background: #8b5a2b;
+    color: #fff;
+}
+
+.dt-hint {
+    text-align: center;
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 16px;
+    min-height: 20px;
+    transition: color 0.3s;
+}
+
+.dt-btn {
+    padding: 8px 20px;
+    background: transparent;
+    border: 1px solid #8b5a2b;
+    color: #e8dcc8;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.dt-btn:hover:not(:disabled) {
+    background: #8b5a2b;
+    color: #fff;
+}
+
+.dt-btn.primary {
+    background: #8b5a2b;
+    color: #fff;
+}
+
+.dt-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ==================== 阶段1：浸染QTE ==================== */
+.dt-dyeing-body {
+    display: flex;
+    gap: 20px;
+    min-height: 440px;
+}
+
+/* ---- 左侧丝线列表 ---- */
+.dt-thread-list {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dt-section-title {
+    font-size: 13px;
+    color: #e8c547;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(139, 90, 43, 0.3);
+}
+
+.dt-thread-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(139, 90, 43, 0.2);
+    border-radius: 8px;
+    transition: all 0.3s;
+    opacity: 0.5;
+}
+
+.dt-thread-item.current {
+    opacity: 1;
+    border-color: #e8c547;
+    background: rgba(232, 197, 71, 0.1);
+    box-shadow: 0 0 12px rgba(232, 197, 71, 0.2);
+}
+
+.dt-thread-item.done {
+    opacity: 0.7;
+    border-color: rgba(74, 154, 48, 0.4);
+}
+
+.dt-thread-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.dt-thread-info {
+    flex: 1;
+}
+
+.dt-thread-name {
+    font-size: 13px;
+    color: #e8dcc8;
+}
+
+.dt-thread-dips {
+    font-size: 11px;
+    color: #888;
+}
+
+.dt-check {
+    font-size: 14px;
+}
+
+.dt-arrow {
+    color: #e8c547;
+    font-size: 12px;
+}
+
+.dt-lock {
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+/* ---- 中央染缸区 ---- */
+.dt-vat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    cursor: pointer;
+}
+
+.dt-thread-label {
+    font-size: 15px;
+    color: #e8c547;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 16px;
+    border-radius: 20px;
+}
+
+/* 染缸 */
+.dt-vat {
+    width: 200px;
+    height: 240px;
+    position: relative;
+    border-radius: 0 0 50% 50% / 0 0 30% 30%;
+    border: 3px solid #5a3825;
+    overflow: hidden;
+    background: #1a0f08;
+}
+
+.dt-vat-liquid {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70%;
+    transition: background 0.5s;
+}
+
+.dt-vat-rim {
+    position: absolute;
+    top: 0;
+    left: -3px;
+    right: -3px;
+    height: 12px;
+    background: #3a2817;
+    border-radius: 50%;
+    border: 3px solid #5a3825;
+    z-index: 5;
+}
+
+/* 丝线 */
+.dt-thread-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 40px;
+    background: #d4c5a0;
+    z-index: 4;
+    transition: none;
+}
+
+.dt-thread-knot {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid #d4c5a0;
+    transition: background 0.3s;
+}
+
+/* 下沉进度条 */
+.dt-dip-meter {
+    width: 320px;
+    position: relative;
+}
+
+.dt-dip-track {
+    width: 100%;
+    height: 24px;
+    display: flex;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(139, 90, 43, 0.3);
+}
+
+.dt-dip-zone {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.dt-dip-zone.early { background: rgba(239, 68, 68, 0.3); flex: 2; }
+.dt-dip-zone.ok { background: rgba(255, 193, 7, 0.3); flex: 2; }
+.dt-dip-zone.good { background: rgba(102, 187, 106, 0.3); flex: 2; }
+.dt-dip-zone.perfect { background: rgba(232, 197, 71, 0.5); flex: 1.5; }
+
+.dt-dip-pointer {
+    position: absolute;
+    top: -4px;
+    left: 0%;
+    width: 4px;
+    height: 32px;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    transition: none;
+    z-index: 5;
+}
+
+.dt-dip-label {
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* 捞出按钮 */
+.dt-retrieve-btn {
+    padding: 12px 36px;
+    font-size: 16px;
+    background: #8b5a2b;
+    color: #fff;
+    border: 2px solid #e8c547;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.dt-retrieve-btn:hover:not(:disabled) {
+    background: #a0682f;
+    transform: scale(1.05);
+}
+
+.dt-retrieve-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 反馈文字 */
+.dt-feedback {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    min-height: 28px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.dt-feedback.show {
+    opacity: 1;
+    animation: dt-feedback-pop 0.5s ease-out;
+}
+
+.dt-feedback.perfect { color: #e8c547; }
+.dt-feedback.good { color: #66bb6a; }
+.dt-feedback.ok { color: #ffc107; }
+.dt-feedback.fail { color: #ef4444; }
+
+@keyframes dt-feedback-pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    30% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ---- 右侧详情 ---- */
+.dt-detail {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dt-detail-icon {
+    text-align: center;
+    font-size: 40px;
+    padding: 8px 0;
+}
+
+.dt-detail-name {
+    text-align: center;
+    font-size: 16px;
+    color: #e8dcc8;
+}
+
+.dt-detail-dye {
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+}
+
+.dt-detail-progress {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+}
+
+.dt-progress-label {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 6px;
+}
+
+.dt-progress-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.dt-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    transition: all 0.3s;
+}
+
+.dt-dot.filled {
+    background: #e8c547;
+    border-color: #e8c547;
+}
+
+.dt-dot.half {
+    background: linear-gradient(90deg, #e8c547 50%, transparent 50%);
+    border-color: #e8c547;
+}
+
+.dt-progress-count {
+    font-size: 13px;
+    color: #e8c547;
+}
+
+.dt-color-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.dt-color-label {
+    font-size: 10px;
+    color: #888;
+}
+
+.dt-color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: background 0.5s;
+}
+
+.dt-color-arrow {
+    color: #888;
+}
+
+/* ==================== 阶段2：晾晒 ==================== */
+.drying-panel {
+    width: 800px;
+}
+
+.dt-drying-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-height: 300px;
+}
+
+.dt-sun-label {
+    text-align: center;
+    font-size: 13px;
+    color: #e8c547;
+    margin-bottom: 12px;
+}
+
+.dt-racks {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.dt-rack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.dt-rack-frame {
+    width: 80px;
+    height: 60px;
+    border: 2px solid #8b5a2b;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+}
+
+.dt-rack-frame::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    right: 5px;
+    height: 2px;
+    background: #8b5a2b;
+}
+
+.dt-rack-frame::after {
+    content: '';
+    position: absolute;
+    top: 30px;
+    left: 5px;
+    right: 5px;
+    height: 2px;
+    background: #8b5a2b;
+}
+
+.dt-rack-slot {
+    width: 80px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed rgba(139, 90, 43, 0.3);
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.dt-rack-slot.hover {
+    border-color: #e8c547;
+    background: rgba(232, 197, 71, 0.1);
+}
+
+.dt-rack-num {
+    font-size: 11px;
+    color: #888;
+    margin-top: 4px;
+}
+
+.dt-racks.shake {
+    animation: dt-shake 0.4s;
+}
+
+@keyframes dt-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+/* 未晾晒丝线池 */
+.dt-threads-pool {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.dt-pool-label {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.dt-pool-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    min-height: 50px;
+}
+
+.dt-dryable-thread {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(139, 90, 43, 0.3);
+    border-radius: 6px;
+    cursor: grab;
+    transition: all 0.2s;
+}
+
+.dt-dryable-thread:hover {
+    border-color: #e8c547;
+}
+
+.dt-dryable-thread.dragging {
+    opacity: 0.4;
+}
+
+.dt-dry-icon {
+    font-size: 18px;
+}
+
+.dt-dry-name {
+    font-size: 12px;
+    color: #e8dcc8;
+}
+
+.dt-drying-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* ==================== 结算 ==================== */
+.result-panel {
+    width: 600px;
+    text-align: center;
+}
+
+.dt-result-body {
+    padding: 20px 0;
+}
+
+.dt-result-grade {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 20px 0;
+    text-shadow: 0 0 20px currentColor;
+}
+
+.dt-result-grade.pass { color: #4ade80; }
+.dt-result-grade.fail { color: #ef4444; }
+
+.dt-result-threads {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 20px auto;
+    max-width: 400px;
+}
+
+.dt-result-thread {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+}
+
+.dt-result-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dt-result-name {
+    flex: 1;
+    text-align: left;
+    font-size: 14px;
+}
+
+.dt-result-dips {
+    font-size: 12px;
+    color: #888;
+}
+
+.dt-result-message {
+    color: #ccc;
+    font-size: 14px;
+    line-height: 2;
+    margin: 20px 0;
+    padding: 0 20px;
+}
+
+.dt-result-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 24px;
+}

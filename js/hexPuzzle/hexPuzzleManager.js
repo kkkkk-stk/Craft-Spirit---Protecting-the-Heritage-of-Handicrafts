@@ -17,8 +17,8 @@ export const HexPuzzleManager = {
 
     // 棋盘尺寸（与背景图缩放一致）
     BOARD_W: 600,
-    BOARD_H: 520,
-    IMAGE_PATH: 'assets/images/game/last1.png',
+    BOARD_H: 600,
+    IMAGE_PATH: 'assets/images/game/last1_square.png',
 
     // 六边形邻居方向（flat-top axial 坐标）
     _NEIGHBOR_DIRS: [[1,0], [1,-1], [0,-1], [-1,0], [-1,1], [0,1]],
