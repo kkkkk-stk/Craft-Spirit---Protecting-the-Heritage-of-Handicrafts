@@ -205,8 +205,8 @@
 
 /* 近景地面 */
 .village-ground {
-    position: absolute; bottom: 11%; left: 0; right: 0; height: 18%;
-    background: url('../assets/images/scences/level1/differentground.png') center/100% 100% no-repeat;
+    position: absolute; bottom: 11%; left: 0; right: 0; height: 24%;
+    background: url('../assets/images/scences/level1/differentground.png') center/cover no-repeat;
     z-index: 4;
 }
 .village-mist { position: absolute; inset: 0; background: rgba(200,210,200,0.04); pointer-events: none; z-index: 5; }
@@ -261,10 +261,10 @@
 /* 蓝阿婆 */
 .village-granny { position: absolute; bottom: 18%; right: 18%; z-index: 7; }
 .village-granny .granny-sprite {
-    width: 36px; height: 72px; background: #3d2a5c;
-    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
-    box-shadow: inset 2px 2px 0 #5a3b88, inset -2px -2px 0 #1a0d2b, 3px 3px 0 #0d0618;
-    opacity: 0.9; image-rendering: pixelated;
+    width: 128px; height: 256px;
+    background: url('../assets/images/image_npc/granny_lan_sprite.png') bottom/contain no-repeat;
+    border: none; outline: none; box-shadow: none;
+    opacity: 1; image-rendering: pixelated;
 }
 .village-granny .granny-glow {
     position: absolute; inset: -8px;
@@ -378,6 +378,19 @@
     border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
     box-shadow: inset 3px 3px 0 #ffffff, inset -3px -3px 0 #d5c6b3, 4px 6px 0 #0d0618;
     padding: 20px 28px; display: none; z-index: 200; cursor: pointer;
+    padding-left: 160px;
+}
+#level1-dialogue-portrait {
+    display: none;
+    position: absolute; left: -50px; bottom: -10px;
+    width: 180px; height: 240px;
+    background: center/contain no-repeat;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+#level1-dialogue-portrait.show {
+    display: block;
+    background-image: url('../assets/images/image_npc/granny_lan_portrait.png');
 }
 #level1-dialogue-speaker { font-size: 12px; color: #5a3b88; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; text-shadow: 2px 2px 0 #d5c6b3; }
 #level1-dialogue-text { font-size: 11px; color: #2c1810; line-height: 1.8; letter-spacing: 0.5px; }
@@ -401,15 +414,16 @@
 #level1-popup-content button:hover { transform: translate(-2px, -2px); box-shadow: inset 2px 2px 0 #9a7bc8, inset -2px -2px 0 #5a3b88, 5px 5px 0 #0d0618; }
 
 #level1-memory-overlay { position: fixed; inset: 0; background: rgba(13,6,24,0.95); z-index: 260; display: none; align-items: center; justify-content: center; }
-.memory-container { text-align: center; color: #e8dcc8; max-width: 600px; }
-.memory-title { font-size: 14px; color: #ffd62e; margin-bottom: 16px; letter-spacing: 2px; text-shadow: 2px 2px 0 #0d0618; }
-.memory-desc { font-size: 11px; line-height: 2; color: #d5c6b3; }
-.memory-subtitle { font-size: 10px; color: #e89ac7; margin-top: 12px; letter-spacing: 1px; }
-.memory-clue { font-size: 10px; color: #ffd62e; margin-top: 16px; padding: 12px; background: #3d2a5c; border: 2px solid #1a0d2b; box-shadow: inset 2px 2px 0 #5a3b88, 3px 3px 0 #0d0618; text-shadow: 1px 1px 0 #0d0618; }
-.memory-progress { height: 6px; background: #1a0d2b; margin-top: 20px; border: 2px solid #0d0618; }
-.memory-progress-bar { height: 100%; background: #ffd62e; animation: memoryBar 8s steps(32) forwards; }
-@keyframes memoryBar { from { width: 100%; } to { width: 0%; } }
-.memory-skip-hint { font-size: 8px; color: #7a5ba8; margin-top: 8px; }
+.memory-container { text-align: center; color: #e8dcc8; max-width: 720px; }
+.memory-video {
+    width: 100%; max-width: 640px;
+    border: 2px solid #1a0d2b; outline: 2px solid #0d0618; outline-offset: 2px;
+    box-shadow: 4px 4px 0 #0d0618;
+    margin-bottom: 16px; background: #000;
+}
+.memory-title { font-size: 14px; color: #ffd62e; margin-bottom: 8px; letter-spacing: 2px; text-shadow: 2px 2px 0 #0d0618; }
+.memory-subtitle { font-size: 10px; color: #e89ac7; margin-top: 8px; letter-spacing: 1px; }
+.memory-clue { font-size: 10px; color: #ffd62e; margin-top: 12px; padding: 10px; background: #3d2a5c; border: 2px solid #1a0d2b; box-shadow: inset 2px 2px 0 #5a3b88, 3px 3px 0 #0d0618; text-shadow: 1px 1px 0 #0d0618; }
 
 #level1-puzzle-overlay { position: fixed; inset: 0; background: rgba(13,6,24,0.9); z-index: 999; display: none; align-items: center; justify-content: center; }
 #level1-puzzle-content {
@@ -457,6 +471,10 @@
     font-family: 'Press Start 2P', monospace; font-size: 8px;
     white-space: nowrap; display: none;
     animation: bouncePixel 1s steps(4) infinite; pointer-events: none; z-index: 10;
+}
+/* 古宅入口提示 — 下移至门边 */
+#door-prompt {
+    top: auto; bottom: 18%;
 }
 @keyframes bouncePixel { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-4px); } }
 @keyframes pulsePixel { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
@@ -657,7 +675,7 @@
 #scene-village-gate .gate-house-left { position: absolute; bottom: 14%; left: -3%; width: 300px; height: 225px; background: url('../assets/images/scences/level1/houses/house_01.png') center/contain no-repeat; z-index: 6; }
 #scene-village-gate .gate-house-mid { position: absolute; bottom: 16%; left: 35%; width: 375px; height: 22vh; background: url('../assets/images/scences/level1/houses/house_03.png') center/contain no-repeat; z-index: 6; }
 #scene-village-inside .village-stage-new { position: absolute; bottom: 14%; left: 5%; width: 420px; height: 300px; background: url('../assets/images/scences/level1/traditional Chinese village stage.png') center/contain no-repeat; z-index: 6; }
-#scene-village-inside::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 11%; background: #1a1a1a; z-index: 3; }
+#scene-village-inside::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 11%; background: #000; z-index: 3; }
 .gate-sky,.village-mountains-far,.gate-grass-l,.gate-grass-r,.gate-mountains-far,.gate-mountains,.gate-mountains-mid{display:none !important}
 .gate-fog-far,.gate-fog-mid,.gate-village-silhouette,.village-fog-far,.village-silhouette,.village-mid-buildings,.village-fog-mid,.village-mist,.village-lantern,.gate-mountains-mid{display:none !important}
 .village-bg{display:none !important}

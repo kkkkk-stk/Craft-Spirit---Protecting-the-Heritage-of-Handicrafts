@@ -184,7 +184,7 @@ export const Level1Manager = {
         const bp1 = document.getElementById('bm-prompt1');
         const bp2 = document.getElementById('bm-prompt2');
         if (gp) gp.style.display = (this._currentScene === 'village' && !this._grannyDone && pos > 65) ? 'block' : 'none';
-        if (dp) dp.style.display = (this._currentScene === 'village' && pos > 45 && pos < 65) ? 'block' : 'none';
+        if (dp) dp.style.display = (this._currentScene === 'village' && this._grannyDone && pos > 48 && pos < 58) ? 'block' : 'none';
         if (ep) ep.style.display = (this._currentScene === 'hub' && pos > 10 && pos < 30) ? 'block' : 'none';
         if (hp) hp.style.display = (this._currentScene === 'hub' && pos > 60) ? 'block' : 'none';
         if (bp1) bp1.style.display = (this._currentScene === 'back-mountain' && pos > 2 && pos < 22) ? 'block' : 'none';
@@ -205,7 +205,7 @@ export const Level1Manager = {
                 this._showToast('绣花古宅的门可以进入了');
             }), 300);
         }
-        if (this._currentScene === 'village' && pos > 45 && pos < 65) {
+        if (this._currentScene === 'village' && this._grannyDone && pos > 48 && pos < 58) {
             this._currentScene = 'house';
             this._switchView('house');
             this._renderArea('house');
@@ -587,20 +587,31 @@ export const Level1Manager = {
 
     _playMemory(id) {
         const m = MEMORIES[id]; if (!m || !this.memoryOverlay) return;
+        const video = this.memoryOverlay.querySelector('#level1-memory-video');
         const t = this.memoryOverlay.querySelector('.memory-title');
-        const d = this.memoryOverlay.querySelector('.memory-desc');
         const s = this.memoryOverlay.querySelector('.memory-subtitle');
         const cl = this.memoryOverlay.querySelector('.memory-clue');
         if (t) t.textContent = m.title;
-        if (d) d.textContent = m.text;
         if (s) s.textContent = m.subtitle || '';
         if (cl) cl.textContent = '🔍 ' + (m.clue || '');
+
+        // 设置视频源并播放
+        if (video && m.video) {
+            video.src = m.video;
+            video.load();
+            video.play().catch(() => {});
+        }
+
         this.memoryOverlay.style.display = 'flex';
         gameState.level1.memories[id] = true;
         this._updateProgressHud();
-        const skip = () => { this.memoryOverlay.style.display = 'none'; this.memoryOverlay.removeEventListener('click', skip); };
-        this.memoryOverlay.addEventListener('click', skip);
-        setTimeout(skip, 8000);
+
+        // 关闭：视频结束
+        const close = () => {
+            this.memoryOverlay.style.display = 'none';
+            if (video) { video.pause(); video.src = ''; video.removeEventListener('ended', close); }
+        };
+        if (video) video.addEventListener('ended', close);
     },
 
     // ==================== 对话系统 ====================
@@ -626,6 +637,15 @@ export const Level1Manager = {
         if (this.dialogueSpeaker) this.dialogueSpeaker.textContent = d.speaker;
         if (this.dialogueText) this.dialogueText.innerHTML = d.text.replace(/\n/g, '<br>');
         if (this.dialogueBox) this.dialogueBox.style.display = 'block';
+        // 蓝阿婆对话时显示立绘
+        const portrait = document.getElementById('level1-dialogue-portrait');
+        if (portrait) {
+            if (d.speaker === '蓝阿婆') {
+                portrait.classList.add('show');
+            } else {
+                portrait.classList.remove('show');
+            }
+        }
     },
 
     _dialogueAdvance() { this._dialogueIndex++; this._dialogueShow(); },
