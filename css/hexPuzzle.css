@@ -1,0 +1,274 @@
+/* ========== 六边锦绣拼图样式 ========== */
+
+#hex-puzzle-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 900;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.hex-puzzle-container {
+    background: #1a1410;
+    border: 2px solid #8b6914;
+    border-radius: 12px;
+    padding: 24px 28px;
+    max-width: 720px;
+    width: 92%;
+    box-shadow: 0 0 40px rgba(139, 105, 20, 0.3);
+}
+
+/* ===== 头部 ===== */
+.hex-puzzle-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #3d2e1e;
+}
+
+.hex-puzzle-title {
+    font-size: 22px;
+    color: #d4a017;
+    letter-spacing: 4px;
+    font-weight: bold;
+}
+
+#hex-close-btn {
+    background: none;
+    border: 1px solid #5c3a1e;
+    color: #d4c0a0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+#hex-close-btn:hover {
+    background: #5c3a1e;
+    color: #fff;
+}
+
+/* ===== 关卡选择界面 ===== */
+#hex-stage-select {
+    text-align: center;
+    padding: 36px 0;
+}
+
+.hex-select-hint {
+    color: #d4c0a0;
+    font-size: 17px;
+    margin-bottom: 28px;
+    letter-spacing: 2px;
+}
+
+.hex-stage-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hex-stage-btn {
+    background: #2c1810;
+    border: 2px solid #8b6914;
+    border-radius: 10px;
+    padding: 24px 28px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    min-width: 140px;
+}
+
+.hex-stage-btn:hover {
+    border-color: #d4a017;
+    background: #3d2e1e;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 16px rgba(212, 160, 23, 0.2);
+}
+
+.hex-stage-btn.completed {
+    border-color: #4a7a30;
+    background: #1a2814;
+}
+
+.hex-stage-btn.completed::after {
+    content: '✅';
+    font-size: 14px;
+}
+
+.hex-stage-name {
+    font-size: 20px;
+    color: #d4a017;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.hex-stage-info {
+    font-size: 13px;
+    color: #8b7355;
+}
+
+/* ===== 拼图棋盘区域 ===== */
+#hex-board-wrapper {
+    display: none;
+}
+
+.hex-board-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    color: #d4c0a0;
+}
+
+#hex-stage-label {
+    font-size: 18px;
+    color: #d4a017;
+    letter-spacing: 2px;
+}
+
+.hex-progress-info {
+    font-size: 14px;
+    color: #8b7355;
+}
+
+#hex-progress {
+    color: #d4a017;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* ===== 棋盘 ===== */
+.hex-board {
+    position: relative;
+    width: 600px;
+    height: 520px;
+    margin: 0 auto;
+    background: #0d0a08;
+    border: 1px solid #3d2e1e;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* 参考图叠层 */
+.hex-reference {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: 600px 520px;
+    background-repeat: no-repeat;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 50;
+}
+
+.hex-reference.show {
+    opacity: 0.35;
+}
+
+/* ===== 六边格 ===== */
+.hex-tile {
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.35s ease;
+    clip-path: polygon(100% 50%, 75% 100%, 25% 100%, 0% 50%, 25% 0%, 75% 0%);
+    -webkit-clip-path: polygon(100% 50%, 75% 100%, 25% 100%, 0% 50%, 25% 0%, 75% 0%);
+    /* 默认灰色蒙版：灰度+压暗 */
+    filter: grayscale(0.85) brightness(0.45) drop-shadow(0 0 1px rgba(0, 0, 0, 0.9));
+    background-repeat: no-repeat;
+}
+
+.hex-tile:hover {
+    /* 悬停时略微提亮，但仍保持灰色 */
+    filter: grayscale(0.7) brightness(0.7) drop-shadow(0 0 2px rgba(0, 0, 0, 0.9));
+    z-index: 10;
+}
+
+.hex-tile.matched {
+    /* 对齐点亮：去灰+提亮+金色光晕 */
+    filter: grayscale(0) brightness(1.05) drop-shadow(0 0 4px rgba(212, 160, 23, 0.8));
+}
+
+/* ===== 底部按钮 ===== */
+.hex-board-footer {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.hex-board-footer button {
+    background: #2c1810;
+    border: 1px solid #8b6914;
+    color: #d4c0a0;
+    padding: 8px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+}
+
+.hex-board-footer button:hover {
+    background: #3d2e1e;
+    color: #fff;
+    border-color: #d4a017;
+}
+
+/* ===== 通关特效 ===== */
+#hex-win-fx {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    border-radius: 12px;
+}
+
+.hex-win-content {
+    text-align: center;
+    animation: hexWinScale 0.5s ease;
+}
+
+.hex-win-content h2 {
+    font-size: 32px;
+    color: #d4a017;
+    margin-bottom: 12px;
+    letter-spacing: 4px;
+}
+
+.hex-win-content p {
+    color: #d4c0a0;
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+.hex-win-content .hex-win-all {
+    color: #4a9a30;
+    font-size: 18px;
+    margin-top: 16px;
+    font-weight: bold;
+}
+
+@keyframes hexWinScale {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ===== 入口按钮（关卡一古宅内）===== */
+#level1-hexpuzzle-entry .puzzle-entry {
+    cursor: pointer;
+}

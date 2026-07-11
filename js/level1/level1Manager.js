@@ -49,6 +49,14 @@ export const Level1Manager = {
             });
         }
 
+        // 六边锦绣拼图入口
+        const hexBtn = document.getElementById('hexpuzzle-btn');
+        if (hexBtn) {
+            hexBtn.addEventListener('click', () => {
+                document.dispatchEvent(new CustomEvent('openHexPuzzle'));
+            });
+        }
+
         // 行走监听
         document.addEventListener('playerMoved', () => {
             if (gameState.currentChapter !== 'level1') return;
@@ -179,7 +187,10 @@ export const Level1Manager = {
             this._renderArea('house');
         }
         if (this._currentScene === 'hub' && pos > 20 && pos < 50) this._startPuzzle('drying');
-        if (this._currentScene === 'hub' && pos > 60) this._startPuzzle('totem');
+        if (this._currentScene === 'hub' && pos > 60) {
+            // 祠堂交互：打开六边锦绣拼图（原图腾拼图改为图像还原拼图）
+            document.dispatchEvent(new CustomEvent('openHexPuzzle'));
+        }
     },
 
     // ==================== 区域渲染 ====================

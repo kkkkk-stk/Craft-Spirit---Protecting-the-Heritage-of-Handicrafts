@@ -13,6 +13,7 @@ import { PauseManager } from './pause/pauseManager.js';
 import { SaveManager } from './save/saveManager.js';
 import { BackpackManager } from './backpack/backpackManager.js';
 import { Level1Manager } from './level1/level1Manager.js';
+import { HexPuzzleManager } from './hexPuzzle/hexPuzzleManager.js';
 
 /**
  * 初始化所有模块
@@ -65,6 +66,9 @@ function init() {
 
         // 第一关
         Level1Manager.init();
+
+        // 六边锦绣拼图
+        HexPuzzleManager.init();
 
         console.log('匠灵 · 所有模块初始化完成 ✅');
     } catch (err) {

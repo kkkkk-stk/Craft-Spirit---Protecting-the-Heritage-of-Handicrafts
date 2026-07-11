@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="css/save.css">
     <link rel="stylesheet" href="css/backpack.css">
     <link rel="stylesheet" href="css/level1.css">
+    <link rel="stylesheet" href="css/hexPuzzle.css">
 </head>
 <body>
 
@@ -303,6 +304,12 @@
             <div id="level1-artifacts"></div>
             <h3 class="area-section-title">机关解谜</h3>
             <div id="level1-puzzle-entry"></div>
+            <h3 class="area-section-title">六边锦绣 · 终极拼图</h3>
+            <div id="level1-hexpuzzle-entry">
+                <div class="puzzle-entry" id="hexpuzzle-btn">
+                    <span>🧩 六边锦绣拼图</span><span>进入</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -337,6 +344,60 @@
 
     <!-- 通关特效 -->
     <div id="level1-ending-fx"></div>
+</div>
+
+<!-- ==================== 六边锦绣拼图 ==================== -->
+<div id="hex-puzzle-overlay">
+    <div class="hex-puzzle-container">
+        <div class="hex-puzzle-header">
+            <span class="hex-puzzle-title">六 边 锦 绣</span>
+            <button id="hex-close-btn">✕</button>
+        </div>
+
+        <!-- 关卡选择 -->
+        <div id="hex-stage-select">
+            <p class="hex-select-hint">选择拼图阶段 · 点击旋转六边格还原图案</p>
+            <div class="hex-stage-buttons">
+                <button class="hex-stage-btn" data-stage="1">
+                    <span class="hex-stage-name">第一阶</span>
+                    <span class="hex-stage-info">7块 · 入门 · 单格点亮</span>
+                </button>
+                <button class="hex-stage-btn" data-stage="2">
+                    <span class="hex-stage-name">第二阶</span>
+                    <span class="hex-stage-info">19块 · 中等 · 集群点亮</span>
+                </button>
+                <button class="hex-stage-btn" data-stage="3">
+                    <span class="hex-stage-name">第三阶</span>
+                    <span class="hex-stage-info">37块 · 挑战 · 集群点亮</span>
+                </button>
+            </div>
+            <p id="hex-all-complete" style="display:none;color:#4a9a30;font-size:18px;margin-top:24px;letter-spacing:2px;">🏆 三阶全部完成 · 万线归宗！</p>
+        </div>
+
+        <!-- 拼图棋盘 -->
+        <div id="hex-board-wrapper">
+            <div class="hex-board-info">
+                <span id="hex-stage-label">六边锦绣 · 第一阶</span>
+                <span class="hex-progress-info">已对齐: <span id="hex-progress">0 / 0</span></span>
+            </div>
+            <div class="hex-board" id="hex-board">
+                <div class="hex-reference" id="hex-reference"></div>
+            </div>
+            <div class="hex-board-footer">
+                <button id="hex-back-btn">返回选择</button>
+                <button id="hex-shuffle-btn">重新打乱</button>
+                <button id="hex-reference-btn">查看原图</button>
+            </div>
+        </div>
+
+        <!-- 通关特效 -->
+        <div id="hex-win-fx">
+            <div class="hex-win-content">
+                <h2>✨ 拼图完成！</h2>
+                <p>刺绣图谱复原成功</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- ==================== 暂停面板 ==================== -->
