@@ -162,7 +162,7 @@ export const Level1Manager = {
         const yp = document.getElementById('yard-prompt');
         const hp = document.getElementById('hall-prompt');
         if (gp) gp.style.display = (this._currentScene === 'village' && !this._grannyDone && pos > 65) ? 'block' : 'none';
-        if (dp) dp.style.display = (this._currentScene === 'village' && pos > 45 && pos < 65) ? 'block' : 'none';
+        if (dp) dp.style.display = (this._currentScene === 'village' && this._grannyDone && pos > 48 && pos < 58) ? 'block' : 'none';
         if (yp) yp.style.display = (this._currentScene === 'hub' && pos > 20 && pos < 50) ? 'block' : 'none';
         if (hp) hp.style.display = (this._currentScene === 'hub' && pos > 60) ? 'block' : 'none';
     },
@@ -181,7 +181,7 @@ export const Level1Manager = {
                 this._showToast('绣花古宅的门可以进入了');
             }), 300);
         }
-        if (this._currentScene === 'village' && pos > 45 && pos < 65) {
+        if (this._currentScene === 'village' && this._grannyDone && pos > 48 && pos < 58) {
             this._currentScene = 'house';
             this._switchView('house');
             this._renderArea('house');
@@ -589,6 +589,15 @@ export const Level1Manager = {
         if (this.dialogueSpeaker) this.dialogueSpeaker.textContent = d.speaker;
         if (this.dialogueText) this.dialogueText.innerHTML = d.text.replace(/\n/g, '<br>');
         if (this.dialogueBox) this.dialogueBox.style.display = 'block';
+        // 蓝阿婆对话时显示立绘
+        const portrait = document.getElementById('level1-dialogue-portrait');
+        if (portrait) {
+            if (d.speaker === '蓝阿婆') {
+                portrait.classList.add('show');
+            } else {
+                portrait.classList.remove('show');
+            }
+        }
     },
 
     _dialogueAdvance() { this._dialogueIndex++; this._dialogueShow(); },
