@@ -1,7 +1,7 @@
 // ========== 第一关管理器 v3 ==========
 import { gameState } from '../common/gameState.js';
 import { SceneManager } from '../common/sceneManager.js';
-import { OPENING_DIALOGUES, AREAS, ARTIFACTS, MEMORIES, PUZZLES } from './level1Data.js';
+import { OPENING_DIALOGUES, AREAS, ARTIFACTS, MEMORIES, PUZZLES, LOOM_LEVELS } from './level1Data.js';
 
 export const Level1Manager = {
     root: null, _currentScene: 'gate', _firstVillageVisit: true, _grannyDone: false, _player: null,
@@ -244,32 +244,250 @@ export const Level1Manager = {
         html += '<p style="color:#5c3a1e;margin-bottom:16px;">' + (puzzle.rule || puzzle.desc || '') + '</p>';
 
         if (pid === 'loom') {
-            html += (puzzle.steps || []).map((s, i) =>
-                '<div class="puzzle-step" data-idx="' + i + '" style="padding:10px;margin:6px;background:#e8dcc8;border:2px solid #8b5a2b;border-radius:6px;cursor:pointer;">' + s.label + '<br><small>' + s.desc + '</small></div>'
-            ).join('');
-            html += '<p style="color:#888;margin-top:12px;">' + (puzzle.errorHint || '') + '</p>';
+            // --- Multi-level SVG drag-to-connect loom puzzle ---
+            var SW = 480, SH = 340;
+            var levels = LOOM_LEVELS;
+            var levelIdx = 0;
+            var phase = 1;
+            var drawn = new Set();
+            var drag = null;
+
+            // Build HTML
+            html += '<div style="margin:16px 0;">';
+            html += '<div id="loom-level-info" style="text-align:center;margin-bottom:8px;"></div>';
+            html += '<div id="loom-phases" style="display:flex;justify-content:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;"></div>';
+            html += '<svg id="loom-svg" width="' + SW + '" height="' + SH + '" viewBox="0 0 ' + SW + ' ' + SH + '" style="background:#3d2a5c;border-radius:8px;display:block;margin:0 auto;touch-action:none;max-width:100%;"></svg>';
+            html += '<div id="loom-hint" style="text-align:center;color:#8b5a2b;font-size:11px;margin-top:10px;min-height:20px;font-family:monospace;"></div>';
+            html += '<div style="display:flex;justify-content:center;gap:10px;margin-top:12px;">';
+            html += '<button id="loom-clear" class="loom-btn">清空重画</button>';
+            html += '<button id="loom-next" class="loom-btn primary" style="display:none;">下一关 →</button>';
+            html += '<button id="loom-confirm" class="loom-btn primary" disabled style="display:none;">确认上机织布</button>';
+            html += '<button id="loom-tip" class="loom-btn">口诀提示</button>';
+            html += '</div></div>';
             this.puzzleContent.innerHTML = html;
-            const steps = this.puzzleContent.querySelectorAll('.puzzle-step');
-            let clicked = [];
-            steps.forEach(el => {
-                el.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (el.classList.contains('done')) return;
-                    el.classList.add('done');
-                    el.style.background = '#8b5a2b'; el.style.color = '#fff';
-                    clicked.push(+el.dataset.idx);
-                    if (clicked.length === steps.length) {
-                        if (clicked.join(',') === puzzle.correctOrder.join(',')) {
-                            gameState.level1.puzzles[pid] = true; this._updateProgressHud();
-                            this.puzzleContent.innerHTML = '<h3 style="color:#4a7a30;">✅ 解谜成功！</h3><p>织机齿轮转动，一缕金光流入凤凰纹样。</p>';
-                            setTimeout(() => { this.puzzleOverlay.style.display = 'none'; }, 1500);
-                        } else {
-                            clicked = [];
-                            this.puzzleContent.querySelectorAll('.puzzle-step').forEach(e => { e.classList.remove('done'); e.style.background = '#e8dcc8'; e.style.color = '#2c1810'; });
-                        }
-                    }
+
+            var svg = document.getElementById('loom-svg');
+            var hintEl = document.getElementById('loom-hint');
+            var phaseEl = document.getElementById('loom-phases');
+            var levelInfoEl = document.getElementById('loom-level-info');
+            var clearBtn = document.getElementById('loom-clear');
+            var confirmBtn = document.getElementById('loom-confirm');
+            var nextBtn = document.getElementById('loom-next');
+            var tipBtn = document.getElementById('loom-tip');
+            var self = this;
+
+            function getLevel() { return levels[levelIdx]; }
+            function getNodeMap() {
+                var m = {};
+                getLevel().nodes.forEach(function (n) { m[n.id] = n; });
+                return m;
+            }
+            function getPhase() { return getLevel().phases[phase - 1]; }
+            function phaseEdgeTotal(pi) { return getLevel().phases[pi].edges.length; }
+            function phaseDrawnCount(pi) {
+                return getLevel().phases[pi].edges.filter(function (e) { return drawn.has(e.id); }).length;
+            }
+            function isPhaseDone(pi) { return phaseDrawnCount(pi) === phaseEdgeTotal(pi); }
+            function isTutorial() { return levelIdx === 0; }
+            function totalEdges() { return getLevel().phases.reduce(function (s, p) { return s + p.edges.length; }, 0); }
+            function totalDrawn() { return getLevel().phases.reduce(function (s, p, i) { return s + phaseDrawnCount(i); }, 0); }
+            function showHint(msg) { if (hintEl) hintEl.textContent = msg; }
+            function updateLevelInfo() {
+                levelInfoEl.innerHTML = '<span style="color:#8b5a2b;font-size:12px;font-family:monospace;">织纹第 ' + (levelIdx + 1) + '/' + levels.length + ' 关 · ' + getLevel().name + ' — ' + getLevel().desc + '</span>';
+            }
+            function updatePhases() {
+                phaseEl.innerHTML = getLevel().phases.map(function (p, i) {
+                    var active = (i + 1 === phase);
+                    var done = isPhaseDone(i);
+                    var cls = active ? 'loom-phase active' : (done ? 'loom-phase done' : 'loom-phase');
+                    return '<span class="' + cls + '">' + (i + 1) + '.' + p.name + ' (' + phaseDrawnCount(i) + '/' + phaseEdgeTotal(i) + ')</span>';
+                }).join('');
+            }
+            function render() {
+                var nodeMap = getNodeMap();
+                var s = '';
+                // 1. Faint target pattern (all edges not yet drawn)
+                getLevel().phases.forEach(function (p, pi) {
+                    p.edges.forEach(function (e) {
+                        if (drawn.has(e.id)) return;
+                        var f = nodeMap[e.from], t = nodeMap[e.to];
+                        var isCur = (pi + 1 === phase);
+                        var cls = isTutorial()
+                            ? (isCur ? 'loom-line-target-active' : 'loom-line-target')
+                            : 'loom-line-target-active';
+                        s += '<line x1="' + f.x + '" y1="' + f.y + '" x2="' + t.x + '" y2="' + t.y + '" class="' + cls + '"/>';
+                    });
                 });
+                // 2. Completed edges (solid)
+                getLevel().phases.forEach(function (p) {
+                    p.edges.forEach(function (e) {
+                        if (!drawn.has(e.id)) return;
+                        var f = nodeMap[e.from], t = nodeMap[e.to];
+                        s += '<line x1="' + f.x + '" y1="' + f.y + '" x2="' + t.x + '" y2="' + t.y + '" class="loom-line-done"/>';
+                    });
+                });
+                // 3. Drag preview
+                if (drag) {
+                    s += '<line x1="' + drag.fx + '" y1="' + drag.fy + '" x2="' + drag.cx + '" y2="' + drag.cy + '" class="loom-line-preview"/>';
+                }
+                // 4. Nodes
+                var curEdges = getPhase().edges;
+                getLevel().nodes.forEach(function (n) {
+                    var inPhase = isTutorial()
+                        ? curEdges.some(function (e) { return e.from === n.id || e.to === n.id; })
+                        : true;
+                    var isCorner = n.id.charAt(0) === 'c';
+                    var isDrag = drag && drag.from === n.id;
+                    var r = isCorner ? 10 : 7;
+                    var cls = 'loom-node' + (isCorner ? ' frame' : '') + (inPhase ? ' active' : '') + (isDrag ? ' dragging' : '');
+                    s += '<circle cx="' + n.x + '" cy="' + n.y + '" r="' + r + '" class="' + cls + '" data-id="' + n.id + '"/>';
+                });
+                svg.innerHTML = s;
+            }
+            function getCoord(e) {
+                var rect = svg.getBoundingClientRect();
+                return { x: (e.clientX - rect.left) * (SW / rect.width), y: (e.clientY - rect.top) * (SH / rect.height) };
+            }
+            function onSvgDown(e) {
+                var id = e.target.getAttribute ? e.target.getAttribute('data-id') : null;
+                if (!id) return;
+                e.preventDefault();
+                var nodeMap = getNodeMap();
+                var node = nodeMap[id];
+                if (!node) return;
+                var curPhase = getPhase();
+                var inPhase = curPhase.edges.some(function (ed) { return ed.from === id || ed.to === id; });
+                if (!inPhase) {
+                    if (isTutorial()) showHint('请连接当前阶段的节点：' + curPhase.name);
+                    else showHint('走线顺序不对，回想口诀：横先竖后、外框先稳、纹理后填');
+                    return;
+                }
+                var c = getCoord(e);
+                drag = { from: id, fx: node.x, fy: node.y, cx: c.x, cy: c.y };
+                try { svg.setPointerCapture(e.pointerId); } catch (err) {}
+                render();
+            }
+            function onSvgMove(e) {
+                if (!drag) return;
+                e.preventDefault();
+                var c = getCoord(e);
+                drag.cx = c.x; drag.cy = c.y;
+                render();
+            }
+            function onSvgUp(e) {
+                if (!drag) return;
+                e.preventDefault();
+                var c = getCoord(e);
+                var nodeMap = getNodeMap();
+                var target = null, minD = 25;
+                Object.values(nodeMap).forEach(function (n) {
+                    if (n.id === drag.from) return;
+                    var d = Math.hypot(n.x - c.x, n.y - c.y);
+                    if (d < minD) { minD = d; target = n; }
+                });
+                if (target) completeEdge(drag.from, target.id);
+                drag = null;
+                render();
+            }
+            function completeEdge(fromId, toId) {
+                var curPhase = getPhase();
+                var edge = curPhase.edges.find(function (e) {
+                    return (e.from === fromId && e.to === toId) || (e.from === toId && e.to === fromId);
+                });
+                if (edge && !drawn.has(edge.id)) {
+                    drawn.add(edge.id);
+                    var drawnN = phaseDrawnCount(phase - 1);
+                    var totalN = phaseEdgeTotal(phase - 1);
+                    if (drawnN === totalN) {
+                        if (phase < getLevel().phases.length) {
+                            phase++;
+                            if (isTutorial()) showHint('✅ ' + curPhase.name + '完成！继续：' + getPhase().name);
+                            else showHint('✅ 走线正确！已完成 ' + totalDrawn() + '/' + totalEdges() + ' 条');
+                        } else {
+                            onLevelComplete();
+                        }
+                    } else {
+                        if (isTutorial()) showHint(curPhase.name + ' ' + drawnN + '/' + totalN + ' 完成');
+                        else showHint('✅ 已完成 ' + totalDrawn() + '/' + totalEdges() + ' 条线');
+                    }
+                } else {
+                    var foundOther = false;
+                    getLevel().phases.forEach(function (p, pi) {
+                        if (pi + 1 === phase) return;
+                        if (p.edges.some(function (e) {
+                            return (e.from === fromId && e.to === toId) || (e.from === toId && e.to === fromId);
+                        })) foundOther = true;
+                    });
+                    if (foundOther) {
+                        if (isTutorial()) showHint('请先完成当前阶段：' + curPhase.name);
+                        else showHint('走线顺序不对，回想口诀：横先竖后、外框先稳、纹理后填');
+                    } else showHint('请连接正确的节点');
+                }
+                updatePhases();
+            }
+            function onLevelComplete() {
+                if (levelIdx < levels.length - 1) {
+                    showHint('✅ ' + getLevel().name + '完成！点击「下一关」继续');
+                    nextBtn.style.display = 'block';
+                    confirmBtn.style.display = 'none';
+                } else {
+                    showHint('✅ 全部织纹完成！点击「确认上机织布」');
+                    confirmBtn.disabled = false;
+                    confirmBtn.style.display = 'block';
+                    nextBtn.style.display = 'none';
+                }
+            }
+            function loadLevel(idx) {
+                levelIdx = idx;
+                phase = 1;
+                drawn.clear();
+                nextBtn.style.display = 'none';
+                confirmBtn.style.display = 'none';
+                confirmBtn.disabled = true;
+                updateLevelInfo();
+                if (isTutorial()) {
+                    phaseEl.style.display = 'flex';
+                    updatePhases();
+                    showHint(getPhase().hint);
+                } else {
+                    phaseEl.style.display = 'none';
+                    showHint('按照口诀「横先竖后、外框先稳、纹理后填」完成所有走线（共' + totalEdges() + '条线）');
+                }
+                render();
+            }
+
+            // Event listeners
+            svg.addEventListener('pointerdown', onSvgDown);
+            svg.addEventListener('pointermove', onSvgMove);
+            svg.addEventListener('pointerup', onSvgUp);
+            svg.addEventListener('pointercancel', onSvgUp);
+            clearBtn.addEventListener('click', function () {
+                if (isTutorial()) {
+                    getPhase().edges.forEach(function (e) { drawn.delete(e.id); });
+                    showHint('当前阶段已重置，重新开始');
+                } else {
+                    drawn.clear();
+                    phase = 1;
+                    showHint('已全部清空，重新开始');
+                }
+                if (isTutorial()) updatePhases();
+                render();
             });
+            nextBtn.addEventListener('click', function () {
+                loadLevel(levelIdx + 1);
+            });
+            confirmBtn.addEventListener('click', function () {
+                gameState.level1.puzzles.loom = true;
+                self._updateProgressHud();
+                self.puzzleContent.innerHTML = '<h3 style="color:#4a7a30;">✅ 解谜成功！</h3><p>织机齿轮转动，五彩柔光流入凤凰纹样，古宅黑雾缓缓消散。</p>';
+                setTimeout(function () { self.puzzleOverlay.style.display = 'none'; }, 2000);
+            });
+            tipBtn.addEventListener('click', function () {
+                showHint('口诀：横先竖后、外框先稳、纹理后填');
+            });
+
+            // Init level 1
+            loadLevel(0);
         } else if (pid === 'drying') {
             html += '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0;">';
             html += puzzle.slots.map((s, i) => '<div class="dry-slot" data-idx="' + i + '" style="padding:10px 16px;background:#e8dcc8;border:2px solid #8b5a2b;border-radius:6px;cursor:pointer;">' + s + '</div>').join('');

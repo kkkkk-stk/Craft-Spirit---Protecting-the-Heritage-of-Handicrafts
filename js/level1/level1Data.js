@@ -115,13 +115,7 @@ export const PUZZLES = {
     loom: {
         name: '织布机走线机关',
         area: 'house',
-        rule: '遵循口诀「横先竖后、外框先稳、纹理后填」，按顺序点击三个步骤完成走线。',
-        steps: [
-            { label: '步骤一：连接外围正方形边框', desc: '固定整块布料轮廓' },
-            { label: '步骤二：从左到右铺满横向线', desc: '编织经线' },
-            { label: '步骤三：从上至下穿插竖向线', desc: '填充内部纹理网格' }
-        ],
-        correctOrder: [0, 1, 2],
+        rule: '遵循口诀「横先竖后、外框先稳、纹理后填」，拖拽连线完成经纬布线：先连外框4边，再从左到右连4条横线，最后从上到下连3条竖线。',
         errorHint: '阿婆当年教寨里妇女织布，总要先搭好完整外框，再织内部花纹。回看织布记忆重新走线。'
     },
     drying: {
@@ -158,6 +152,91 @@ export const PUZZLES = {
         errorHint: '阿婆晚年整理纹样底稿时说，盘瓠是畲家始祖，是所有文脉的根基，应当摆放在石壁最底层。'
     }
 };
+
+// ========== 织布机三关织纹数据 ==========
+export const LOOM_LEVELS = [
+    {
+        name: '方格纹',
+        desc: '基础方格织纹，先搭外框再织经纬',
+        nodes: [
+            { id: 'c0', x: 50, y: 50 }, { id: 'c1', x: 430, y: 50 },
+            { id: 'c2', x: 430, y: 290 }, { id: 'c3', x: 50, y: 290 },
+            { id: 'l0', x: 50, y: 130 }, { id: 'l1', x: 50, y: 210 },
+            { id: 'r0', x: 430, y: 130 }, { id: 'r1', x: 430, y: 210 },
+            { id: 't0', x: 145, y: 50 }, { id: 't1', x: 335, y: 50 },
+            { id: 'b0', x: 145, y: 290 }, { id: 'b1', x: 335, y: 290 }
+        ],
+        phases: [
+            { name: '外框', hint: '拖拽连接外围4条边框', edges: [
+                { id: 'f0', from: 'c0', to: 'c1' }, { id: 'f1', from: 'c1', to: 'c2' },
+                { id: 'f2', from: 'c2', to: 'c3' }, { id: 'f3', from: 'c3', to: 'c0' }
+            ]},
+            { name: '横线', hint: '从左到右拖拽连接2条横向经线', edges: [
+                { id: 'h0', from: 'l0', to: 'r0' }, { id: 'h1', from: 'l1', to: 'r1' }
+            ]},
+            { name: '竖线', hint: '从上到下拖拽连接2条竖向纬线', edges: [
+                { id: 'v0', from: 't0', to: 'b0' }, { id: 'v1', from: 't1', to: 'b1' }
+            ]}
+        ]
+    },
+    {
+        name: '菱花纹',
+        desc: '花草菱形织纹，加入十字与对角走线',
+        nodes: [
+            { id: 'c0', x: 50, y: 50 }, { id: 'c1', x: 430, y: 50 },
+            { id: 'c2', x: 430, y: 290 }, { id: 'c3', x: 50, y: 290 },
+            { id: 't0', x: 240, y: 50 }, { id: 'b0', x: 240, y: 290 },
+            { id: 'l0', x: 50, y: 170 }, { id: 'r0', x: 430, y: 170 }
+        ],
+        phases: [
+            { name: '外框', hint: '拖拽连接外围4条边框', edges: [
+                { id: 'f0', from: 'c0', to: 'c1' }, { id: 'f1', from: 'c1', to: 'c2' },
+                { id: 'f2', from: 'c2', to: 'c3' }, { id: 'f3', from: 'c3', to: 'c0' }
+            ]},
+            { name: '十字', hint: '连接中心十字经纬线', edges: [
+                { id: 'h0', from: 'l0', to: 'r0' }, { id: 'v0', from: 't0', to: 'b0' }
+            ]},
+            { name: '对角', hint: '拖拽连接2条对角斜线', edges: [
+                { id: 'd0', from: 'c0', to: 'c2' }, { id: 'd1', from: 'c3', to: 'c1' }
+            ]},
+            { name: '菱形', hint: '连接4条边构成内菱形花纹', edges: [
+                { id: 'dm0', from: 't0', to: 'r0' }, { id: 'dm1', from: 'r0', to: 'b0' },
+                { id: 'dm2', from: 'b0', to: 'l0' }, { id: 'dm3', from: 'l0', to: 't0' }
+            ]}
+        ]
+    },
+    {
+        name: '凤纹',
+        desc: '婚嫁凤凰织纹，最复杂的走线工序',
+        nodes: [
+            { id: 'c0', x: 50, y: 50 }, { id: 'c1', x: 430, y: 50 },
+            { id: 'c2', x: 430, y: 290 }, { id: 'c3', x: 50, y: 290 },
+            { id: 't0', x: 145, y: 50 }, { id: 't1', x: 240, y: 50 }, { id: 't2', x: 335, y: 50 },
+            { id: 'b0', x: 145, y: 290 }, { id: 'b1', x: 240, y: 290 }, { id: 'b2', x: 335, y: 290 },
+            { id: 'l0', x: 50, y: 110 }, { id: 'l1', x: 50, y: 170 }, { id: 'l2', x: 50, y: 230 },
+            { id: 'r0', x: 430, y: 110 }, { id: 'r1', x: 430, y: 170 }, { id: 'r2', x: 430, y: 230 }
+        ],
+        phases: [
+            { name: '外框', hint: '拖拽连接外围4条边框', edges: [
+                { id: 'f0', from: 'c0', to: 'c1' }, { id: 'f1', from: 'c1', to: 'c2' },
+                { id: 'f2', from: 'c2', to: 'c3' }, { id: 'f3', from: 'c3', to: 'c0' }
+            ]},
+            { name: '横线', hint: '从左到右连接3条横向经线', edges: [
+                { id: 'h0', from: 'l0', to: 'r0' }, { id: 'h1', from: 'l1', to: 'r1' }, { id: 'h2', from: 'l2', to: 'r2' }
+            ]},
+            { name: '竖线', hint: '从上到下连接3条竖向纬线', edges: [
+                { id: 'v0', from: 't0', to: 'b0' }, { id: 'v1', from: 't1', to: 'b1' }, { id: 'v2', from: 't2', to: 'b2' }
+            ]},
+            { name: '对角', hint: '拖拽连接2条对角斜线', edges: [
+                { id: 'd0', from: 'c0', to: 'c2' }, { id: 'd1', from: 'c3', to: 'c1' }
+            ]},
+            { name: '菱形', hint: '连接4条边构成中心菱形凤冠', edges: [
+                { id: 'dm0', from: 't1', to: 'r1' }, { id: 'dm1', from: 'r1', to: 'b1' },
+                { id: 'dm2', from: 'b1', to: 'l1' }, { id: 'dm3', from: 'l1', to: 't1' }
+            ]}
+        ]
+    }
+];
 
 // ========== 通关结局 ==========
 export const ENDING_DIALOGUES = [
