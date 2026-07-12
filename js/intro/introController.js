@@ -77,13 +77,17 @@ export const IntroController = {
 
         const enterScene = () => {
             SceneManager.show('game-screen', 'block');
-            SceneManager.show('ui-hud', 'flex');
-            // 延迟显示新手教程
-            setTimeout(() => {
-                document.dispatchEvent(new CustomEvent('showTutorial'));
-            }, 600);
-            // 进入场景后，异步加载剩余CG视频
-            Preloader.preloadVideos();
+            // 等待2帧让浏览器完成所有background-image渲染，再激活控制
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    SceneManager.show('ui-hud', 'flex');
+                    setTimeout(() => {
+                        document.dispatchEvent(new CustomEvent('showTutorial'));
+                    }, 600);
+                    // 进入场景后，异步加载剩余CG视频
+                    Preloader.preloadVideos();
+                });
+            });
         };
 
         // 3.mp4已加载完 → 直接进入

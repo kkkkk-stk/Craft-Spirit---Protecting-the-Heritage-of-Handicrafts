@@ -72,6 +72,10 @@ const HINTS = [
     '正在点亮传承之路...',
 ];
 
+// 保持所有Image对象引用，防止垃圾回收清除图片内存缓存
+// 避免CSS background-image渲染时缓存不命中导致延迟出现
+const _imageCache = [];
+
 /**
  * 预加载单张图片（确保下载+解码完成，避免CSS渲染时延迟出现）
  */
@@ -79,6 +83,7 @@ function loadImage(src) {
     return new Promise((resolve) => {
         const img = new Image();
         img.onload = () => {
+            _imageCache.push(img); // 保持引用，防止垃圾回收清除缓存
             // 确保图片解码完成，CSS background-image 渲染时可立即显示
             if (img.decode) {
                 img.decode().then(() => resolve({ src, ok: true }))
