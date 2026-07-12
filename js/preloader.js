@@ -134,46 +134,64 @@ const _lazyCache = {};
 let _videoPromise = null;
 
 /**
- * 后台逐个预加载视频（不阻塞，解决记忆CG播放卡顿）
+ * 加载单个视频（loadeddata 时 resolve）
+ */
+function preloadVideo(src) {
+    return new Promise(resolve => {
+        const v = document.createElement('video');
+        v.preload = 'auto';
+        v.muted = true;
+        v.src = src;
+        v.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';
+        document.body.appendChild(v);
+
+        let done = false;
+        const finish = () => {
+            if (done) return;
+            done = true;
+            v.remove();
+            resolve();
+        };
+
+        v.addEventListener('loadeddata', finish);
+        v.addEventListener('error', finish);
+        // 超时保护（120秒，视频较大）
+        setTimeout(finish, 120000);
+    });
+}
+
+/**
+ * 后台逐个预加载剩余视频（跳过第一个，已在开局加载）
  * 在游戏场景资源加载完后调用
  */
 function preloadVideos() {
     if (_videoPromise) return _videoPromise;
 
     _videoPromise = (async () => {
-        for (const src of VIDEO_LIST) {
-            await new Promise(resolve => {
-                const v = document.createElement('video');
-                v.preload = 'auto';
-                v.muted = true;
-                v.src = src;
-                v.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';
-                document.body.appendChild(v);
-
-                let done = false;
-                const finish = () => {
-                    if (done) return;
-                    done = true;
-                    v.remove();
-                    resolve();
-                };
-
-                v.addEventListener('loadeddata', finish);
-                v.addEventListener('error', finish);
-                // 超时保护（60秒）
-                setTimeout(finish, 60000);
-            });
+        // 跳过第一个CG视频（已在开局加载阶段加载）
+        for (let i = 1; i < VIDEO_LIST.length; i++) {
+            await preloadVideo(VIDEO_LIST[i]);
         }
-        console.log('Preloader: 所有视频预加载完成');
+        console.log('Preloader: 剩余视频预加载完成');
     })();
 
     return _videoPromise;
 }
 
 export const Preloader = {
-    /** 阶段1：加载主菜单必需资源（阻塞，带进度回调） */
+    /** 阶段1：加载主菜单资源 + 第一个CG视频（阻塞，带进度回调） */
     loadCritical(onProgress) {
-        return loadList(CRITICAL_LIST, onProgress);
+        const totalSteps = CRITICAL_LIST.length + 1; // 图片 + 首个CG视频
+        return loadList(CRITICAL_LIST, (loaded, total, hint) => {
+            if (onProgress) onProgress(loaded, totalSteps, hint);
+        }).then(({ failed }) => {
+            // 图片加载完，继续加载第一个CG视频
+            if (onProgress) onProgress(CRITICAL_LIST.length, totalSteps, '正在预载首章记忆...');
+            return preloadVideo(VIDEO_LIST[0]).then(() => {
+                if (onProgress) onProgress(totalSteps, totalSteps, '匠灵已唤醒');
+                return { loaded: totalSteps, failed };
+            });
+        });
     },
 
     /** 阶段2：后台静默加载游戏场景资源（不阻塞，可重复调用安全） */
