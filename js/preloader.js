@@ -58,6 +58,14 @@ const LAZY_MAP = {
     ],
 };
 
+// ===== 视频资源（后台预加载，解决播放卡顿） =====
+const VIDEO_LIST = [
+    'assets/cg/1/1.mp4',
+    'assets/cg/2/2222222.mp4',
+    'assets/cg/3/3.mp4',
+    'assets/cg/4/4.mp4',
+];
+
 // 加载提示文案（轮换显示）
 const HINTS = [
     '正在唤醒沉睡的匠灵...',
@@ -116,6 +124,49 @@ async function loadList(list, onProgress) {
 let _gameReady = false;
 let _gamePromise = null;
 
+// 阶段3 lazy 缓存（避免重复加载）
+const _lazyCache = {};
+
+// 视频预加载状态
+let _videoPromise = null;
+
+/**
+ * 后台逐个预加载视频（不阻塞，解决记忆CG播放卡顿）
+ * 在游戏场景资源加载完后调用
+ */
+function preloadVideos() {
+    if (_videoPromise) return _videoPromise;
+
+    _videoPromise = (async () => {
+        for (const src of VIDEO_LIST) {
+            await new Promise(resolve => {
+                const v = document.createElement('video');
+                v.preload = 'auto';
+                v.muted = true;
+                v.src = src;
+                v.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';
+                document.body.appendChild(v);
+
+                let done = false;
+                const finish = () => {
+                    if (done) return;
+                    done = true;
+                    v.remove();
+                    resolve();
+                };
+
+                v.addEventListener('loadeddata', finish);
+                v.addEventListener('error', finish);
+                // 超时保护（60秒）
+                setTimeout(finish, 60000);
+            });
+        }
+        console.log('Preloader: 所有视频预加载完成');
+    })();
+
+    return _videoPromise;
+}
+
 export const Preloader = {
     /** 阶段1：加载主菜单必需资源（阻塞，带进度回调） */
     loadCritical(onProgress) {
@@ -144,9 +195,14 @@ export const Preloader = {
         return _gamePromise || Promise.resolve();
     },
 
-    /** 阶段3：按需加载指定分组的资源 */
+    /** 阶段3：按需加载指定分组的资源（带缓存，避免重复加载） */
     loadLazy(key) {
+        if (_lazyCache[key]) return _lazyCache[key];
         const list = LAZY_MAP[key] || [];
-        return loadList(list);
+        _lazyCache[key] = loadList(list);
+        return _lazyCache[key];
     },
+
+    /** 后台预加载视频（逐个加载，不阻塞） */
+    preloadVideos,
 };

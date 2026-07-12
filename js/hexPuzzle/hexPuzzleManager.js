@@ -1,6 +1,8 @@
 // ========== 六边锦绣拼图管理器 ==========
-// 三阶六边形旋转拼图，用 last1.webp 作为背景图
+// 三阶六边形旋转拼图，用 last1_square.webp 作为背景图
 // 玩法：点击旋转六边格（左键顺时针60°，右键逆时针60°），全图复原即通关
+
+import { Preloader } from '../preloader.js';
 
 export const HexPuzzleManager = {
     overlay: null,
@@ -82,8 +84,11 @@ export const HexPuzzleManager = {
 
     // ==================== 打开/关闭 ====================
     open() {
-        this._showStageSelect();
-        if (this.overlay) this.overlay.style.display = 'flex';
+        // 先确保拼图图片已加载完成，再显示界面
+        Preloader.loadLazy('hexPuzzle').then(() => {
+            this._showStageSelect();
+            if (this.overlay) this.overlay.style.display = 'flex';
+        });
     },
 
     close() {
