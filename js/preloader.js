@@ -140,6 +140,9 @@ const _lazyCache = {};
 // 视频预加载状态
 let _videoPromise = null;
 
+// 保持所有视频元素引用，防止移除后浏览器清除视频缓存
+const _videoCache = [];
+
 /**
  * 加载单个视频（canplaythrough 时 resolve，确保可流畅播放到底）
  * @param {string} src 视频路径
@@ -158,7 +161,8 @@ function preloadVideo(src, onProgress) {
         const finish = () => {
             if (done) return;
             done = true;
-            v.remove();
+            // 不移除video元素，保持引用防止浏览器清除视频缓存
+            _videoCache.push(v);
             resolve();
         };
 
@@ -175,7 +179,7 @@ function preloadVideo(src, onProgress) {
             });
         }
 
-        // canplaythrough：浏览器判断可以流畅播放到底（非loadeddata仅第一帧）
+        // canplaythrough：浏览器判断可以流畅播放到底
         v.addEventListener('canplaythrough', finish);
         v.addEventListener('error', finish);
         // 超时保护（120秒）
