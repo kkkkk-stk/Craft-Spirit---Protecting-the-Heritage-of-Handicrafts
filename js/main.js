@@ -1,6 +1,7 @@
 // ========== 游戏入口 ==========
 // 统一初始化所有模块
 
+import { Preloader } from './preloader.js';
 import { MainMenu } from './menu/mainMenu.js';
 import { IntroController } from './intro/introController.js';
 import { PlayerController } from './game/playerController.js';
@@ -86,9 +87,44 @@ function init() {
     }
 }
 
-// DOM 加载完成后初始化
+/**
+ * 启动资源预加载，完成后显示进入按钮
+ */
+function startLoading() {
+    const barFill = document.getElementById('loading-bar-fill');
+    const percentEl = document.getElementById('loading-percent');
+    const hintEl = document.getElementById('loading-hint');
+    const enterBtn = document.getElementById('loading-enter-btn');
+    const loadingScreen = document.getElementById('loading-screen');
+
+    Preloader.loadAll((loaded, total, hint) => {
+        const pct = Math.round((loaded / total) * 100);
+        barFill.style.width = pct + '%';
+        percentEl.textContent = pct + '%';
+        if (hint) hintEl.textContent = hint;
+    }).then(({ loaded, failed }) => {
+        // 确保进度满
+        barFill.style.width = '100%';
+        percentEl.textContent = '100%';
+        hintEl.textContent = '匠灵已唤醒';
+
+        if (failed.length) {
+            console.warn('预加载失败的资源（' + failed.length + ' 项）:', failed);
+        }
+
+        // 显示进入按钮（用户交互后初始化，顺便满足浏览器自动播放策略）
+        enterBtn.classList.add('show');
+        enterBtn.addEventListener('click', () => {
+            loadingScreen.classList.add('loaded');
+            setTimeout(() => loadingScreen.remove(), 800);
+            init();
+        }, { once: true });
+    });
+}
+
+// DOM 加载完成后启动预加载
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', startLoading);
 } else {
-    init();
+    startLoading();
 }

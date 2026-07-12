@@ -17,6 +17,7 @@
     </style>
 
     <!-- ========== CSS 模块 ========== -->
+    <link rel="stylesheet" href="css/loading.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/main-menu.css">
     <link rel="stylesheet" href="css/intro.css">
@@ -33,6 +34,21 @@
     <link rel="stylesheet" href="css/hexPuzzle.css">
 </head>
 <body>
+
+<!-- ==================== 开局加载页 ==================== -->
+<div id="loading-screen">
+    <div class="loading-content">
+        <h1 class="loading-title">匠 灵</h1>
+        <p class="loading-subtitle">守护手艺传承</p>
+        <div class="loading-bar-wrap">
+            <div class="loading-bar-fill" id="loading-bar-fill"></div>
+        </div>
+        <p class="loading-percent" id="loading-percent">0%</p>
+        <p class="loading-hint" id="loading-hint">正在唤醒沉睡的匠灵...</p>
+        <button class="loading-enter-btn" id="loading-enter-btn">踏入匠灵之旅</button>
+    </div>
+    <p class="loading-footer">© 2026 匠灵工作室</p>
+</div>
 
 <!-- ==================== 主界面 ==================== -->
 <div id="main-menu">
