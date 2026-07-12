@@ -105,6 +105,23 @@
     font-size: 14px;
 }
 
+.hex-stage-btn.locked {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(0.8);
+}
+
+.hex-stage-btn.locked:hover {
+    border-color: #8b6914;
+    background: #2c1810;
+    transform: none;
+    box-shadow: none;
+}
+
+.hex-stage-btn.locked .hex-stage-name::before {
+    content: '🔒 ';
+}
+
 .hex-stage-name {
     font-size: 20px;
     color: #d4a017;

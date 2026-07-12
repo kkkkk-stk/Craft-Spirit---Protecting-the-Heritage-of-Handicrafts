@@ -105,10 +105,14 @@ export const HexPuzzleManager = {
         if (this.boardWrapper) this.boardWrapper.style.display = 'none';
         if (this.winFx) this.winFx.style.display = 'none';
 
-        // 更新已完成标记
+        // 更新已完成标记和解锁状态
         document.querySelectorAll('.hex-stage-btn').forEach(btn => {
             const stage = parseInt(btn.dataset.stage);
-            btn.classList.toggle('completed', this._completedStages.has(stage));
+            const completed = this._completedStages.has(stage);
+            btn.classList.toggle('completed', completed);
+            // 解锁规则：第1关始终解锁，第N关需第N-1关完成
+            const unlocked = stage === 1 || this._completedStages.has(stage - 1);
+            btn.classList.toggle('locked', !unlocked);
         });
 
         // 全部完成提示
@@ -118,6 +122,8 @@ export const HexPuzzleManager = {
     },
 
     _openStage(stage) {
+        // 检查是否解锁（第N关需第N-1关完成）
+        if (stage > 1 && !this._completedStages.has(stage - 1)) return;
         this._currentStage = stage;
         if (this.stageSelect) this.stageSelect.style.display = 'none';
         if (this.boardWrapper) this.boardWrapper.style.display = 'block';

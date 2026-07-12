@@ -15,12 +15,12 @@ CG_DIR = os.path.join(ROOT, 'assets', 'cg')
 FFMPEG_ARGS = [
     '-c:v', 'libx264',
     '-preset', 'slow',
-    '-crf', '24',
-    '-maxrate', '2.5M',
-    '-bufsize', '5M',
+    '-crf', '28',
+    '-maxrate', '1.5M',
+    '-bufsize', '3M',
     '-vf', "scale='min(1280,iw)':-2",
     '-c:a', 'aac',
-    '-b:a', '128k',
+    '-b:a', '96k',
     '-movflags', '+faststart',
     '-y',
 ]

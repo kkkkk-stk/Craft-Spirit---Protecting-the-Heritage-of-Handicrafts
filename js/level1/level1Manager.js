@@ -376,7 +376,15 @@ export const Level1Manager = {
                 setTimeout(() => this._collectArtifact(2), 4000);
             }
             if (!gameState.level1.puzzles.totem) {
-                document.dispatchEvent(new CustomEvent('openHexPuzzle'));
+                // 先播放CG4，再打开拼图（仅首次）
+                if (!gameState.level1.cg4Played) {
+                    gameState.level1.cg4Played = true;
+                    this._playCG('cg_puzzle', () => {
+                        document.dispatchEvent(new CustomEvent('openHexPuzzle'));
+                    });
+                } else {
+                    document.dispatchEvent(new CustomEvent('openHexPuzzle'));
+                }
             }
             return;
         }
@@ -543,6 +551,10 @@ export const Level1Manager = {
         this._showPopup(ARTIFACTS[id]);
         this._updateProgressHud();
         this._renderArea('house');
+        // 拾取文物1（绣花绷架）时播放CG
+        if (id === 1) {
+            setTimeout(() => this._playCG('cg_pickup1'), 2000);
+        }
     },
 
     // ==================== 解密 ====================
