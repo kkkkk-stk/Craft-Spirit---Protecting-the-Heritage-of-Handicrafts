@@ -542,11 +542,6 @@ export const Level1Manager = {
         if (gameState.inventory.indexOf(itemId) === -1) gameState.inventory.push(itemId);
         this._showPopup(ARTIFACTS[id]);
         this._updateProgressHud();
-        // 主宅文物不在拾取时播放CG，改在织布机页面播放
-        const isHouse = ARTIFACTS[id].area === 'house';
-        if (!skipMemory && !isHouse && ARTIFACTS[id].memory) {
-            setTimeout(() => this._playMemory(ARTIFACTS[id].memory), 2000);
-        }
         this._renderArea('house');
     },
 
@@ -561,12 +556,6 @@ export const Level1Manager = {
         if (pid === 'dyeCraft' && taskPhase !== 1) { this._showToast('现在不能采药'); return; }
         if (pid === 'dyeThread' && taskPhase !== 3) { this._showToast('现在不能染线'); return; }
         if (pid === 'loom' && taskPhase !== 5) { this._showToast('现在不能织布'); return; }
-
-        // 织布机：进入前先播放记忆CG（主宅拾取文物时已取消自动播放）
-        if (pid === 'loom' && !gameState.level1.memories[3]) {
-            this._playMemory(3, () => this._startPuzzle('loom'));
-            return;
-        }
 
         this._prePuzzlePos = gameState.playerPosPercent;
         let html = '<h3 style="color:#8b4513;margin-bottom:12px;">' + puzzle.name + '</h3>';
