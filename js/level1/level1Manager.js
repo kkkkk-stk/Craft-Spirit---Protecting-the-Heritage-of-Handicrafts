@@ -327,6 +327,10 @@ export const Level1Manager = {
                 this._showToast('后山的任务已完成');
                 return;
             }
+            // 收集文物4（植物染料包），触发记忆CG
+            if (!gameState.level1.artifacts[4]) {
+                this._collectArtifact(4);
+            }
             this.enter('back-mountain');
             return;
         }
@@ -336,6 +340,10 @@ export const Level1Manager = {
             if (phase !== 1) {
                 this._showToast('现在不需要在这里采药');
                 return;
+            }
+            // 确保文物4已收集
+            if (!gameState.level1.artifacts[4]) {
+                this._collectArtifact(4);
             }
             if (gameState.level1.puzzles.dyeCraft) return;
             this._startPuzzle('dyeCraft');
@@ -358,6 +366,14 @@ export const Level1Manager = {
             if (phase < 7) {
                 this._showToast('祠堂还未解锁，先完成蓝婆婆的任务');
                 return;
+            }
+            // 收集文物5（凤冠绣片，有CG）+ 文物2（丝线束，无CG，延迟显示避免覆盖）
+            if (!gameState.level1.artifacts[5]) {
+                this._collectArtifact(5);
+            }
+            // 延迟收集文物2，等文物5弹窗关闭后再显示
+            if (!gameState.level1.artifacts[2]) {
+                setTimeout(() => this._collectArtifact(2), 4000);
             }
             if (!gameState.level1.puzzles.totem) {
                 document.dispatchEvent(new CustomEvent('openHexPuzzle'));

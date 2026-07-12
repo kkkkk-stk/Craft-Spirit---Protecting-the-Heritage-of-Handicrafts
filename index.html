@@ -5,7 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>匠灵：守护手艺传承</title>
     <link rel="icon" href="data:,">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Google Fonts fallback: 使用中文字体替代，避免加载超时阻塞页面 -->
+    <style>
+        @font-face {
+            font-family: 'Press Start 2P';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Press Start 2P'), local('PressStart2P-Regular');
+            font-display: swap;
+        }
+    </style>
 
     <!-- ========== CSS 模块 ========== -->
     <link rel="stylesheet" href="css/main.css">
