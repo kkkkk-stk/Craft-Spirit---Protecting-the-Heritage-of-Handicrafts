@@ -25,6 +25,9 @@ import { HexPuzzleManager } from './hexPuzzle/hexPuzzleManager.js';
 function init() {
     console.log('匠灵 · 开始初始化...');
 
+    // 后台静默加载游戏场景资源（不阻塞主菜单操作）
+    Preloader.loadGame();
+
     try {
         // 主界面
         MainMenu.init();
@@ -97,7 +100,7 @@ function startLoading() {
     const enterBtn = document.getElementById('loading-enter-btn');
     const loadingScreen = document.getElementById('loading-screen');
 
-    Preloader.loadAll((loaded, total, hint) => {
+    Preloader.loadCritical((loaded, total, hint) => {
         const pct = Math.round((loaded / total) * 100);
         barFill.style.width = pct + '%';
         percentEl.textContent = pct + '%';

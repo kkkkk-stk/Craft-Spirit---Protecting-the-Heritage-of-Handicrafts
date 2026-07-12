@@ -1,5 +1,5 @@
 // ========== 六边锦绣拼图管理器 ==========
-// 三阶六边形旋转拼图，用 last1.png 作为背景图
+// 三阶六边形旋转拼图，用 last1.webp 作为背景图
 // 玩法：点击旋转六边格（左键顺时针60°，右键逆时针60°），全图复原即通关
 
 export const HexPuzzleManager = {
@@ -18,7 +18,7 @@ export const HexPuzzleManager = {
     // 棋盘尺寸（与背景图缩放一致）
     BOARD_W: 600,
     BOARD_H: 600,
-    IMAGE_PATH: 'assets/images/game/last1_square.png',
+    IMAGE_PATH: 'assets/images/game/last1_square.webp',
 
     // 六边形邻居方向（flat-top axial 坐标）
     _NEIGHBOR_DIRS: [[1,0], [1,-1], [0,-1], [-1,0], [-1,1], [0,1]],

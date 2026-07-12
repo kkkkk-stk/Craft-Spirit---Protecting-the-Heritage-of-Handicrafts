@@ -22,35 +22,35 @@ export const ITEMS = {
     'cultural_relic_1': {
         id: 'cultural_relic_1',
         name: '老式绣花绷架',
-        img: 'assets/images/Cultural relic/relic_embroidery_frame.png',
+        img: 'assets/images/Cultural relic/relic_embroidery_frame.webp',
         desc: '景宁畲族刺绣世代使用竹制绣花绷架，畲人自称"山哈"，早年进山采竹自制绷架，家家户户女子人手一副。蓝阿婆六岁跟着外婆学艺，第一副小绣绷便是外婆亲手削竹制成。',
         type: 'quest'
     },
     'cultural_relic_2': {
         id: 'cultural_relic_2',
         name: '七彩畲族丝线束',
-        img: 'assets/images/Cultural relic/relic_thread_bundle.png',
+        img: 'assets/images/Cultural relic/relic_thread_bundle.webp',
         desc: '畲族五色丝线对应天地五行：黑色代表畲乡群山大地、青色取自山中蓝草染就、红色象征婚嫁凤凰、绿色代表山间草木、黄色是栀子染出的日光之色。',
         type: 'quest'
     },
     'cultural_relic_3': {
         id: 'cultural_relic_3',
         name: '祖传纹样底稿',
-        img: 'assets/images/Cultural relic/relic_pattern_manuscript.png',
+        img: 'assets/images/Cultural relic/relic_pattern_manuscript.webp',
         desc: '底稿是蓝阿婆外婆世代传下的畲族祖纹手稿，畲族无文字，纹样便是民族史书。蓝阿婆晚年担心纹样失传，反复临摹数十份底稿，分发给村里想学刺绣的年轻人。',
         type: 'quest'
     },
     'cultural_relic_4': {
         id: 'cultural_relic_4',
         name: '天然植物染料包',
-        img: 'assets/images/Cultural relic/relic_plant_dye_pack.png',
+        img: 'assets/images/Cultural relic/relic_plant_dye_pack.webp',
         desc: '景宁畲绣坚持古法草木染，每年夏秋蓝阿婆独自上山采摘蓝草、栀子，历经浸泡、发酵、熬煮十几道工序制天然染料，不用工业化学颜料。',
         type: 'quest'
     },
     'cultural_relic_5': {
         id: 'cultural_relic_5',
         name: '残缺婚嫁凤冠绣片',
-        img: 'assets/images/Cultural relic/relic_phoenix_crown.png',
+        img: 'assets/images/Cultural relic/relic_phoenix_crown.webp',
         desc: '畲族女子婚嫁必戴凤凰凤冠，凤冠绣片象征"凤凰赐福"。这件残片是蓝阿婆晚年未完成的嫁衣凤冠，一针一线寄托对新人平安美满的祝福。',
         type: 'quest'
     },

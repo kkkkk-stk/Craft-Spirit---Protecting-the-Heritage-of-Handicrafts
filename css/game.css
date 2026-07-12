@@ -43,7 +43,7 @@
     left: 0;
     width: 100vw;      /* 与视口同宽，无摄像机滚动 */
     height: 100vh;
-    background: url('../assets/images/scences/level1/bg.png') center / cover no-repeat;
+    background: url('../assets/images/scences/level1/bg.webp') center / cover no-repeat;
     will-change: transform;
 }
 
@@ -66,7 +66,7 @@
     left: 0;
     right: 0;
     height: 24%;
-    background: url('../assets/images/scences/level1/ground1.png') center / cover;
+    background: url('../assets/images/scences/level1/ground1.webp') center / cover;
     z-index: 4;
 }
 

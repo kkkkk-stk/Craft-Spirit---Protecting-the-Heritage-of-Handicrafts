@@ -137,7 +137,7 @@ export const DialogueSystem = {
         if (!this.portraitEl) return;
         const name = speaker?.trim();
         if (name === '老匠人') {
-            this.portraitEl.style.backgroundImage = "url('assets/images/image_npc/old_man_portrait.png')";
+            this.portraitEl.style.backgroundImage = "url('assets/images/image_npc/old_man_portrait.webp')";
             this.portraitEl.classList.add('visible');
         } else {
             this.portraitEl.classList.remove('visible');

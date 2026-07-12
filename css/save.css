@@ -14,7 +14,7 @@
 }
 
 .save-slots-panel {
-    background: url('../assets/images/ui/bamboo-panel.png') center/100% 100% no-repeat;
+    background: url('../assets/images/ui/bamboo-panel.webp') center/100% 100% no-repeat;
     border: none;
     border-radius: 0;
     padding: 100px 72px;
@@ -51,7 +51,7 @@
     padding: 16px 24px;
     min-height: 90px;
     flex: 1;
-    background: url('../assets/images/ui/slot-bg.png') center/100% 100% no-repeat;
+    background: url('../assets/images/ui/slot-bg.webp') center/100% 100% no-repeat;
     border: none;
     border-radius: 0;
     cursor: pointer;
@@ -79,7 +79,7 @@
     flex-shrink: 0;
     width: 48px;
     height: 48px;
-    background: url('../assets/images/ui/square-panel.png') center/100% 100% no-repeat;
+    background: url('../assets/images/ui/square-panel.webp') center/100% 100% no-repeat;
     border: none;
     border-radius: 0;
     color: #2c1810;
@@ -155,7 +155,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: url('../assets/images/ui/square-panel.png') center/100% 100% no-repeat;
+    background: url('../assets/images/ui/square-panel.webp') center/100% 100% no-repeat;
     border: none;
     border-radius: 0;
     color: #2c1810;
@@ -173,7 +173,7 @@
 }
 
 .save-slots-btn.secondary {
-    background: url('../assets/images/ui/square-panel.png') center/100% 100% no-repeat;
+    background: url('../assets/images/ui/square-panel.webp') center/100% 100% no-repeat;
     color: #2c1810;
     border: none;
     opacity: 0.85;
@@ -186,7 +186,7 @@
 
 /* 删除按钮 */
 .save-slots-btn.danger {
-    background: url('../assets/images/ui/square-panel.png') center/100% 100% no-repeat;
+    background: url('../assets/images/ui/square-panel.webp') center/100% 100% no-repeat;
     color: #c62828;
     border: none;
 }
@@ -210,7 +210,7 @@
     right: -14px;
     width: 40px;
     height: 40px;
-    background: url('../assets/images/ui/delete-icon-clean.png') center/cover no-repeat;
+    background: url('../assets/images/ui/delete-icon-clean.webp') center/cover no-repeat;
     border: none;
     border-radius: 0;
     display: none;

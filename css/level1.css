@@ -35,7 +35,7 @@
 /* ========================================================
    场景一：村口 — 三层景深
    ======================================================== */
-#scene-village-gate { background: url('../assets/images/scences/level1/bg.png') center / cover; }
+#scene-village-gate { background: url('../assets/images/scences/level1/bg.webp') center / cover; }
 
 /* ===== 远景层 ===== */
 .gate-sky {
@@ -93,7 +93,7 @@
 /* ===== 近景层 ===== */
 .gate-path {
     position: absolute; bottom: 0; left: 0; right: 0; height: 24%;
-    background: url('../assets/images/scences/level1/ground1.png') center / cover;
+    background: url('../assets/images/scences/level1/ground1.webp') center / cover;
     z-index: 4;
 }
 .gate-grass-l {
@@ -163,7 +163,7 @@
 /* ========================================================
    场景二：村内 — 三层景深
    ======================================================== */
-#scene-village-inside { background: url('../assets/images/scences/level1/bg.png') center / cover; }
+#scene-village-inside { background: url('../assets/images/scences/level1/bg.webp') center / cover; }
 .village-bg {
     position: absolute; inset: 0; background: #d8d0c0;
     background-image: radial-gradient(circle, #c8c0b0 2px, transparent 2px);
@@ -206,7 +206,7 @@
 /* 近景地面 */
 .village-ground {
     position: absolute; bottom: 0; left: 0; right: 0; height: 24%;
-    background: url('../assets/images/scences/level1/ground1.png') center/cover no-repeat;
+    background: url('../assets/images/scences/level1/ground1.webp') center/cover no-repeat;
     z-index: 4;
 }
 .village-mist { position: absolute; inset: 0; background: rgba(200,210,200,0.04); pointer-events: none; z-index: 5; }
@@ -262,7 +262,7 @@
 .village-granny { position: absolute; bottom: 18%; right: 18%; z-index: 7; }
 .village-granny .granny-sprite {
     width: 128px; height: 256px;
-    background: url('../assets/images/image_npc/granny_lan_sprite.png') bottom/contain no-repeat;
+    background: url('../assets/images/image_npc/granny_lan_sprite.webp') bottom/contain no-repeat;
     border: none; outline: none; box-shadow: none;
     opacity: 1; image-rendering: pixelated;
 }
@@ -292,7 +292,7 @@
    ======================================================== */
 #scene-hub {
     background-color: #2d5a1e;
-    background-image: url('../assets/images/scences/level1/bg.png');
+    background-image: url('../assets/images/scences/level1/bg.webp');
     background-position: center;
     background-size: cover;
 }
@@ -308,7 +308,7 @@
 /* ===== 近景层 ===== */
 .hub-ground {
     position: absolute; bottom: 0; left: 0; right: 0; height: 24%;
-    background: url('../assets/images/scences/level1/ground1.png') center / cover;
+    background: url('../assets/images/scences/level1/ground1.webp') center / cover;
     z-index: 4;
 }
 
@@ -391,7 +391,7 @@
 }
 #level1-dialogue-portrait.show {
     display: block;
-    background-image: url('../assets/images/image_npc/granny_lan_portrait.png');
+    background-image: url('../assets/images/image_npc/granny_lan_portrait.webp');
 }
 #level1-dialogue-speaker { font-size: 12px; color: #5a3b88; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; text-shadow: 2px 2px 0 #d5c6b3; }
 #level1-dialogue-text { font-size: 11px; color: #2c1810; line-height: 1.8; letter-spacing: 0.5px; }
@@ -521,7 +521,7 @@
 #village-gate-structure {
     width: 200px;
     height: 267px;
-    background-image: url('../assets/images/scences/level1/gate_structure.png');
+    background-image: url('../assets/images/scences/level1/gate_structure.webp');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
@@ -539,7 +539,7 @@
     background: none;
     width: 80px;
     height: 88px;
-    background-image: url('../assets/images/scences/level1/fg_tree.png');
+    background-image: url('../assets/images/scences/level1/fg_tree.webp');
     background-size: contain;
     background-repeat: no-repeat;
     clip-path: none;
@@ -552,7 +552,7 @@
     background: none;
     width: 100px;
     height: 60px;
-    background-image: url('../assets/images/scences/level1/fg_fence.png');
+    background-image: url('../assets/images/scences/level1/fg_fence.webp');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
@@ -565,7 +565,7 @@
     background: none;
     width: 50px;
     height: 32px;
-    background-image: url('../assets/images/scences/level1/fg_bush.png');
+    background-image: url('../assets/images/scences/level1/fg_bush.webp');
     background-size: contain;
     background-repeat: no-repeat;
     clip-path: none;
@@ -576,7 +576,7 @@
 #scene-village-inside .village-stage {
     width: 200px;
     height: 267px;
-    background-image: url('../assets/images/scences/level1/stage.png');
+    background-image: url('../assets/images/scences/level1/stage.webp');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
@@ -591,7 +591,7 @@
 #scene-village-inside .village-house {
     width: 500px;
     height: 624px;
-    background-image: url('../assets/images/scences/level1/ethnic embroidery house.png');
+    background-image: url('../assets/images/scences/level1/ethnic embroidery house.webp');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
@@ -616,7 +616,7 @@
     background: none;
     width: 16px;
     height: 24px;
-    background-image: url('../assets/images/scences/level1/fg_lantern.png');
+    background-image: url('../assets/images/scences/level1/fg_lantern.webp');
     background-size: contain;
     background-repeat: no-repeat;
     border: none;
@@ -635,7 +635,7 @@
 /* ---------- 后山染坊场景 ---------- */
 #scene-back-mountain {
     background-color: #2d5a1e;
-    background-image: url('../assets/images/scences/level1/bg.png');
+    background-image: url('../assets/images/scences/level1/bg.webp');
     background-position: center;
     background-size: cover;
 }
@@ -668,7 +668,7 @@
 #scene-hub .hub-hall {
     width: 500px;
     height: 250px;
-    background-image: url('../assets/images/scences/level1/hall.png');
+    background-image: url('../assets/images/scences/level1/hall.webp');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center bottom;
@@ -684,9 +684,9 @@
     white-space: nowrap;
 }
 
-#scene-village-gate .gate-house-left { position: absolute; bottom: 14%; left: -3%; width: 300px; height: 225px; background: url('../assets/images/scences/level1/houses/house_01.png') center/contain no-repeat; z-index: 6; }
-#scene-village-gate .gate-house-mid { position: absolute; bottom: 16%; left: 35%; width: 375px; height: 22vh; background: url('../assets/images/scences/level1/houses/house_03.png') center/contain no-repeat; z-index: 6; }
-#scene-village-inside .village-stage-new { position: absolute; bottom: 14%; left: 5%; width: 420px; height: 300px; background: url('../assets/images/scences/level1/traditional Chinese village stage.png') center/contain no-repeat; z-index: 6; }
+#scene-village-gate .gate-house-left { position: absolute; bottom: 14%; left: -3%; width: 300px; height: 225px; background: url('../assets/images/scences/level1/houses/house_01.webp') center/contain no-repeat; z-index: 6; }
+#scene-village-gate .gate-house-mid { position: absolute; bottom: 16%; left: 35%; width: 375px; height: 22vh; background: url('../assets/images/scences/level1/houses/house_03.webp') center/contain no-repeat; z-index: 6; }
+#scene-village-inside .village-stage-new { position: absolute; bottom: 14%; left: 5%; width: 420px; height: 300px; background: url('../assets/images/scences/level1/traditional Chinese village stage.webp') center/contain no-repeat; z-index: 6; }
 .gate-sky,.village-mountains-far,.gate-grass-l,.gate-grass-r,.gate-mountains-far,.gate-mountains,.gate-mountains-mid{display:none !important}
 .gate-fog-far,.gate-fog-mid,.gate-village-silhouette,.village-fog-far,.village-silhouette,.village-mid-buildings,.village-fog-mid,.village-mist,.village-lantern,.gate-mountains-mid{display:none !important}
 .village-bg{display:none !important}

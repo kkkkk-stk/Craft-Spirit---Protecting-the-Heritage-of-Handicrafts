@@ -3,6 +3,7 @@
 
 import { gameState } from '../common/gameState.js';
 import { SceneManager } from '../common/sceneManager.js';
+import { Preloader } from '../preloader.js';
 
 export const IntroController = {
     started: false,
@@ -74,13 +75,30 @@ export const IntroController = {
         // 自动保存初始状态
         document.dispatchEvent(new CustomEvent('requestSave'));
 
-        SceneManager.show('game-screen', 'block');
-        SceneManager.show('ui-hud', 'flex');
+        const enterScene = () => {
+            SceneManager.show('game-screen', 'block');
+            SceneManager.show('ui-hud', 'flex');
+            // 延迟显示新手教程
+            setTimeout(() => {
+                document.dispatchEvent(new CustomEvent('showTutorial'));
+            }, 600);
+        };
 
-        // 延迟显示新手教程
-        setTimeout(() => {
-            document.dispatchEvent(new CustomEvent('showTutorial'));
-        }, 600);
+        // 游戏场景资源已加载完 → 直接进入
+        if (Preloader.isGameReady()) {
+            enterScene();
+        } else {
+            // 资源仍在加载，显示过渡提示
+            const tip = document.createElement('div');
+            tip.id = 'scene-loading-tip';
+            tip.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#1a1410;display:flex;align-items:center;justify-content:center;z-index:99998;color:#d4af6e;font-size:20px;letter-spacing:4px;font-family:Microsoft YaHei,sans-serif;';
+            tip.textContent = '正在唤醒匠灵...';
+            document.body.appendChild(tip);
+            Preloader.waitForGame().then(() => {
+                tip.remove();
+                enterScene();
+            });
+        }
     },
 
     /**
