@@ -88,13 +88,25 @@ export const IntroController = {
         if (Preloader.isGameReady()) {
             enterScene();
         } else {
-            // 资源仍在加载，显示过渡提示
+            // 资源仍在加载，显示带进度条的过渡提示
             const tip = document.createElement('div');
             tip.id = 'scene-loading-tip';
-            tip.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#1a1410;display:flex;align-items:center;justify-content:center;z-index:99998;color:#d4af6e;font-size:20px;letter-spacing:4px;font-family:Microsoft YaHei,sans-serif;';
-            tip.textContent = '正在唤醒匠灵...';
+            tip.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#1a1410;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99998;font-family:Microsoft YaHei,sans-serif;';
+            tip.innerHTML = '<p style="color:#d4af6e;font-size:20px;letter-spacing:4px;margin-bottom:24px;">正在唤醒匠灵...</p>'
+                + '<div style="width:300px;height:12px;background:rgba(245,240,232,0.08);border:1px solid rgba(212,175,110,0.35);border-radius:7px;overflow:hidden;">'
+                + '<div id="scene-loading-fill" style="height:100%;width:0%;background:linear-gradient(90deg,#8b5a2b,#d4af6e,#f5e6c8);border-radius:6px;transition:width 0.25s ease;"></div>'
+                + '</div>'
+                + '<p id="scene-loading-percent" style="color:#c9a86a;font-size:15px;letter-spacing:2px;margin-top:14px;">0%</p>';
             document.body.appendChild(tip);
-            Preloader.waitForGame().then(() => {
+
+            const fill = tip.querySelector('#scene-loading-fill');
+            const percentEl = tip.querySelector('#scene-loading-percent');
+
+            Preloader.loadGame((loaded, total) => {
+                const pct = total > 0 ? Math.round((loaded / total) * 100) : 0;
+                fill.style.width = pct + '%';
+                percentEl.textContent = pct + '%';
+            }).then(() => {
                 tip.remove();
                 enterScene();
             });

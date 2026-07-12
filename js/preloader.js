@@ -123,6 +123,9 @@ async function loadList(list, onProgress) {
 // 阶段2状态追踪
 let _gameReady = false;
 let _gamePromise = null;
+let _gameLoaded = 0;
+let _gameTotal = 0;
+let _gameProgressCb = null;
 
 // 阶段3 lazy 缓存（避免重复加载）
 const _lazyCache = {};
@@ -174,9 +177,20 @@ export const Preloader = {
     },
 
     /** 阶段2：后台静默加载游戏场景资源（不阻塞，可重复调用安全） */
-    loadGame() {
-        if (_gamePromise) return _gamePromise;
-        _gamePromise = loadList(GAME_LIST).then(({ failed }) => {
+    loadGame(onProgress) {
+        // 已在加载中：立即用当前进度回调一次，并注册后续进度回调
+        if (_gamePromise) {
+            if (onProgress) onProgress(_gameLoaded, _gameTotal || GAME_LIST.length);
+            _gameProgressCb = onProgress;
+            return _gamePromise;
+        }
+        _gameTotal = GAME_LIST.length;
+        _gameProgressCb = onProgress;
+        _gamePromise = loadList(GAME_LIST, (loaded, total) => {
+            _gameLoaded = loaded;
+            _gameTotal = total;
+            if (_gameProgressCb) _gameProgressCb(loaded, total);
+        }).then(({ failed }) => {
             _gameReady = true;
             if (failed.length) {
                 console.warn('游戏场景资源加载失败（' + failed.length + ' 项）:', failed);
