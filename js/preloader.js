@@ -60,10 +60,10 @@ const LAZY_MAP = {
 
 // ===== 视频资源（后台预加载，解决播放卡顿） =====
 const VIDEO_LIST = [
-    'assets/cg/1/1.mp4',
-    'assets/cg/2/2222222.mp4',
-    'assets/cg/3/3.mp4',
-    'assets/cg/4/4.mp4',
+    'assets/cg/1/1.mp4',       // [0] 开局加载（第1个播放：采药完成）
+    'assets/cg/3/3.mp4',       // [1] 开局加载（第2个播放：拾取文物1）
+    'assets/cg/2/2222222.mp4', // [2] 异步加载（第3个播放：布给蓝婆婆）
+    'assets/cg/4/4.mp4',       // [3] 异步加载（第4个播放：进入拼图）
 ];
 
 // 加载提示文案（轮换显示）
@@ -161,15 +161,15 @@ function preloadVideo(src) {
 }
 
 /**
- * 后台逐个预加载剩余视频（跳过第一个，已在开局加载）
+ * 后台逐个预加载剩余视频（跳过前两个，已在开局加载）
  * 在游戏场景资源加载完后调用
  */
 function preloadVideos() {
     if (_videoPromise) return _videoPromise;
 
     _videoPromise = (async () => {
-        // 跳过第一个CG视频（已在开局加载阶段加载）
-        for (let i = 1; i < VIDEO_LIST.length; i++) {
+        // 跳过前两个CG视频（已在开局加载阶段加载）
+        for (let i = 2; i < VIDEO_LIST.length; i++) {
             await preloadVideo(VIDEO_LIST[i]);
         }
         console.log('Preloader: 剩余视频预加载完成');
@@ -179,17 +179,20 @@ function preloadVideos() {
 }
 
 export const Preloader = {
-    /** 阶段1：加载主菜单资源 + 第一个CG视频（阻塞，带进度回调） */
+    /** 阶段1：加载主菜单资源 + 前两个CG视频（阻塞，带进度回调） */
     loadCritical(onProgress) {
-        const totalSteps = CRITICAL_LIST.length + 1; // 图片 + 首个CG视频
+        const totalSteps = CRITICAL_LIST.length + 2; // 图片 + 前两个CG视频
         return loadList(CRITICAL_LIST, (loaded, total, hint) => {
             if (onProgress) onProgress(loaded, totalSteps, hint);
         }).then(({ failed }) => {
-            // 图片加载完，继续加载第一个CG视频
-            if (onProgress) onProgress(CRITICAL_LIST.length, totalSteps, '正在预载首章记忆...');
+            // 图片加载完，继续加载前两个CG视频
+            if (onProgress) onProgress(CRITICAL_LIST.length, totalSteps, '正在预载记忆...');
             return preloadVideo(VIDEO_LIST[0]).then(() => {
-                if (onProgress) onProgress(totalSteps, totalSteps, '匠灵已唤醒');
-                return { loaded: totalSteps, failed };
+                if (onProgress) onProgress(CRITICAL_LIST.length + 1, totalSteps, '正在预载记忆...');
+                return preloadVideo(VIDEO_LIST[1]).then(() => {
+                    if (onProgress) onProgress(totalSteps, totalSteps, '匠灵已唤醒');
+                    return { loaded: totalSteps, failed };
+                });
             });
         });
     },
