@@ -25,8 +25,8 @@ import { HexPuzzleManager } from './hexPuzzle/hexPuzzleManager.js';
 function init() {
     console.log('匠灵 · 开始初始化...');
 
-    // 后台静默加载游戏场景资源，加载完后预加载视频（不阻塞主菜单操作）
-    Preloader.loadGame().then(() => Preloader.preloadVideos());
+    // loadGame（加载3.mp4）在 _enterGame 过渡加载条中调用
+    // preloadVideos（加载剩余视频）在进入场景后调用
 
     try {
         // 主界面

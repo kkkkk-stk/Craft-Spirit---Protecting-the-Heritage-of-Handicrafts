@@ -82,9 +82,11 @@ export const IntroController = {
             setTimeout(() => {
                 document.dispatchEvent(new CustomEvent('showTutorial'));
             }, 600);
+            // 进入场景后，异步加载剩余CG视频
+            Preloader.preloadVideos();
         };
 
-        // 游戏场景资源已加载完 → 直接进入
+        // 3.mp4已加载完 → 直接进入
         if (Preloader.isGameReady()) {
             enterScene();
         } else {
