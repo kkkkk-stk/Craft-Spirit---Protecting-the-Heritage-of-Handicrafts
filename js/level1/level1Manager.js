@@ -7,7 +7,7 @@ import { DyeThreadGame } from './dyeThreadGame.js';
 
 export const Level1Manager = {
     root: null, _currentScene: 'gate', _firstVillageVisit: true, _player: null,
-    _cgOverlay: null,
+    _cgOverlay: null, _spiritTimer: null,
     dialogueBox: null, dialogueSpeaker: null, dialogueText: null,
     popupOverlay: null, popupContent: null, memoryOverlay: null,
     puzzleOverlay: null, puzzleContent: null, hudProgress: null,
@@ -65,14 +65,21 @@ export const Level1Manager = {
             });
         }
 
-        // 六边拼图完成 → 播放最终CG → 通关
+
+        // 六边拼图完成 → 匠灵诞生 → 通关
         document.addEventListener('hexPuzzleSolved', (e) => {
             if (!e.detail || !e.detail.allDone) return;
             if (gameState.level1.taskPhase !== 7) return;  // 仅阶段7可触发通关
             gameState.level1.puzzles.totem = true;
             gameState.level1.taskPhase = 8;
             this._updateProgressHud();
-            setTimeout(() => this._playEndingSequence(), 1000);
+            // 关闭拼图面板，切换到hub场景，播放匠灵诞生动画
+            setTimeout(() => {
+                const hexOverlay = document.getElementById('hex-puzzle-overlay');
+                if (hexOverlay) hexOverlay.style.display = 'none';
+                this._switchView('hub');
+                this._playSpiritBirth();
+            }, 800);
         });
 
         // 行走监听
@@ -482,6 +489,27 @@ export const Level1Manager = {
 
         const btn = this._cgOverlay.querySelector('#cg-continue-btn');
         if (btn) btn.addEventListener('click', closeCG);
+    },
+
+    // ==================== 匠灵诞生动画 ====================
+    _playSpiritBirth() {
+        const spiritBirth = document.getElementById('spirit-birth');
+        if (!spiritBirth) { this._playEndingSequence(); return; }
+
+        // 锁定玩家操作
+        gameState.transitioning = true;
+
+        // 播放匠灵诞生动画
+        spiritBirth.style.display = 'block';
+        // 强制回流后触发动画
+        void spiritBirth.offsetWidth;
+
+        // 动画总时长约11秒，之后进入结局
+        this._spiritTimer = setTimeout(() => {
+            spiritBirth.style.display = 'none';
+            gameState.transitioning = false;
+            this._playEndingSequence();
+        }, 11000);
     },
 
     // ==================== 最终通关序列 ====================
@@ -1025,11 +1053,14 @@ export const Level1Manager = {
     _reset() {
         this._currentScene = 'gate';
         this._firstVillageVisit = true;
+        clearTimeout(this._spiritTimer);
         const hud = document.getElementById('ui-hud');
         if (hud) hud.style.top = '';  // 恢复默认位置
         if (gameState.level1) {
             gameState.level1.gateDescribed = false;
             gameState.level1.taskPhase = 0;
         }
+        const spiritBirth = document.getElementById('spirit-birth');
+        if (spiritBirth) spiritBirth.style.display = 'none';
     }
 };

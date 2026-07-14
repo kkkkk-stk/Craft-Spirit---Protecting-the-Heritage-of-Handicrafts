@@ -84,6 +84,10 @@ function init() {
         // 六边锦绣拼图
         HexPuzzleManager.init();
 
+        // 调试入口：控制台直接调用
+        window.__gameState = gameState;
+        window.__Level1Manager = Level1Manager;
+
         console.log('匠灵 · 所有模块初始化完成 ✅');
     } catch (err) {
         console.error('匠灵 · 初始化失败:', err);
