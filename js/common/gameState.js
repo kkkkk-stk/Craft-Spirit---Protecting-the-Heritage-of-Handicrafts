@@ -74,7 +74,7 @@ export const gameState = {
     settingsSource: null,
 
     // 游戏配置
-    playerSpeed: 12,
+    playerSpeed: 10,
 
     // 按键绑定
     keyBindings: {
