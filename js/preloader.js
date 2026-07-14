@@ -34,8 +34,8 @@ const CRITICAL_LIST = [
     'assets/images/scences/level1/traditional Chinese village stage.webp',
 ];
 
-// 主角行走动画帧 00~29
-for (let i = 0; i < 30; i++) {
+	// 主角行走动画帧 00~10
+	for (let i = 0; i < 11; i++) {
     CRITICAL_LIST.push(
         `assets/images/protagonist_move/protagonist_move_${String(i).padStart(2, '0')}_clean.webp`
     );

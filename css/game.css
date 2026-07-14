@@ -174,7 +174,6 @@
     left: calc(15% + 30px);
     z-index: 50;
     image-rendering: pixelated;
-    transform-origin: center bottom;
 }
 
 #player-sprite {

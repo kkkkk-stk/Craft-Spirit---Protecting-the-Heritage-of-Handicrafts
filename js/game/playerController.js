@@ -3,9 +3,9 @@
 import { gameState } from '../common/gameState.js';
 
 const FIXED_FRAME_MS = 1000 / 60;       // 固定 60fps 逻辑帧
-const ANIM_SPEED = 1;                    // 每逻辑帧推进 1 帧 → 60fps 动画
-const ANIM_IMAGE_COUNT = 30;            // 实际图片数量
-const ANIM_FRAME_COUNT = 480;            // 总帧数（每张图复用 16 次）
+const ANIM_SPEED = 3;                    // 每 3 逻辑帧推进 1 帧 → 20fps 动画
+const ANIM_IMAGE_COUNT = 11;            // 实际图片数量 (00~10)
+const ANIM_FRAME_COUNT = 176;            // 总帧数（每张图复用 16 次）
 const MOVE_FRAME_PATH = (i) =>
     `assets/images/protagonist_move/protagonist_move_${String(i).padStart(2, '0')}_clean.webp`;
 const STAND_PATH = 'assets/images/protagonist_stand/character1.webp';
@@ -16,7 +16,7 @@ export const PlayerController = {
     keysPressed: {},
     _lastFrameTime: 0,
     _animTick: 0,          // 动画计时器
-    _animFrame: 0,         // 当前行走帧 (0~29)
+    _animFrame: 0,         // 当前行走帧 (0~10)
     _wasMoving: false,     // 上一帧是否在移动
 
     init() {
