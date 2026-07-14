@@ -492,6 +492,28 @@ export const DyeThreadGame = {
                 this._updateDryingState();
             });
         }
+
+        // Catch-all：拖到无效区域时放回池子
+        this.overlay.addEventListener('dragover', (e) => {
+            if (!e.target.closest('.dt-rack-slot') && !e.target.closest('#dt-pool-items')) {
+                e.preventDefault();
+            }
+        });
+        this.overlay.addEventListener('drop', (e) => {
+            if (e.target.closest('.dt-rack-slot') || e.target.closest('#dt-pool-items')) return;
+            e.preventDefault();
+            const idx = parseInt(e.dataTransfer.getData('text/plain'));
+            if (isNaN(idx)) return;
+            const el = document.getElementById('dt-dry-' + idx);
+            const prevPos = this._dryingPlaced.indexOf(idx);
+            if (prevPos >= 0) {
+                this._dryingPlaced[prevPos] = null;
+                const slotEl = document.getElementById('dt-slot-' + prevPos);
+                if (slotEl) slotEl.innerHTML = '';
+            }
+            if (el && pool) pool.appendChild(el);
+            this._updateDryingState();
+        });
     },
 
     _updateDryingState() {
