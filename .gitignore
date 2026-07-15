@@ -74,3 +74,4 @@ export_presets.cfg
 *.pem
 *.key
 secrets/
+.zcode/
