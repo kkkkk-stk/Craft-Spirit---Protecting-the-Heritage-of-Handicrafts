@@ -107,6 +107,16 @@ function init() {
             }
         });
 
+        // 对话框推进音效
+        const nextSfx = new Audio('assets/audio/next.mp3');
+        nextSfx.volume = 0.6;
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#level1-dialogue-box') || e.target.closest('#dialogue-box')) {
+                nextSfx.currentTime = 0;
+                nextSfx.play().catch(() => {});
+            }
+        });
+
         // 调试入口：控制台直接调用
         window.__gameState = gameState;
         window.__Level1Manager = Level1Manager;

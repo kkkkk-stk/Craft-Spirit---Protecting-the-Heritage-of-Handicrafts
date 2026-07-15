@@ -83,14 +83,8 @@ function loadImage(src) {
     return new Promise((resolve) => {
         const img = new Image();
         img.onload = () => {
-            _imageCache.push(img); // 保持引用，防止垃圾回收清除缓存
-            // 确保图片解码完成，CSS background-image 渲染时可立即显示
-            if (img.decode) {
-                img.decode().then(() => resolve({ src, ok: true }))
-                    .catch(() => resolve({ src, ok: true }));
-            } else {
-                resolve({ src, ok: true });
-            }
+            _imageCache.push(img);
+            resolve({ src, ok: true });
         };
         img.onerror = () => resolve({ src, ok: false });
         img.src = src;

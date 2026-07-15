@@ -344,7 +344,12 @@ export const SaveManager = {
             document.dispatchEvent(new CustomEvent('gameLoaded', {
                 detail: { slotIndex: slotIndex }
             }));
-            document.dispatchEvent(new CustomEvent('enterLevel1'));
+            document.dispatchEvent(new CustomEvent('enterLevel1', {
+                detail: {
+                    scene: gameState.level1.currentScene,
+                    playerPosPercent: gameState.playerPosPercent
+                }
+            }));
         } else {
             SceneManager.show('game-screen', 'block');
             SceneManager.show('ui-hud', 'flex');

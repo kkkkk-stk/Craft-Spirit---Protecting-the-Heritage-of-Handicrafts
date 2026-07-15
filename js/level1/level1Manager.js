@@ -15,9 +15,17 @@ export const Level1Manager = {
 
     init() {
         // 事件监听最先注册
-        document.addEventListener('enterLevel1', () => {
+        document.addEventListener('enterLevel1', (e) => {
             console.log('Level1Manager: 收到 enterLevel1');
-            try { this.enter('gate'); } catch (e) { console.error('enter error:', e); }
+            const scene = (e.detail && e.detail.scene) || gameState.level1.currentScene || 'gate';
+            const savedPos = e.detail && e.detail.playerPosPercent;
+            try {
+                this.enter(scene);
+                if (savedPos !== undefined) {
+                    gameState.playerPosPercent = savedPos;
+                    document.dispatchEvent(new CustomEvent('gameLoaded'));
+                }
+            } catch (err) { console.error('enter error:', err); }
         });
         document.addEventListener('returnToMenu', () => { try { this._reset(); } catch (e) {} });
 
@@ -110,6 +118,7 @@ export const Level1Manager = {
         gameState.currentChapter = 'level1';
         gameState.level1.entered = true;
         this._currentScene = scene;
+        gameState.level1.currentScene = scene;
         SceneManager.hide('game-screen');
         SceneManager.show('ui-hud', 'flex');
         const hud = document.getElementById('ui-hud');
@@ -125,8 +134,8 @@ export const Level1Manager = {
                 '山间薄雾沉沉，整座村寨静悄悄的，往日热闹的畲寨烟火散尽。\n青瓦夯土的老房墙面、祠堂图腾、晾晒的旧绣布，全都覆着一层灰蒙蒙的黑气，色彩黯淡死寂。'
             ), 600);
         }
-        if (scene === 'village' && this._firstVillageVisit) {
-            this._firstVillageVisit = false;
+        if (scene === 'village' && !gameState.level1.villageDescribed) {
+            gameState.level1.villageDescribed = true;
             setTimeout(() => this._showDesc(
                 '村口老戏台落满枯叶，无人问津。\n绣花古宅的木门半掩，一道温柔苍老的虚影静静立在门边，身着褪色畲族传统蓝衣，头戴畲族头帕，眼神温柔却满是怅然。'
             ), 400);

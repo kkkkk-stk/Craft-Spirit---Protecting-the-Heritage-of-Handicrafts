@@ -30,8 +30,9 @@ export const gameState = {
 
     // ========== 第一关进度 ==========
     level1: {
-        entered: false,             // 是否已进入第一关
-        openingDone: false,         // 开场对话是否完成
+        entered: false,
+        openingDone: false,
+        currentScene: 'gate',        // 当前所在场景
         // 文物收集（1~5）
         artifacts: { 1: false, 2: false, 3: false, 4: false, 5: false },
         // 匠人记忆观看（1~4）

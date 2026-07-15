@@ -443,6 +443,16 @@ export const DyeThreadGame = {
             });
             thread.addEventListener('dragend', () => {
                 thread.classList.remove('dragging');
+                // 防御：若元素因取消拖拽而脱离 DOM，放回池子
+                if (!thread.parentElement) {
+                    const idx = parseInt(thread.dataset.idx);
+                    const prevPos = this._dryingPlaced.indexOf(idx);
+                    if (prevPos >= 0) {
+                        this._dryingPlaced[prevPos] = null;
+                    }
+                    if (pool) pool.appendChild(thread);
+                    this._updateDryingState();
+                }
             });
         });
 
@@ -481,13 +491,13 @@ export const DyeThreadGame = {
             pool.addEventListener('drop', (e) => {
                 e.preventDefault();
                 const idx = parseInt(e.dataTransfer.getData('text/plain'));
+                const el = document.getElementById('dt-dry-' + idx);
                 const prevPos = this._dryingPlaced.indexOf(idx);
                 if (prevPos >= 0) {
                     this._dryingPlaced[prevPos] = null;
                     const slotEl = document.getElementById('dt-slot-' + prevPos);
                     if (slotEl) slotEl.innerHTML = '';
                 }
-                const el = document.getElementById('dt-dry-' + idx);
                 if (el) pool.appendChild(el);
                 this._updateDryingState();
             });
