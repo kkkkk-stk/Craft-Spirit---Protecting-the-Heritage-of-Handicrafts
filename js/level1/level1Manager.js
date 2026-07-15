@@ -933,18 +933,19 @@ export const Level1Manager = {
         if (s) s.textContent = m.subtitle || '';
         if (cl) cl.textContent = '🔍 ' + (m.clue || '');
 
-        // 设置视频源并播放
+        // 设置视频源并播放，暂停 BGM
         if (video && m.video) {
             video.src = m.video;
             video.load();
             video.play().catch(() => {});
         }
+        if (gameState.bgmAudio) gameState.bgmAudio.pause();
 
         this.memoryOverlay.style.display = 'flex';
         gameState.level1.memories[id] = true;
         this._updateProgressHud();
 
-        // 关闭：视频结束或点击关闭
+        // 关闭：视频结束或点击关闭，恢复 BGM
         let closed = false;
         const close = () => {
             if (closed) return;
@@ -952,6 +953,9 @@ export const Level1Manager = {
             this.memoryOverlay.style.display = 'none';
             if (video) { video.pause(); video.src = ''; video.removeEventListener('ended', close); }
             this.memoryOverlay.removeEventListener('click', close);
+            if (gameState.bgmAudio && gameState.currentChapter === 'level1') {
+                gameState.bgmAudio.play().catch(() => {});
+            }
             if (onComplete) onComplete();
         };
         if (video) video.addEventListener('ended', close);
