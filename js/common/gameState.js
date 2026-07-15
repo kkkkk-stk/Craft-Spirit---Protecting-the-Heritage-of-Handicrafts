@@ -76,6 +76,15 @@ export const gameState = {
     // 游戏配置
     playerSpeed: 10,
 
+    // 音频
+    bgmVolume: 0.4,
+    sfxVolume: 0.5,
+    bgmAudio: null,
+    sfxAudio: null,
+
+    // 画面
+    fullscreen: false,
+
     // 按键绑定
     keyBindings: {
         moveLeft:  { keys: ['arrowleft', 'a'], label: '向左移动' },
@@ -117,6 +126,9 @@ export const gameState = {
             currentChapter: this.currentChapter,
             currentDialogueIndex: this.currentDialogueIndex,
             playerSpeed: this.playerSpeed,
+            bgmVolume: this.bgmVolume,
+            sfxVolume: this.sfxVolume,
+            fullscreen: this.fullscreen,
             level1: JSON.parse(JSON.stringify(this.level1))
         };
     },
@@ -134,6 +146,9 @@ export const gameState = {
         this.currentChapter = snap.currentChapter ?? 'prologue';
         this.currentDialogueIndex = snap.currentDialogueIndex ?? 0;
         this.playerSpeed = snap.playerSpeed ?? 8;
+        this.bgmVolume = snap.bgmVolume ?? 0.4;
+        this.sfxVolume = snap.sfxVolume ?? 0.5;
+        this.fullscreen = snap.fullscreen ?? false;
         this.isPaused = false;
         this.dialogueActive = false;
         if (snap.level1) {

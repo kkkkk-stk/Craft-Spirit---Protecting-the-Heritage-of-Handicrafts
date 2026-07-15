@@ -450,37 +450,68 @@
 </div>
 
 <!-- ==================== 设置面板 ==================== -->
-<div id="settings-overlay">
-    <div class="settings-panel">
-        <!-- 设置主菜单 -->
-        <div id="settings-menu">
-            <h2 class="settings-title">游 戏 设 置</h2>
-            <div class="settings-menu-buttons">
-                <button class="settings-menu-btn" data-target="keybinding">按 键 绑 定</button>
-                <button class="settings-menu-btn disabled" disabled>音量设置（开发中）</button>
-                <button class="settings-menu-btn disabled" disabled>画面设置（开发中）</button>
-            </div>
-            <div class="settings-buttons">
-                <button class="settings-btn secondary" id="settings-close">关闭</button>
-            </div>
-        </div>
+	<div id="settings-overlay">
+	    <div class="settings-panel">
+	        <!-- 设置主菜单 -->
+	        <div id="settings-menu">
+	            <h2 class="settings-title">游 戏 设 置</h2>
+	            <div class="settings-menu-buttons">
+	                <button class="settings-menu-btn" data-target="keybinding">按 键 绑 定</button>
+	                <button class="settings-menu-btn" data-target="volume">音 量 设 置</button>
+	                <button class="settings-menu-btn" data-target="display">画 面 设 置</button>
+	            </div>
+	            <div class="settings-buttons">
+	                <button class="settings-btn secondary" id="settings-close">关闭</button>
+	            </div>
+	        </div>
 
-        <!-- 按键绑定子界面 -->
-        <div id="settings-keybinding" style="display:none;">
-            <h2 class="settings-title">按 键 绑 定</h2>
-            <div class="settings-section">
-                <div class="keybinding-list" id="keybinding-list">
-                    <!-- JS 动态填充 -->
-                </div>
-                <p class="keybinding-hint">点击「修改」后按下新按键即可完成绑定</p>
-            </div>
-            <div class="settings-buttons">
-                <button class="settings-btn secondary" id="settings-reset">恢复默认</button>
-                <button class="settings-btn secondary" id="settings-back">返回</button>
-            </div>
-        </div>
-    </div>
-</div>
+	        <!-- 按键绑定子界面 -->
+	        <div id="settings-keybinding" style="display:none;">
+	            <h2 class="settings-title">按 键 绑 定</h2>
+	            <div class="settings-section">
+	                <div class="keybinding-list" id="keybinding-list">
+	                    <!-- JS 动态填充 -->
+	                </div>
+	                <p class="keybinding-hint">点击「修改」后按下新按键即可完成绑定</p>
+	            </div>
+	            <div class="settings-buttons">
+	                <button class="settings-btn secondary" id="settings-reset">恢复默认</button>
+	                <button class="settings-btn secondary" id="settings-back">返回</button>
+	            </div>
+	        </div>
+
+	        <!-- 音量设置子界面 -->
+	        <div id="settings-volume" style="display:none;">
+	            <h2 class="settings-title">音 量 设 置</h2>
+	            <div class="settings-section">
+	                <div class="volume-row">
+	                    <span class="volume-label">🎵 背景音乐</span>
+	                    <input type="range" id="bgm-volume-slider" min="0" max="100" value="40" class="volume-slider">
+	                    <span class="volume-value" id="bgm-volume-value">40%</span>
+	                </div>
+	                <div class="volume-row">
+	                    <span class="volume-label">🔊 按钮音效</span>
+	                    <input type="range" id="sfx-volume-slider" min="0" max="100" value="50" class="volume-slider">
+	                    <span class="volume-value" id="sfx-volume-value">50%</span>
+	                </div>
+	            </div>
+	            <div class="settings-buttons">
+	                <button class="settings-btn secondary" id="settings-volume-back">返回</button>
+	            </div>
+	        </div>
+
+	        <!-- 画面设置子界面 -->
+	        <div id="settings-display" style="display:none;">
+	            <h2 class="settings-title">画 面 设 置</h2>
+	            <div class="settings-section">
+	                <button class="settings-btn primary" id="fullscreen-toggle">切换全屏 / 窗口</button>
+	            </div>
+	            <div class="settings-buttons">
+	                <button class="settings-btn secondary" id="settings-display-back">返回</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 
 <!-- ==================== 存档槽选择界面 ==================== -->
 <div id="save-slots-overlay">

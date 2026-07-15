@@ -15,8 +15,10 @@ const DEFAULT_KEY_BINDINGS = {
 
 export const SettingsManager = {
     overlay: null,
-    menuView: null,       // 设置主菜单
-    keybindingView: null, // 按键绑定子界面
+    menuView: null,
+    keybindingView: null,
+    volumeView: null,
+    displayView: null,
     keybindingList: null,
     _listeningAction: null,
     _listeningBtn: null,
@@ -28,6 +30,8 @@ export const SettingsManager = {
         this.overlay = document.getElementById('settings-overlay');
         this.menuView = document.getElementById('settings-menu');
         this.keybindingView = document.getElementById('settings-keybinding');
+        this.volumeView = document.getElementById('settings-volume');
+        this.displayView = document.getElementById('settings-display');
         this.keybindingList = document.getElementById('keybinding-list');
 
         if (!this.overlay) {
@@ -44,6 +48,10 @@ export const SettingsManager = {
                 const target = btn.dataset.target;
                 if (target === 'keybinding') {
                     this._showKeybinding();
+                } else if (target === 'volume') {
+                    this._showVolume();
+                } else if (target === 'display') {
+                    this._showDisplay();
                 }
             });
         }
@@ -52,6 +60,24 @@ export const SettingsManager = {
         const backBtn = document.getElementById('settings-back');
         if (backBtn) {
             backBtn.addEventListener('click', () => this._showMenu());
+        }
+
+        // 音量子界面 —— 返回按钮
+        const volBackBtn = document.getElementById('settings-volume-back');
+        if (volBackBtn) {
+            volBackBtn.addEventListener('click', () => this._showMenu());
+        }
+
+        // 画面子界面 —— 返回按钮
+        const dispBackBtn = document.getElementById('settings-display-back');
+        if (dispBackBtn) {
+            dispBackBtn.addEventListener('click', () => this._showMenu());
+        }
+
+        // 全屏切换按钮
+        const fsBtn = document.getElementById('fullscreen-toggle');
+        if (fsBtn) {
+            fsBtn.addEventListener('click', () => this._toggleFullscreen());
         }
 
         // 关闭按钮
@@ -116,6 +142,8 @@ export const SettingsManager = {
         this._cancelListening();
         if (this.menuView) this.menuView.style.display = 'block';
         if (this.keybindingView) this.keybindingView.style.display = 'none';
+        if (this.volumeView) this.volumeView.style.display = 'none';
+        if (this.displayView) this.displayView.style.display = 'none';
     },
 
     /**
@@ -124,7 +152,66 @@ export const SettingsManager = {
     _showKeybinding() {
         if (this.menuView) this.menuView.style.display = 'none';
         if (this.keybindingView) this.keybindingView.style.display = 'block';
+        if (this.volumeView) this.volumeView.style.display = 'none';
+        if (this.displayView) this.displayView.style.display = 'none';
         this._renderKeybindings();
+    },
+
+    /**
+     * 显示音量设置子界面
+     */
+    _showVolume() {
+        if (this.menuView) this.menuView.style.display = 'none';
+        if (this.keybindingView) this.keybindingView.style.display = 'none';
+        if (this.volumeView) this.volumeView.style.display = 'block';
+        if (this.displayView) this.displayView.style.display = 'none';
+
+        const bgmSlider = document.getElementById('bgm-volume-slider');
+        const bgmValue = document.getElementById('bgm-volume-value');
+        const sfxSlider = document.getElementById('sfx-volume-slider');
+        const sfxValue = document.getElementById('sfx-volume-value');
+
+        if (bgmSlider) {
+            bgmSlider.value = Math.round(gameState.bgmVolume * 100);
+            if (bgmValue) bgmValue.textContent = bgmSlider.value + '%';
+            bgmSlider.oninput = () => {
+                gameState.bgmVolume = bgmSlider.value / 100;
+                if (bgmValue) bgmValue.textContent = bgmSlider.value + '%';
+                if (gameState.bgmAudio) gameState.bgmAudio.volume = gameState.bgmVolume;
+            };
+        }
+        if (sfxSlider) {
+            sfxSlider.value = Math.round(gameState.sfxVolume * 100);
+            if (sfxValue) sfxValue.textContent = sfxSlider.value + '%';
+            sfxSlider.oninput = () => {
+                gameState.sfxVolume = sfxSlider.value / 100;
+                if (sfxValue) sfxValue.textContent = sfxSlider.value + '%';
+                if (gameState.sfxAudio) gameState.sfxAudio.volume = gameState.sfxVolume;
+            };
+        }
+    },
+
+    /**
+     * 显示画面设置子界面
+     */
+    _showDisplay() {
+        if (this.menuView) this.menuView.style.display = 'none';
+        if (this.keybindingView) this.keybindingView.style.display = 'none';
+        if (this.volumeView) this.volumeView.style.display = 'none';
+        if (this.displayView) this.displayView.style.display = 'block';
+    },
+
+    /**
+     * 切换全屏
+     */
+    _toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+            gameState.fullscreen = true;
+        } else {
+            document.exitFullscreen();
+            gameState.fullscreen = false;
+        }
     },
 
     /**

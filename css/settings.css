@@ -248,3 +248,59 @@
 .settings-btn.secondary:hover {
     background: rgba(139, 69, 19, 0.1);
 }
+
+/* ---- 音量滑块 ---- */
+.volume-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+}
+
+.volume-label {
+    min-width: 130px;
+    font-size: 17px;
+    color: #2c1810;
+}
+
+.volume-slider {
+    flex: 1;
+    height: 8px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #d4c5a9;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    background: #8b4513;
+    border-radius: 4px;
+    border: 2px solid #5c2e0a;
+    cursor: pointer;
+}
+
+.volume-value {
+    min-width: 48px;
+    font-size: 16px;
+    color: #8b4513;
+    text-align: right;
+    font-weight: bold;
+}
+
+/* ---- 全屏按钮 ---- */
+.settings-btn.primary {
+    background: #8b4513;
+    color: #f5e6d3;
+    padding: 14px 32px;
+    font-size: 18px;
+    width: 100%;
+}
+
+.settings-btn.primary:hover {
+    background: #a0522d;
+}

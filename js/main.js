@@ -4,6 +4,7 @@
 import { Preloader } from './preloader.js';
 import { MainMenu } from './menu/mainMenu.js';
 import { IntroController } from './intro/introController.js';
+import { gameState } from './common/gameState.js';
 import { PlayerController } from './game/playerController.js';
 import { CameraController } from './game/cameraController.js';
 import { NpcController } from './game/npcController.js';
@@ -83,6 +84,28 @@ function init() {
 
         // 六边锦绣拼图
         HexPuzzleManager.init();
+
+        // 背景音乐
+        gameState.bgmAudio = new Audio('assets/audio/BGM.mp3');
+        gameState.bgmAudio.loop = true;
+        gameState.bgmAudio.volume = gameState.bgmVolume;
+        document.addEventListener('enterLevel1', () => {
+            gameState.bgmAudio.play().catch(() => {});
+        });
+        document.addEventListener('returnToMenu', () => {
+            gameState.bgmAudio.pause();
+            gameState.bgmAudio.currentTime = 0;
+        });
+
+        // 按钮点击音效
+        gameState.sfxAudio = new Audio('assets/audio/dianji.mp3');
+        gameState.sfxAudio.volume = gameState.sfxVolume;
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('button')) {
+                gameState.sfxAudio.currentTime = 0;
+                gameState.sfxAudio.play().catch(() => {});
+            }
+        });
 
         // 调试入口：控制台直接调用
         window.__gameState = gameState;
