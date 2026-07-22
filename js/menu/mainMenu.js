@@ -73,7 +73,7 @@ export const MainMenu = {
                 <h2 style="color:#8b4513;letter-spacing:6px;margin-bottom:24px;">匠灵：守护手艺传承</h2>
                 <p style="line-height:2;">一款以浙江非遗文化为题材的</p>
                 <p style="line-height:2;">国风叙事解谜游戏</p>
-                <p style="line-height:2;margin-top:16px;">开发团队：匠灵工作室</p>
+                <p style="line-height:2;margin-top:16px;">开发团队：温州大学元文创工作室</p>
                 <p style="line-height:2;color:#888;">© 2026 All Rights Reserved</p>
                 <button style="margin-top:28px;padding:10px 40px;background:#8b4513;color:#fff;border:none;border-radius:8px;font-size:16px;cursor:pointer;letter-spacing:3px;">关闭</button>
             </div>

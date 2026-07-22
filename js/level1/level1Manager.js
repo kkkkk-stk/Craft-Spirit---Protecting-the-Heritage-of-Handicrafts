@@ -482,10 +482,11 @@ export const Level1Manager = {
         this._cgOverlay.style.display = 'flex';
         gameState.dialogueActive = true;  // 锁定玩家移动
 
-        // 如果有视频，自动播放
+        // 如果有视频，自动播放并暂停BGM
         if (cg.video) {
             const v = this._cgOverlay.querySelector('#cg-video');
-            if (v) v.play().catch(() => {});
+            if (v) { v.play().catch(()=>{}); }
+            if (gameState.bgmAudio) gameState.bgmAudio.pause();
         }
 
         const closeCG = () => {
@@ -493,6 +494,9 @@ export const Level1Manager = {
             gameState.dialogueActive = false;
             const v = this._cgOverlay.querySelector('#cg-video');
             if (v) v.pause();
+            if (gameState.bgmAudio && gameState.currentChapter === 'level1') {
+                gameState.bgmAudio.play().catch(()=>{});
+            }
             if (onEnd) onEnd();
         };
 
@@ -588,9 +592,9 @@ export const Level1Manager = {
         this._showPopup(ARTIFACTS[id]);
         this._updateProgressHud();
         this._renderArea('house');
-        // 拾取文物1（绣花绷架）时播放CG
-        if (id === 1) {
-            setTimeout(() => this._playCG('cg_pickup1'), 2000);
+        // 触发记忆 CG
+        if (!skipMemory && ARTIFACTS[id].memory) {
+            setTimeout(() => this._playMemory(ARTIFACTS[id].memory), 2000);
         }
     },
 
